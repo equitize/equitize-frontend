@@ -8,6 +8,8 @@ import {
 } from "react-router-dom";
 import PublicPage from "./containers/publicPage/PublicPage";
 import Footer from "./components/Footer/Footer";
+import RegisterPage from "./containers/registerPage/RegisterPage";
+import StartupRegistration from "./containers/startupRegistration/StartupRegistration";
 
 function App() {
   return (
@@ -18,8 +20,11 @@ function App() {
               <Route exact path="/">
                   <PublicPage />
               </Route>
-              <Route path="/register">
-
+              <Route exact path="/register">
+                <RegisterPage />
+              </Route>
+              <Route exact path="/register/startup">
+                  <StartupRegistration />
               </Route>
               <Route path="*">
                   <InvalidPage />

@@ -7,10 +7,12 @@ function Header() {
     return (
         <header className="text-gray-600 body-font m-2">
             <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-                <div className="flex flex-wrap items-center">
-                    <img src={Logo} alt="Company Logo" />
-                    <p className="font-Inter">EQUITIZE</p>
-                </div>
+                <Link to="/">
+                    <div className="flex flex-wrap items-center">
+                        <img src={Logo} alt="Company Logo" />
+                        <p className="font-Inter">EQUITIZE</p>
+                    </div>
+                </Link>
                 <nav className="flex flex-wrap items-center text-base md:ml-auto">
                     <a className="mr-6 hover:text-gray-900" href="#about">About</a>
                     <a className="mr-6 hover:text-gray-900" href="#contact">Contact</a>

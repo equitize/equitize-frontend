@@ -14,7 +14,7 @@ function Footer() {
                      <p className="px-2">EQUITIZE</p>
                  </div>
                  <div className="font-Inter text-white flex flex-wrap flex-col px-12">
-                     <div className="my-3">
+                     <div >
                          <p className="text-sm my-1">About Us</p>
                          <p className="text-sm my-1">Key Features</p>
                          <p className="text-sm my-1">Investment Guide</p>
@@ -23,14 +23,14 @@ function Footer() {
                  </div>
              </div>
              <div className="font-Inter text-white flex flex-wrap flex-col lg:w-1/4 sm:w-1/2 sm:items-center lg:items-start">
-                 <p>Learn</p>
+                 <p className="text-xl">Learn</p>
                  <div className="my-3">
                      <p className="text-sm my-1">Regulations</p>
                      <p className="text-sm my-1">General FAQ</p>
                  </div>
              </div>
              <div className="font-Inter text-white flex flex-wrap flex-col lg:w-1/4 sm:w-1/2 sm:px-12">
-                 <p>Contact</p>
+                 <p className="text-xl">Contact</p>
                  <div className="my-3">
                      <p className="text-sm my-1">Connect With Us</p>
                      <p className="text-sm my-1">General FAQ</p>
