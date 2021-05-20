@@ -1,25 +1,23 @@
-import React from 'react';
+import React from 'react'
 
-function Header() {
+import { Link } from 'react-router-dom'
 
+const Header = () => {
     return (
-        <header className="text-gray-600 body-font m-2">
-            <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-                <div>
-                    Equitize
-                </div>
-                <nav className="flex flex-wrap items-center text-base md:ml-auto">
-                    <a className="mr-6 hover:text-gray-900" href="#about">About</a>
-                    <a className="mr-6 hover:text-gray-900" href="#contact">Contact</a>
-                    <a className="mr-6 hover:text-gray-900" href="/login">Login</a>
-                    <button className="bg-secondary hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full">
-                        Register
-                    </button>
-                </nav>
+        <nav className='flex justify-between items-center h-16 bg-white text-black relative shadow-sm font-mono' role='navigation'>
+            <Link to='/' className='pl-8'>Equitize</Link>
+            <div className="px-4 cursor-pointer md:hidden">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
             </div>
-        </header>
-    );
+            <div className="pr-8 md:block hidden">
+                <Link className="p-4" to='/'>Home</Link>
+                <Link className="p-4" to='/about'>About</Link>
+                <Link className="p-4" to='/contact'>Contact</Link>
+                <Link className="p-4" to='/keyFeatures'>Key Features</Link>
+            </div>
+        </nav>
 
+    )
 }
 
-export default Header;
+export default Header
