@@ -5,7 +5,7 @@ function InvalidPage() {
     let location = useLocation();
 
     return (
-        <div>
+        <div className="container px-5 py-24 mx-auto">
             <h3>
                 Invalid Page for <code>{location.pathname}</code>
             </h3>

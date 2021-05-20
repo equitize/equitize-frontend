@@ -6,7 +6,8 @@ import {
     Route,
     Switch,
 } from "react-router-dom";
-
+import PublicPage from "./containers/publicPage/PublicPage";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   return (
@@ -15,12 +16,17 @@ function App() {
 
           <Switch>
               <Route exact path="/">
-                  <p>Home Page TODO</p>
+                  <PublicPage />
+              </Route>
+              <Route path="/register">
+
               </Route>
               <Route path="*">
                   <InvalidPage />
               </Route>
           </Switch>
+
+          <Footer />
       </Router>
   );
 }
