@@ -15,7 +15,6 @@ function Header() {
                 </Link>
                 <nav className="flex flex-wrap items-center text-base md:ml-auto">
                     <a className="mr-6 hover:text-gray-900" href="#about">About</a>
-                    <a className="mr-6 hover:text-gray-900" href="#contact">Contact</a>
                     <Link to="/login">
                         <p className="mr-6 hover:text-gray-900">Login</p>
                     </Link>
