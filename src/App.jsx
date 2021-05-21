@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import InvalidPage from "./containers/invalidPage/InvalidPage";
 import Header from "./components/Header/Header";
 import {
@@ -7,12 +7,33 @@ import {
     Switch,
 } from "react-router-dom";
 import Homepage from './components/Homepage';
+import Dropdown from './components/Dropdown';
 
 
 function App() {
+    const [isOpen, setIsOpen] = useState(false)
+
+    const toggle = () => {
+        setIsOpen(!isOpen)
+    }
+
+    useEffect(() => {
+        const hideMenu = () => {
+                setIsOpen(false)
+            }
+        }
+
+        window.addEventListener('resize', hideMenu)
+
+        return () => {
+            window.removeEventListener('resize', hideMenu)
+        }
+    })
+
   return (
       <Router>
-          <Header />
+          <Header toggle={toggle}/>
+          <Dropdown isOpen={isOpen} toggle={toggle}/>
           <Homepage />
 
           <Switch>
@@ -26,7 +47,5 @@ function App() {
       </Router>
   );
 }
-
-
 
 export default App;
