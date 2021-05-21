@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import Logo from './Logo.svg';
+import PrimaryButton from "../PrimaryButton/PrimaryButton";
 
 function Header() {
 
@@ -19,9 +20,7 @@ function Header() {
                         <p className="mr-6 hover:text-gray-900">Login</p>
                     </Link>
                     <Link to="/register">
-                        <button className="bg-secondary hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full">
-                            Register
-                        </button>
+                        <PrimaryButton text="Register" />
                     </Link>
                 </nav>
             </div>
