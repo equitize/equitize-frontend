@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
 import { useForm } from "react-hook-form";
 import PrimaryInput from "../../components/PrimaryInput/PrimaryInput";
 import FormProgressBar from "../../components/FormProgressBar/FormProgressBar";
 import PrimaryErrorMessage from "../../components/PrimaryErrorMessage/PrimaryErrorMessage";
-import FormButton from "../../components/FormButton/FormButton";
-import checkBoxGrayIcon from './checkBoxGray.svg'
+import FormRowWithCheckbox from "./FormRowWithCheckbox";
 
 function StartupRegistration (){
     const [isFirstPage, setIsFirstPage] = useState(true)
@@ -53,7 +52,7 @@ function StartupRegistration (){
                         <p>Please provide the following info</p>
                     </div>
                     <br/>
-                    <div className="bg-white px-24 py-16 rounded-xl space-y-10 shadow-lg h-full flex flex-col items-center">
+                    <div className="bg-white px-24 py-16 rounded-xl space-y-10 shadow-lg h-full w-full flex flex-col items-center sm:w-2/3 lg:w-1/2">
                         <form className="flex flex-col items-center justify-start" onSubmit={handleSubmit(onSubmit)}>
                             <PrimaryInput placeholder="Company Name" register={register("companyName", {required:true})} />
                             <PrimaryInput placeholder="Email Address" register={register("emailAddress", {required:true})} />
@@ -80,23 +79,14 @@ function StartupRegistration (){
                         <p>Before you start raising capital, you must understand the basics of equity crowdfunding process.</p>
                     </div>
                     <br/>
-                    <div className="bg-white px-20 py-16 rounded-xl space-y-10 shadow-lg h-full w-1/2">
+                    <div className="bg-white px-20 py-16 rounded-xl space-y-10 shadow-lg h-full w-full sm:w-2/3 lg:w-1/2">
                         <div className="flex flex-col items-end w-full">
                             <br />
-                            <div className="flex flex-wrap space-x-0 md:space-x-10 w-full justify-end">
-                                <FormButton text="Investment Guide" onClick={e => readContent(e,"first")}/>
-                                <img src={checkBoxGrayIcon} alt="Read this document" />
-                            </div>
+                            <FormRowWithCheckbox buttonText="Investment Guide" onClickFunc={e => readContent(e,"first")} checkBoxAlt="Read this document"/>
                             <br />
-                            <div className="flex flex-wrap space-x-10 w-full justify-end">
-                                <FormButton text="Campaign Process Guide" onClick={e => readContent(e,"second")}/>
-                                <img src={checkBoxGrayIcon} alt="Read this document" />
-                            </div>
+                            <FormRowWithCheckbox buttonText="Campaign Process Guide" onClickFunc={e => readContent(e,"second")} checkBoxAlt="Read this document"/>
                             <br />
-                            <div className="flex flex-wrap space-x-10 w-full justify-end">
-                                <FormButton text="Terms and Conditions" onClick={e => readContent(e,"third")}/>
-                                <img src={checkBoxGrayIcon} alt="Read this document" />
-                            </div>
+                            <FormRowWithCheckbox buttonText="Terms and Conditions" onClickFunc={e => readContent(e,"third")} checkBoxAlt="Read this document"/>
                             <br />
                             <br />
                             <PrimaryButton text="Submit" disabled={isDisabled} />

@@ -9,15 +9,15 @@ function FormProgressBar({ pages, selected }){
 
     for (let i = 0; i < pages; i++) {
         if (i === 0){
-            indents.push(<img src={ellipseSecondary} alt="Inactive Page" key={i} />);
+            indents.push(<img src={ellipseSecondary} alt="Inactive Page" key={i} className="w-6 md:w-8" />);
         }
         else{
-            indents.push(<img src={line} alt="Connecting Line" key={i} />);
-            indents.push(<img src={ellipseSecondary} alt="Inactive Page" key={i+100} />);
+            indents.push(<img src={line} alt="Connecting Line" key={i} className="w-6 md:w-8" />);
+            indents.push(<img src={ellipseSecondary} alt="Inactive Page" key={i+100} className="w-6 md:w-8" />);
         }
     }
 
-    indents[selected*2] = <img src={ellipsePrimary} alt="Active Page" key={selected*2} />
+    indents[selected*2] = <img src={ellipsePrimary} alt="Active Page" key={selected*2} className="w-6 md:w-8" />
 
     return (
         <div className="flex flex-wrap self-center">

@@ -22,7 +22,7 @@ function Footer() {
                      </div>
                  </div>
              </div>
-             <div className="font-Inter text-white flex flex-wrap flex-col lg:w-1/4 w-1/2 xl:items-start">
+             <div className="font-Inter text-white flex flex-wrap flex-col lg:w-1/4 w-1/2 pl-12 xl:items-start">
                  <p className="text-xl">Learn</p>
                  <div className="my-3">
                      <p className="text-sm my-1">Regulations</p>
@@ -37,7 +37,7 @@ function Footer() {
                  </div>
              </div>
              <div className="font-Inter text-white flex flex-wrap flex-col lg:w-1/4 w-1/2 lg:items-center">
-                 <p className="text-xl">Payment Services</p>
+                 <p className="text-xl px-10 sm:px-0">Payment Services</p>
                  <div className="flex flex-wrap my-3 xl:space-x-4 flex-col xl:flex-row items-start px-9 lg:px-0 lg:items-center">
                          <img src={Visa} alt="Company Logo" className=""/>
                          <img src={MasterCard} alt="Company Logo" className=""/>
