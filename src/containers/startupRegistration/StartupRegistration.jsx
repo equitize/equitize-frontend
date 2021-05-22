@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import PrimaryInput from "../../components/PrimaryInput/PrimaryInput";
 import FormProgressBar from "../../components/FormProgressBar/FormProgressBar";
 import PrimaryErrorMessage from "../../components/PrimaryErrorMessage/PrimaryErrorMessage";
+import FormButton from "../../components/FormButton/FormButton";
+import checkBoxGrayIcon from './checkBoxGray.svg'
 
 function StartupRegistration (){
     const [isFirstPage, setIsFirstPage] = useState(true)
@@ -32,7 +34,6 @@ function StartupRegistration (){
 
     useEffect(() => {
         let completedReading = Object.keys(isRead).every(function(k){ return isRead[k] === true })
-        console.log(completedReading)
 
         if (completedReading) {
             setIsDisabled(false)
@@ -48,7 +49,7 @@ function StartupRegistration (){
                     </div>
                     <br/>
                     <br/>
-                    <div className="text-xl font-Rubik text-gray-500">
+                    <div className="text-xl font-Rubik text-gray-500 ">
                         <p>Please provide the following info</p>
                     </div>
                     <br/>
@@ -70,25 +71,39 @@ function StartupRegistration (){
                 </div>
                 :
                 <div className="container mx-auto flex flex-wrap p-5 flex-col items-center my-auto">
-                    <div className="text-6xl font-Rubik">
+                    <div className="text-6xl font-Rubik text-center">
                         <p>Further Action</p>
                     </div>
                     <br/>
                     <br/>
-                    <div className="text-xl font-Rubik text-gray-500">
+                    <div className="text-xl font-Rubik text-gray-500 text-center">
                         <p>Before you start raising capital, you must understand the basics of equity crowdfunding process.</p>
                     </div>
                     <br/>
-                    <div className="bg-white px-24 py-16 rounded-xl space-y-10 shadow-lg h-full flex flex-col items-center">
-                        <form className="flex flex-col items-center justify-start" onSubmit={handleSubmit(onSubmit)}>
+                    <div className="bg-white px-20 py-16 rounded-xl space-y-10 shadow-lg h-full w-1/2">
+                        <div className="flex flex-col items-end w-full">
                             <br />
-                            <PrimaryButton text="Sign Up" type="submit" disabled={isDisabled} />
+                            <div className="flex flex-wrap space-x-0 md:space-x-10 w-full justify-end">
+                                <FormButton text="Investment Guide" onClick={e => readContent(e,"first")}/>
+                                <img src={checkBoxGrayIcon} alt="Read this document" />
+                            </div>
                             <br />
-
-                            <PrimaryButton text="Sign Up" onClick={e => readContent(e,"first")}/>
+                            <div className="flex flex-wrap space-x-10 w-full justify-end">
+                                <FormButton text="Campaign Process Guide" onClick={e => readContent(e,"second")}/>
+                                <img src={checkBoxGrayIcon} alt="Read this document" />
+                            </div>
+                            <br />
+                            <div className="flex flex-wrap space-x-10 w-full justify-end">
+                                <FormButton text="Terms and Conditions" onClick={e => readContent(e,"third")}/>
+                                <img src={checkBoxGrayIcon} alt="Read this document" />
+                            </div>
+                            <br />
+                            <br />
+                            <PrimaryButton text="Submit" disabled={isDisabled} />
+                            <br />
                             <br />
                             <FormProgressBar pages={2} selected={1}/>
-                        </form>
+                        </div>
                     </div>
                     <br/>
                 </div>

@@ -15,6 +15,7 @@ module.exports = {
             'primary': '#0D0D2B',
             'secondary': '#2B076E',
             'danger': '#e3342f',
+            'custom-gray': '#EFF0F6'
         })
     },
     variants: {

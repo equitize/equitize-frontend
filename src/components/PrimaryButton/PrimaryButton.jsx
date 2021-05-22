@@ -3,9 +3,17 @@ import PropTypes from 'prop-types';
 
 function PrimaryButton({ text, onClick, disabled }){
     return (
-        <button className="bg-secondary hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full" disabled={disabled} onClick={onClick}>
-            {text}
-        </button>
+        <>
+            {
+                disabled?
+                    <button className="bg-secondary bg-opacity-40 hover:bg-gray-300 text-white font-bold py-2 px-5 rounded-full self-center" disabled={disabled} onClick={onClick}>
+                        {text}
+                    </button>
+                    : <button className="bg-secondary hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full self-center" onClick={onClick}>
+                        {text}
+                    </button>
+            }
+        </>
     )
 }
 

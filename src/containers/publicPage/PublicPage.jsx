@@ -6,11 +6,11 @@ function PublicPage() {
     return (
         <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center justify-between">
             <div className="flex-col items-center md:w-1/2">
-                <p className="text-left break-words text-6xl font-Rubik">Empowering StartUps and Retail Investors</p>
+                <p className="text-left break-words lg:text-6xl font-Rubik text-3xl">Empowering StartUps and Retail Investors</p>
                 <br/>
                 <p className="text-gray-600 font-Rubik">Let us help you</p>
             </div>
-            <img src={SamplePicture} alt="Display Picture" />
+            <img src={SamplePicture} alt="Display Picture" className="w-1/2 lg:w-1/2"/>
         </div>
     )
 

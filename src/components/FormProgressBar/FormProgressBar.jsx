@@ -13,19 +13,18 @@ function FormProgressBar({ pages, selected }){
         }
         else{
             indents.push(<img src={line} alt="Connecting Line" key={i} />);
-            indents.push(<img src={ellipseSecondary} alt="Inactive Page" key={i+1} />);
+            indents.push(<img src={ellipseSecondary} alt="Inactive Page" key={i+100} />);
         }
     }
 
     indents[selected*2] = <img src={ellipsePrimary} alt="Active Page" key={selected*2} />
 
     return (
-        <div className="flex flex-wrap">
+        <div className="flex flex-wrap self-center">
             {indents}
         </div>
     )
 }
-
 
 FormProgressBar.propTypes = {
     pages: PropTypes.number.isRequired,
