@@ -6,9 +6,10 @@ import {
     Route,
     Switch,
 } from "react-router-dom";
-import Homepage from './components/Homepage';
-import Dropdown from './components/Dropdown';
-
+import PublicPage from "./containers/publicPage/PublicPage";
+import Footer from "./components/Footer/Footer";
+import RegisterPage from "./containers/registerPage/RegisterPage";
+import StartupRegistration from "./containers/startupRegistration/StartupRegistration";
 
 function App() {
     const [isOpen, setIsOpen] = useState(false)
@@ -39,12 +40,20 @@ function App() {
 
           <Switch>
               <Route exact path="/">
-                  <p>Home Page TODO</p>
+                  <PublicPage />
+              </Route>
+              <Route exact path="/register">
+                <RegisterPage />
+              </Route>
+              <Route exact path="/register/startup">
+                  <StartupRegistration />
               </Route>
               <Route path="*">
                   <InvalidPage />
               </Route>
           </Switch>
+
+          <Footer />
       </Router>
   );
 }

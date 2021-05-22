@@ -5,7 +5,9 @@ module.exports = {
         extend: {
             fontFamily:{
                 source_code_pro: ["Source Code Pro"],
-                roboto: ["Roboto"]
+                roboto: ["Roboto"],
+                Inter: ["Inter"],
+                Rubik: ["Rubik"]
             }
         },
         backgroundColor: theme => ({
