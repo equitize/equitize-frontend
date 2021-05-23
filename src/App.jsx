@@ -10,6 +10,7 @@ import PublicPage from "./containers/publicPage/PublicPage";
 import Footer from "./components/Footer/Footer";
 import RegisterPage from "./containers/registerPage/RegisterPage";
 import StartupRegistration from "./containers/startupRegistration/StartupRegistration";
+import Dropdown from './components/Dropdown';
 
 function App() {
     const [isOpen, setIsOpen] = useState(false)
@@ -33,28 +34,27 @@ function App() {
     })
 
   return (
-      <Router>
-          <Header toggle={toggle}/>
-          <Dropdown isOpen={isOpen} toggle={toggle}/>
-          <Homepage />
+    <Router>
+        <Header toggle={toggle}/>
+        <Dropdown isOpen={isOpen} toggle={toggle}/>
 
-          <Switch>
-              <Route exact path="/">
-                  <PublicPage />
-              </Route>
-              <Route exact path="/register">
-                <RegisterPage />
-              </Route>
-              <Route exact path="/register/startup">
-                  <StartupRegistration />
-              </Route>
-              <Route path="*">
-                  <InvalidPage />
-              </Route>
-          </Switch>
+        <Switch>
+            <Route exact path="/">
+                <PublicPage />
+            </Route>
+            <Route exact path="/register">
+            <RegisterPage />
+            </Route>
+            <Route exact path="/register/startup">
+                <StartupRegistration />
+            </Route>
+            <Route path="*">
+                <InvalidPage />
+            </Route>
+        </Switch>
 
-          <Footer />
-      </Router>
+        <Footer />
+    </Router>
   );
 }
 
