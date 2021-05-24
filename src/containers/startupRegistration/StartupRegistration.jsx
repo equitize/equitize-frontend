@@ -94,7 +94,7 @@ function StartupRegistration (){
                                                  checkBoxAlt="Read this document" checked={isRead.third}/>
                             <br />
                             <br />
-                            <Link to="/startup/fundraising" className="self-center">
+                            <Link to="/startup/setup" className="self-center">
                                 <PrimaryButton text="Submit" disabled={isDisabled} />
                             </Link>
                             <br />
