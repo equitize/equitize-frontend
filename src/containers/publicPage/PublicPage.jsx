@@ -10,7 +10,7 @@ function PublicPage() {
                 <br/>
                 <p className="text-gray-600 font-Rubik">Let us help you</p>
             </div>
-            <img src={SamplePicture} alt="Display Picture" />
+            <img src={SamplePicture} alt="Display Picture" className="w-1/2 lg:w-1/2"/>
         </div>
     )
 

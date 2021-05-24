@@ -1,9 +1,13 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
 import { useForm } from "react-hook-form";
 import PrimaryInput from "../../components/PrimaryInput/PrimaryInput";
 import FormProgressBar from "../../components/FormProgressBar/FormProgressBar";
 import PrimaryErrorMessage from "../../components/PrimaryErrorMessage/PrimaryErrorMessage";
+import FormRowWithCheckbox from "./FormRowWithCheckbox";
+import Investment from './investment.svg'
+import Campaign from './campaign.svg'
+import { Link } from "react-router-dom";
 
 function StartupRegistration (){
     const [isFirstPage, setIsFirstPage] = useState(true)
@@ -22,8 +26,7 @@ function StartupRegistration (){
         setIsFirstPage(!isFirstPage)
     }
 
-    function readContent(e, sequence){
-        e.preventDefault()
+    function readContent(sequence){
         setIsRead(prevState => ({
             ...prevState,
             [sequence]: !prevState[sequence]
@@ -32,7 +35,6 @@ function StartupRegistration (){
 
     useEffect(() => {
         let completedReading = Object.keys(isRead).every(function(k){ return isRead[k] === true })
-        console.log(completedReading)
 
         if (completedReading) {
             setIsDisabled(false)
@@ -48,11 +50,11 @@ function StartupRegistration (){
                     </div>
                     <br/>
                     <br/>
-                    <div className="text-xl font-Rubik text-gray-500">
+                    <div className="text-xl font-Rubik text-gray-500 ">
                         <p>Please provide the following info</p>
                     </div>
                     <br/>
-                    <div className="bg-white px-24 py-16 rounded-xl space-y-10 shadow-lg h-full flex flex-col items-center">
+                    <div className="bg-white px-24 py-16 rounded-xl space-y-10 shadow-lg h-full w-full flex flex-col items-center sm:w-2/3 lg:w-1/2">
                         <form className="flex flex-col items-center justify-start" onSubmit={handleSubmit(onSubmit)}>
                             <PrimaryInput placeholder="Company Name" register={register("companyName", {required:true})} />
                             <PrimaryInput placeholder="Email Address" register={register("emailAddress", {required:true})} />
@@ -70,25 +72,35 @@ function StartupRegistration (){
                 </div>
                 :
                 <div className="container mx-auto flex flex-wrap p-5 flex-col items-center my-auto">
-                    <div className="text-6xl font-Rubik">
+                    <div className="text-6xl font-Rubik text-center">
                         <p>Further Action</p>
                     </div>
                     <br/>
                     <br/>
-                    <div className="text-xl font-Rubik text-gray-500">
+                    <div className="text-xl font-Rubik text-gray-500 text-center">
                         <p>Before you start raising capital, you must understand the basics of equity crowdfunding process.</p>
                     </div>
                     <br/>
-                    <div className="bg-white px-24 py-16 rounded-xl space-y-10 shadow-lg h-full flex flex-col items-center">
-                        <form className="flex flex-col items-center justify-start" onSubmit={handleSubmit(onSubmit)}>
+                    <div className="bg-white px-20 py-16 rounded-xl space-y-10 shadow-lg h-full w-full sm:w-2/3 lg:w-1/2">
+                        <div className="flex flex-col items-end w-full">
                             <br />
-                            <PrimaryButton text="Sign Up" type="submit" disabled={isDisabled} />
+                            <FormRowWithCheckbox buttonText="Investment Guide" onClickFunc={() => readContent("first")}
+                                                 checkBoxAlt="Read this document" modalImg={Investment} checked={isRead.first}/>
                             <br />
-
-                            <PrimaryButton text="Sign Up" onClick={e => readContent(e,"first")}/>
+                            <FormRowWithCheckbox buttonText="Campaign Process Guide" onClickFunc={() => readContent("second")}
+                                                 checkBoxAlt="Read this document" modalImg={Campaign} checked={isRead.second}/>
+                            <br />
+                            <FormRowWithCheckbox buttonText="Terms and Conditions" onClickFunc={() => readContent("third")}
+                                                 checkBoxAlt="Read this document" checked={isRead.third}/>
+                            <br />
+                            <br />
+                            <Link to="/startup/fundraising" className="self-center">
+                                <PrimaryButton text="Submit" disabled={isDisabled} />
+                            </Link>
+                            <br />
                             <br />
                             <FormProgressBar pages={2} selected={1}/>
-                        </form>
+                        </div>
                     </div>
                     <br/>
                 </div>
