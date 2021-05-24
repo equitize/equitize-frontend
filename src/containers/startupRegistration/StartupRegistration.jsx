@@ -5,6 +5,9 @@ import PrimaryInput from "../../components/PrimaryInput/PrimaryInput";
 import FormProgressBar from "../../components/FormProgressBar/FormProgressBar";
 import PrimaryErrorMessage from "../../components/PrimaryErrorMessage/PrimaryErrorMessage";
 import FormRowWithCheckbox from "./FormRowWithCheckbox";
+import Investment from './investment.svg'
+import Campaign from './campaign.svg'
+import { Link } from "react-router-dom";
 
 function StartupRegistration (){
     const [isFirstPage, setIsFirstPage] = useState(true)
@@ -23,8 +26,7 @@ function StartupRegistration (){
         setIsFirstPage(!isFirstPage)
     }
 
-    function readContent(e, sequence){
-        e.preventDefault()
+    function readContent(sequence){
         setIsRead(prevState => ({
             ...prevState,
             [sequence]: !prevState[sequence]
@@ -82,14 +84,19 @@ function StartupRegistration (){
                     <div className="bg-white px-20 py-16 rounded-xl space-y-10 shadow-lg h-full w-full sm:w-2/3 lg:w-1/2">
                         <div className="flex flex-col items-end w-full">
                             <br />
-                            <FormRowWithCheckbox buttonText="Investment Guide" onClickFunc={e => readContent(e,"first")} checkBoxAlt="Read this document"/>
+                            <FormRowWithCheckbox buttonText="Investment Guide" onClickFunc={() => readContent("first")}
+                                                 checkBoxAlt="Read this document" modalImg={Investment} checked={isRead.first}/>
                             <br />
-                            <FormRowWithCheckbox buttonText="Campaign Process Guide" onClickFunc={e => readContent(e,"second")} checkBoxAlt="Read this document"/>
+                            <FormRowWithCheckbox buttonText="Campaign Process Guide" onClickFunc={() => readContent("second")}
+                                                 checkBoxAlt="Read this document" modalImg={Campaign} checked={isRead.second}/>
                             <br />
-                            <FormRowWithCheckbox buttonText="Terms and Conditions" onClickFunc={e => readContent(e,"third")} checkBoxAlt="Read this document"/>
+                            <FormRowWithCheckbox buttonText="Terms and Conditions" onClickFunc={() => readContent("third")}
+                                                 checkBoxAlt="Read this document" checked={isRead.third}/>
                             <br />
                             <br />
-                            <PrimaryButton text="Submit" disabled={isDisabled} />
+                            <Link to="/startup/fundraising" className="self-center">
+                                <PrimaryButton text="Submit" disabled={isDisabled} />
+                            </Link>
                             <br />
                             <br />
                             <FormProgressBar pages={2} selected={1}/>
