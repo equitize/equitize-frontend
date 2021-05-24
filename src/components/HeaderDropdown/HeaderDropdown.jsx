@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'; // ES6
 
-const Dropdown = ({isOpen, toggle}) => {
+const HeaderDropdown = ({isOpen, toggle}) => {
     return (
         <div className={isOpen ? "grid grid-rows-5 text-center items-center bg-white" : "hidden"} onClick={toggle}>
             <Link className="p-4" to='/about'>About</Link>
@@ -16,9 +16,9 @@ const Dropdown = ({isOpen, toggle}) => {
     )
 }
 
-Dropdown.propTypes = {
+HeaderDropdown.propTypes = {
     isOpen: PropTypes.bool,
     toggle: PropTypes.func
 }
 
-export default Dropdown
+export default HeaderDropdown

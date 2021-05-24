@@ -8,6 +8,9 @@ module.exports = {
                 roboto: ["Roboto"],
                 Inter: ["Inter"],
                 Rubik: ["Rubik"]
+            },
+            colors: {
+                'active-purple' : '#5F2EEA'
             }
         },
         backgroundColor: theme => ({
