@@ -36,12 +36,12 @@ function Footer() {
                      <p className="text-sm my-1">General FAQ</p>
                  </div>
              </div>
-             <div className="font-Inter text-white flex flex-wrap flex-col lg:w-1/4 w-1/2 lg:items-center">
+             <div className="font-Inter text-white flex flex-wrap flex-col lg:w-1/4 sm:w-1/2 items-center">
                  <p className="text-xl px-10 sm:px-0">Payment Services</p>
                  <div className="flex flex-wrap my-3 xl:space-x-4 flex-col xl:flex-row items-start px-9 lg:px-0 lg:items-center">
-                         <img src={Visa} alt="Company Logo" className=""/>
-                         <img src={MasterCard} alt="Company Logo" className=""/>
-                         <img src={Xfers} alt="Company Logo" className=""/>
+                         <img src={Visa} alt="Company Logo" className="m-1"/>
+                         <img src={MasterCard} alt="Company Logo" className="m-1"/>
+                         <img src={Xfers} alt="Company Logo" className="m-1"/>
                  </div>
              </div>
          </div>

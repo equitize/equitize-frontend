@@ -2,30 +2,34 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import Logo from './Logo.svg';
 import PrimaryButton from "../PrimaryButton/PrimaryButton";
+import PropTypes from 'prop-types'; // ES6
 
-function Header() {
+const Header = ({ toggle }) => {
 
     return (
-        <header className="text-gray-600 body-font m-2">
-            <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-                <Link to="/">
-                    <div className="flex flex-wrap items-center">
-                        <img src={Logo} alt="Company Logo" />
-                        <p className="font-Inter">EQUITIZE</p>
-                    </div>
-                </Link>
-                <nav className="flex flex-wrap items-center text-base md:ml-auto">
-                    <a className="mr-6 hover:text-gray-900" href="#about">About</a>
-                    <Link to="/login">
-                        <p className="mr-6 hover:text-gray-900">Login</p>
-                    </Link>
-                    <Link to="/register">
-                        <PrimaryButton text="Register" />
-                    </Link>
-                </nav>
+        <nav className="flex justify-between items-center h-16 relative bg-white shadow-sm text-gray-600 body-font m-2" role='navigation'>
+            <Link className="pl-8" to="/">
+                <div className="flex flex-wrap items-center">
+                    <img src={Logo} alt="Company Logo" />
+                    <p className="font-Inter">EQUITIZE</p>
+                </div>
+            </Link>
+            <div className="px-4 cursor-pointer md:hidden" onClick={toggle}>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
             </div>
-        </header>
+            <div className='pr-8 md:block hidden'>
+            <Link className="p-4 hover:text-gray-900" to="/About">About</Link>
+                <Link className="p-4 hover:text-gray-900" to="/login">Login</Link>
+                <Link className="p-4" to="/register">
+                    <PrimaryButton text="Register" />
+                </Link>
+            </div>
+        </nav>
     );
+}
+
+Header.propTypes = {
+    toggle: PropTypes.func
 }
 
 export default Header;
