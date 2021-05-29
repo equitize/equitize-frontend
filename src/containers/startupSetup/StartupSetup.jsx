@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import StartupSetupTabs from "./StartupSetupTabs";
-import PrimaryTextArea from "../../components/PrimaryTextArea/PrimaryTextArea";
-import PrimaryUploadButton from "../../components/PrimaryUploadButton/PrimaryUploadButton";
+import AccountVerification from "./subPages/accountVerification/AccountVerification";
+import CampaignSetup from "./subPages/campaignSetup/CampaignSetup"
+import CommercialChampion from "./subPages/commericalChampion/CommercialChampion";
+import DesignSprintApplication from "./subPages/designSprintApplication/DesignSprintApplication";
 
 function StartupSetup(){
     const [isActiveTab, setIsActiveTab] = useState({
@@ -24,11 +26,26 @@ function StartupSetup(){
             <br/>
             <StartupSetupTabs setIsActiveTab={setIsActiveTab} isActiveTab={isActiveTab}/>
             <br/>
-            <div className="bg-white px-24 py-16 rounded-xl space-y-10 shadow-lg h-full w-full flex flex-col items-center">
-                <PrimaryUploadButton text="Upload CAP Table" />
-                <PrimaryTextArea placeholder="Short Description of your Business" properties="w-full"/>
-
-            </div>
+            {
+                isActiveTab.first ?
+                    <AccountVerification />
+                    : null
+            }
+            {
+                isActiveTab.second ?
+                    <CampaignSetup />
+                    : null
+            }
+            {
+                isActiveTab.third ?
+                    <CommercialChampion />
+                    : null
+            }
+            {
+                isActiveTab.fourth ?
+                    <DesignSprintApplication />
+                    : null
+            }
         </div>
     )
 }

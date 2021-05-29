@@ -1,15 +1,24 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import classNames from "classnames";
 
-function PrimaryButton({ text, onClick, disabled }){
+function PrimaryButton({ text, onClick, disabled, properties }){
+    let cssProperties = classNames(properties, "bg-secondary text-white font-bold py-2 px-5 rounded-full")
+    if (disabled){
+        cssProperties = classNames(cssProperties, "bg-opacity-40 hover:bg-gray-300")
+    }
+    else{
+        cssProperties = classNames(cssProperties, "hover:bg-blue-700")
+    }
+
     return (
         <>
             {
                 disabled?
-                    <button className="bg-secondary bg-opacity-40 hover:bg-gray-300 text-white font-bold py-2 px-5 rounded-full self-center" disabled={disabled} onClick={onClick}>
+                    <button className={cssProperties} disabled={disabled} onClick={onClick}>
                         {text}
                     </button>
-                    : <button className="bg-secondary hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full self-center" onClick={onClick}>
+                    : <button className={cssProperties} onClick={onClick}>
                         {text}
                     </button>
             }
@@ -20,7 +29,8 @@ function PrimaryButton({ text, onClick, disabled }){
 PrimaryButton.propTypes = {
     text: PropTypes.string,
     onClick: PropTypes.func,
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    properties: PropTypes.any
 }
 
 export default PrimaryButton;
