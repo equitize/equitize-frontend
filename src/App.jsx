@@ -12,6 +12,7 @@ import RegisterPage from "./containers/registerPage/RegisterPage";
 import StartupRegistration from "./containers/startupRegistration/StartupRegistration";
 import StartupSetup from "./containers/startupSetup/StartupSetup";
 import HeaderDropdown from './components/HeaderDropdown/HeaderDropdown';
+import SetupCompleted from "./containers/startupSetup/SetupCompleted";
 
 function App() {
     const [isOpen, setIsOpen] = useState(false)
@@ -51,6 +52,9 @@ function App() {
               </Route>
               <Route exact path="/startup/setup">
                   <StartupSetup />
+              </Route>
+              <Route exact path="/startup/setup/completed">
+                  <SetupCompleted />
               </Route>
               <Route path="*">
                   <InvalidPage />

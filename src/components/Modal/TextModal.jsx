@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 
-function Modal({showModal, setShowModal, modalImg, header, content}){
+function TextModal({showModal, setShowModal, modalImg, header, content}){
     function closeModal(){
         setShowModal()
     }
@@ -23,7 +23,7 @@ function Modal({showModal, setShowModal, modalImg, header, content}){
                                         {header}
                                     </h3>
                                     <button
-                                        className="p-1 ml-auto bg-transparent border-0 text-black opacity-90 w-1/9 float-right text-3xl text-center  leading-none font-semibold outline-none focus:outline-none"
+                                        className="p-1 ml-auto bg-transparent border-0 text-black opacity-90 w-1/9 float-right text-3xl text-center leading-none font-semibold outline-none focus:outline-none"
                                         onClick={closeModal}
                                     >
                                         <p className="bg-transparent text-black h-6 w-6 text-2xl focus:outline-none">
@@ -52,7 +52,7 @@ function Modal({showModal, setShowModal, modalImg, header, content}){
     )
 }
 
-Modal.propTypes = {
+TextModal.propTypes = {
     showModal: PropTypes.bool,
     setShowModal: PropTypes.func,
     modalImg: PropTypes.element,
@@ -61,4 +61,4 @@ Modal.propTypes = {
     content: PropTypes.string
 }
 
-export default Modal;
+export default TextModal;

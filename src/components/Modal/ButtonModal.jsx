@@ -28,7 +28,7 @@ function ButtonModal({ text, onClick, modalImg }) {
                                         {text}
                                     </h3>
                                     <button
-                                        className="p-1 ml-auto bg-transparent border-0 text-black opacity-90 w-1/9 float-right text-3xl text-center  leading-none font-semibold outline-none focus:outline-none"
+                                        className="p-1 ml-auto bg-transparent border-0 text-black opacity-90 w-1/9 float-right text-3xl text-center leading-none font-semibold outline-none focus:outline-none"
                                         onClick={() => setShowModal(false)}
                                     >
                                         <p className="bg-transparent text-black h-6 w-6 text-2xl focus:outline-none">

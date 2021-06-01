@@ -19,7 +19,8 @@ module.exports = {
             'secondary': '#2B076E',
             'danger': '#e3342f',
             'custom-gray': '#EFF0F6',
-            'custom-blue': '#3671E9'
+            'custom-blue': '#3671E9',
+            'custom-green': '#6FCF97'
         })
     },
     variants: {

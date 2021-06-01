@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import StartupSetupTabs from "./StartupSetupTabs";
 import AccountVerification from "./subPages/accountVerification/AccountVerification";
 import CampaignSetup from "./subPages/campaignSetup/CampaignSetup"
-import CommercialChampion from "./subPages/commericalChampion/CommercialChampion";
+import CommercialChampion from "./subPages/commercialChampion/CommercialChampion";
 import DesignSprintApplication from "./subPages/designSprintApplication/DesignSprintApplication";
 
 function StartupSetup(){
