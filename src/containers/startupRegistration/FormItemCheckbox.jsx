@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from "prop-types";
 import checkBoxGrayIcon from "./checkBoxGray.svg";
 import checkBoxFilledIcon from './checkBoxFilled.svg'
-import Modal from "../../components/Modal/Modal";
+import ButtonModal from "../../components/Modal/ButtonModal";
 
-function FormRowWithCheckbox({ buttonText, onClickFunc, checkBoxAlt, modalImg, checked }){
+function FormItemCheckbox({ buttonText, onClickFunc, checkBoxAlt, modalImg, checked }){
     return(
         <div className="flex flex-wrap space-x-2 lg:space-x-10 w-full justify-evenly lg:justify-end">
-            <Modal text={buttonText} onClick={onClickFunc} modalImg={modalImg} />
+            <ButtonModal text={buttonText} onClick={onClickFunc} modalImg={modalImg} />
             {
                 checked ?
                     <img src={checkBoxFilledIcon} alt={checkBoxAlt} />
@@ -18,7 +18,7 @@ function FormRowWithCheckbox({ buttonText, onClickFunc, checkBoxAlt, modalImg, c
     )
 }
 
-FormRowWithCheckbox.propTypes = {
+FormItemCheckbox.propTypes = {
     buttonText: PropTypes.string,
     onClickFunc: PropTypes.func,
     checkBoxAlt: PropTypes.string,
@@ -26,4 +26,4 @@ FormRowWithCheckbox.propTypes = {
     checked: PropTypes.bool
 }
 
-export default FormRowWithCheckbox;
+export default FormItemCheckbox;
