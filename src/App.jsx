@@ -11,6 +11,7 @@ import Footer from "./components/Footer/Footer";
 import RegisterPage from "./containers/registerPage/RegisterPage";
 import StartupRegistration from "./containers/startupRegistration/StartupRegistration";
 import StartupSetup from "./containers/startupSetup/StartupSetup";
+import SetupCompleted from "./containers/startupSetup/SetupCompleted";
 
 function App() {
 
@@ -30,6 +31,9 @@ function App() {
               </Route>
               <Route exact path="/startup/setup">
                   <StartupSetup />
+              </Route>
+              <Route exact path="/startup/setup/completed">
+                  <SetupCompleted />
               </Route>
               <Route path="*">
                   <InvalidPage />

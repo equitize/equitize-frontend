@@ -1,12 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import TabButton from "./TabButton";
+import { getKeyByValue } from "../../helpers";
 
 function StartupSetupTabs({isActiveTab, setIsActiveTab}) {
-    function getKeyByValue(object, value) {
-        return Object.keys(object).find(key => object[key] === value);
-    }
-
     function changeTab(tab){
         const activeTab = getKeyByValue(isActiveTab, true)
 
