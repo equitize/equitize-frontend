@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import InvalidPage from "./containers/invalidPage/InvalidPage";
 import Header from "./components/Header/Header";
 import {
@@ -11,34 +11,13 @@ import Footer from "./components/Footer/Footer";
 import RegisterPage from "./containers/registerPage/RegisterPage";
 import StartupRegistration from "./containers/startupRegistration/StartupRegistration";
 import StartupSetup from "./containers/startupSetup/StartupSetup";
-import HeaderDropdown from './components/HeaderDropdown/HeaderDropdown';
 import SetupCompleted from "./containers/startupSetup/SetupCompleted";
 
 function App() {
-    const [isOpen, setIsOpen] = useState(false)
-
-    const toggle = () => {
-        setIsOpen(!isOpen)
-    }
-
-    useEffect(() => {
-        const hideMenu = () => {
-            if(window.innerWidth > 768 && isOpen) {
-                setIsOpen(false)
-            }
-        }
-
-        window.addEventListener('resize', hideMenu)
-
-        return () => {
-            window.removeEventListener('resize', hideMenu)
-        }
-    })
 
   return (
       <Router>
-          <Header toggle={toggle}/>
-          <HeaderDropdown isOpen={isOpen} toggle={toggle}/>
+          <Header/>
 
           <Switch>
               <Route exact path="/">
