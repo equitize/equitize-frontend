@@ -16,7 +16,7 @@ PrimaryInput.propTypes = {
     register: PropTypes.object,
     properties: PropTypes.any,
     onChange: PropTypes.func,
-    value: PropTypes.string,
+    value: PropTypes.any,
     type: PropTypes.string
 }
 

@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import FormButton from "../FormButton/FormButton";
 import PropTypes from 'prop-types';
 
 function ButtonModal({ text, onClick, modalImg }) {
-    const [showModal, setShowModal] = React.useState(false);
+    const [showModal, setShowModal] = useState(false);
 
     function onClickFunc(){
         onClick()

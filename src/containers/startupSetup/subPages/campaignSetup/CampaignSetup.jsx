@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import DropZone from "../../../../components/DropZone/DropZone";
 import PrimaryTextArea from "../../../../components/PrimaryTextArea/PrimaryTextArea";
 import PrimaryButton from "../../../../components/PrimaryButton/PrimaryButton";
-import ZoomSessionModal from "./ZoomSessionModal";
+import ZoomSessionModal from "./modals/ZoomSessionModal";
+import MilestoneModal from "./modals/MilestoneModal";
 
 function CampaignSetup(){
     const [campaignDetails, setCampaignDetails] = useState({
@@ -11,6 +12,11 @@ function CampaignSetup(){
             date: "",
             startTime: "",
             endTime: ""
+        },
+        campaignGoal: {
+            crowdfundingTarget: 500000,
+            sharesAllocation: 10,
+            tokensConverted: 1000000
         },
         milestones:[]
     })
@@ -32,6 +38,53 @@ function CampaignSetup(){
         }))
     }
 
+    function addMilestonesDetails(milestone){
+        setCampaignDetails(prevState => ({
+            ...prevState,
+            milestones: [
+                ...prevState.milestones,
+                milestone
+            ]
+        }))
+    }
+
+    function editMilestoneFunc(index){
+        function editSelectedMilestone(milestone){
+            let currentMilestones = campaignDetails.milestones
+            currentMilestones[index] = milestone
+
+            setCampaignDetails(prevState => ({
+                ...prevState,
+                milestones: [
+                    ...currentMilestones
+                ]
+            }))
+        }
+        return editSelectedMilestone;
+    }
+
+    function deleteMilestoneFunc(index){
+        function deleteSelectedMilestone(){
+            let currentMilestones = campaignDetails.milestones
+            currentMilestones.splice(index, 1)
+
+            setCampaignDetails(prevState => ({
+                ...prevState,
+                milestones: [
+                    ...currentMilestones
+                ]
+            }))
+        }
+        return deleteSelectedMilestone;
+    }
+
+    function setCampaignGoal(campaignGoalObj){
+        setCampaignDetails(prevState => ({
+            ...prevState,
+            campaignGoal: campaignGoalObj
+        }))
+    }
+
     function saveCampaignDescription(){
         console.log(campaignDetails.campaignDescription)
         // TODO More detailed logic such as no selection and error handling
@@ -44,9 +97,9 @@ function CampaignSetup(){
                 <DropZone placeHolderText="Drop Pitch Deck Materials (pdf, jpg)" acceptedFileTypes=".jpg, .pdf" />
                 <PrimaryTextArea placeholder="Campaign Description" onChangeFunc={setCampaignDescription}
                                  properties="w-full h-40" value={campaignDetails.campaignDescription} />
-                <button className="bg-custom-blue hover:bg-blue-700 font-bold py-3 px-2 self-stretch text-white text-xs sm:text-sm lg:text-xl lg:px-5 rounded-xl w-full sm:mx-4">
-                    <p>SET UP PROPOSED CAMPAIGN MILESTONES</p>
-                </button>
+                <MilestoneModal addMilestonesFunc={addMilestonesDetails} details={campaignDetails}
+                                editMilestoneFunc={editMilestoneFunc} deleteMilestoneFunc={deleteMilestoneFunc}
+                                setCampaignGoal={setCampaignGoal} />
                 <ZoomSessionModal onChangeFunc={setZoomDetails} details={campaignDetails.zoomDetails}/>
                 <br />
                 <br />

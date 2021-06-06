@@ -22,9 +22,11 @@
     "react-dropzone": "^11.3.2",
     "react-hook-form": "^7.6.0",
     "react-query": "^3.16.0",
+    "react-range": "^1.8.9",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-tooltip": "^4.2.21",
     "redux-persist": "^6.0.0",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2",
     "yarn": "^1.22.10"
