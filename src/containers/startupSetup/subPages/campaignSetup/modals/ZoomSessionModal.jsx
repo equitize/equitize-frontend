@@ -1,13 +1,13 @@
 import React from "react";
-import PrimaryInput from "../../../../components/PrimaryInput/PrimaryInput";
+import PrimaryInput from "../../../../../components/PrimaryInput/PrimaryInput";
 import PropTypes from "prop-types";
-import PrimaryButton from "../../../../components/PrimaryButton/PrimaryButton";
+import PrimaryButton from "../../../../../components/PrimaryButton/PrimaryButton";
 
 function ZoomSessionModal({ onChangeFunc, details }){
     const [showModal, setShowModal] = React.useState(false);
 
-    function onClickFunc(){
-        setShowModal(true)
+    function ModalFunc(){
+        setShowModal(!showModal)
     }
 
     function submitZoomSession(){
@@ -17,7 +17,7 @@ function ZoomSessionModal({ onChangeFunc, details }){
     return (
         <>
             <button className="bg-custom-blue hover:bg-blue-700 font-bold py-3 px-2 self-stretch text-white text-xs sm:text-sm lg:text-xl lg:px-5 rounded-xl w-full sm:mx-4"
-                    onClick={onClickFunc}>
+                    onClick={ModalFunc}>
                 <p>SET UP ZOOM SESSION FOR CAMPAIGN LAUNCH</p>
             </button>
             {showModal ? (
@@ -31,7 +31,7 @@ function ZoomSessionModal({ onChangeFunc, details }){
                                 {/*header*/}
                                 <button
                                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-90 w-1/9 float-right text-3xl text-center leading-none font-semibold outline-none focus:outline-none"
-                                    onClick={() => setShowModal(false)}
+                                    onClick={ModalFunc}
                                 >
                                     <p className="bg-transparent text-black h-6 w-6 text-2xl focus:outline-none">
                                         ×
@@ -50,7 +50,7 @@ function ZoomSessionModal({ onChangeFunc, details }){
                                     <div className="flex flex-wrap flex-col w-full">
                                         <div className="flex flex-row justify-center items-center">
                                             <p className="bg-secondary text-white font-bold px-2 py-2 rounded-xl text-center w-1/2 sm:w-1/3 text-sm sm:text-base">Select a date</p>
-                                            <PrimaryInput placeholder="dd/mm/yy" properties="text-center w-1/2 sm:w-1/3 text-sm md:text-md" onChange={(e) => onChangeFunc("date", e.target.value)}
+                                            <PrimaryInput placeholder="dd/mm/yy" properties="text-center w-1/2 sm:w-1/3 text-xs md:text-md" onChange={(e) => onChangeFunc("date", e.target.value)}
                                                           value={details.date} type="date" />
                                         </div>
                                         <div className="flex flex-row justify-center items-center">
@@ -60,7 +60,7 @@ function ZoomSessionModal({ onChangeFunc, details }){
                                                        placeholder="0000" onChange={(e) => onChangeFunc("startTime", e.target.value)}
                                                        value={details.startTime} type="time" />
                                                 <p className="text-center text-xs md:text-base font-bold">TO</p>
-                                                <input className="rounded-xl bg-gray-100 placeholder-gray-400 font-Inter text-center px-1 py-2 text-xs sm:text-base"
+                                                <input className="rounded-xl bg-gray-100 placeholder-gray-400 font-Inter text-center py-2 text-xs sm:text-base"
                                                        placeholder="2359" onChange={(e) => onChangeFunc("endTime", e.target.value)}
                                                        value={details.endTime} type="time" />
                                             </div>
