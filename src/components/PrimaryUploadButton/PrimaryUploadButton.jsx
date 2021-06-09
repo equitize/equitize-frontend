@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import InfoIcon from './info.svg'
 
-function PrimaryUploadButton({ text, properties, moreInfo, labelId, moreInfoFunc, errorFunc, Modal }){
+function PrimaryUploadButton({ text, properties, moreInfo, labelId, moreInfoFunc, errorFunc, Modal, startupId }){
     let cssProperties;
 
     if (moreInfo){
@@ -19,9 +19,20 @@ function PrimaryUploadButton({ text, properties, moreInfo, labelId, moreInfoFunc
         "name": ""
     })
 
-    function fileUpload(fileToUpload){
+    const fileUpload = async (fileToUpload) => {
         // TODO API CALL
-        console.log(fileToUpload)
+        const formData = new FormData()
+        formData.append('file', fileToUpload)
+
+        // TODO: Hardcoded baseURL
+        const response = await fetch('http://localhost:8080/api/db/startup/' + labelId + '/' + startupId, {
+            method: 'PUT',
+            body: formData
+        })
+
+        const data = await response.json()
+        console.log(data)
+
         return true
     }
 
@@ -112,7 +123,8 @@ PrimaryUploadButton.propTypes = {
     labelId: PropTypes.string,
     moreInfoFunc: PropTypes.func,
     errorFunc: PropTypes.func,
-    Modal: PropTypes.element
+    Modal: PropTypes.element,
+    startupId: PropTypes.number
 }
 
 export default PrimaryUploadButton;

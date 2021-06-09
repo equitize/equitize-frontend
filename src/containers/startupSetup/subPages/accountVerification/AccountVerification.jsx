@@ -8,7 +8,14 @@ import IdProofModal from "./infoModals/IdProofModal";
 import BankInfoModal from "./infoModals/BankInfoModal";
 import AcraDocModal from "./infoModals/AcraDocModal";
 
+// For redux
+import { useSelector } from 'react-redux'
+import { getStartupId } from '../../../../store/auth'
+
 function AccountVerification(){
+
+    const startupId = useSelector(getStartupId)
+
     const [businessDescription, setBusinessDescription] = useState("")
     const [errorMessage, setErrorMessage] = useState(null)
     const [showModal, setShowModal] = React.useState({
@@ -45,14 +52,16 @@ function AccountVerification(){
                                                     <CapTableModal showModal={showModal.capTable} setShowModal={launchInfoModal} id="capTable"/>
                                                  </>
                                              }
+                                            startupId={startupId}
                         />
-                        <PrimaryUploadButton text="Upload ACRA Documents" moreInfo={true} labelId="acraDoc"
+                        <PrimaryUploadButton text="Upload ACRA Documents" moreInfo={true} labelId="acraDocuments"
                                              moreInfoFunc={launchInfoModal} errorFunc={setErrorMessage}
                                              Modal={
                                                  <>
-                                                     <AcraDocModal showModal={showModal.acraDoc} setShowModal={launchInfoModal} id="acraDoc"/>
+                                                     <AcraDocModal showModal={showModal.acraDoc} setShowModal={launchInfoModal} id="acraDocuments"/>
                                                  </>
                                              }
+                                             startupId={startupId}
                         />
                         <PrimaryUploadButton text="Bank Information" moreInfo={true} labelId="bankInfo"
                                              moreInfoFunc={launchInfoModal} errorFunc={setErrorMessage}
@@ -61,6 +70,7 @@ function AccountVerification(){
                                                      <BankInfoModal showModal={showModal.bankInfo} setShowModal={launchInfoModal} id="bankInfo"/>
                                                  </>
                                              }
+                                             startupId={startupId}
                         />
                         <PrimaryUploadButton text="Upload Identification Proof" moreInfo={true} labelId="idProof"
                                              moreInfoFunc={launchInfoModal} errorFunc={setErrorMessage}
@@ -69,11 +79,12 @@ function AccountVerification(){
                                                      <IdProofModal showModal={showModal.idProof} setShowModal={launchInfoModal} id="idProof"/>
                                                  </>
                                              }
+                                             startupId={startupId}
                         />
                     </div>
                     <div className="flex flex-wrap w-1/3">
                         <PrimaryUploadImageButton text="Upload Profile Picture" properties="w-full justify-center"
-                                                  labelId="profilePic" errorFunc={setErrorMessage} />
+                                                  labelId="profilePhoto" errorFunc={setErrorMessage} startupId={startupId} />
                     </div>
                 </div>
                 <PrimaryTextArea placeholder="Short Description of your Business" properties="w-full h-40" onChangeFunc={setBusinessDescription}/>

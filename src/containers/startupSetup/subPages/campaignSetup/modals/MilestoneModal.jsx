@@ -51,7 +51,7 @@ function MilestoneModal({ details, addMilestonesFunc, editMilestoneFunc, deleteM
                                             : null
                                     }
                                 </div>
-                                <AddMilestoneModal addMilestonesFunc={addMilestonesFunc} />
+                                <AddMilestoneModal addMilestonesFunc={addMilestonesFunc} currentMilestoneLength={details.milestones.length} />
                                 <br/>
                                 <br/>
                             </div>

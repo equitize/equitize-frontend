@@ -12,7 +12,6 @@ const api = ({ dispatch }) => next => async action => {
     next(action)
 
     try {
-
         const response = await axios.request({
             // withCredentials: true,
             // credentials: 'include',
@@ -41,5 +40,6 @@ const api = ({ dispatch }) => next => async action => {
         }
     }
 }
+    
 
 export default api

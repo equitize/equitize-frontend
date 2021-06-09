@@ -8,7 +8,13 @@ import MoneyIcon from "./money.svg"
 import InfoIcon from "./info.svg"
 import ReactTooltip from 'react-tooltip';
 
+// For redux
+import { useSelector } from 'react-redux'
+import { getStartupId } from '../../../../../store/auth'
+
 function CampaignGoalModal({ ModalFunc, showModal, editCampaignGoal, campaignGoal }){
+    const startupId = useSelector(getStartupId)
+
     const [tempCampaignGoal, setTempCampaignGoal] = useState(campaignGoal)
 
     function setCampaignGoalProperties(selected) {
@@ -21,9 +27,22 @@ function CampaignGoalModal({ ModalFunc, showModal, editCampaignGoal, campaignGoa
         return setSelectedCampaignGoalProperty;
     }
 
-    function saveCampaignGoal(){
+    const saveCampaignGoal = async () => {
         editCampaignGoal(tempCampaignGoal)
         ModalFunc()
+
+        // API to update/set campaign goals
+        //TODO: Hardcoded baseURL
+        const response = await fetch('http://localhost:8080/api/db/startup/campaign/update/' + startupId, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'PUT',
+            body: JSON.stringify(tempCampaignGoal) 
+        })
+
+        const data = await response.json()
+        console.log(data)
     }
 
     useEffect(()=>{
@@ -73,7 +92,7 @@ function CampaignGoalModal({ ModalFunc, showModal, editCampaignGoal, campaignGoa
                                                      data-tip="COMPANY VALUATION = <br />CROWDFUNDING TARGET X<br /> (100%/SHARES ALLOCATION TO<br /> INVESTORS)"/>
                                             </div>
                                             <p className="text-center w-1/2 sm:w-1/3 text-sm md:text-md rounded-xl bg-gray-100 px-2 py-2 xl:text-xl m-4 font-Inter">
-                                                ${tempCampaignGoal.crowdfundingTarget * tempCampaignGoal.sharesAllocation / 100}
+                                                ${tempCampaignGoal.goal * (100 / tempCampaignGoal.sharesAllocated)}
                                             </p>
                                         </div>
                                         <br/>
@@ -84,8 +103,8 @@ function CampaignGoalModal({ ModalFunc, showModal, editCampaignGoal, campaignGoa
                                                 <div className="flex flex-row justify-center">
                                                     <p className="self-center font-bold font-Rubik text-xs md:text-md">$</p>
                                                     <PrimaryInput properties="text-center w-2/3 text-xs md:text-md"
-                                                                  value={tempCampaignGoal.crowdfundingTarget}
-                                                                  onChange={setCampaignGoalProperties('crowdfundingTarget')}
+                                                                  value={tempCampaignGoal.goal}
+                                                                  onChange={setCampaignGoalProperties('goal')}
                                                                   type="number" />
                                                 </div>
                                             </div>
@@ -94,8 +113,8 @@ function CampaignGoalModal({ ModalFunc, showModal, editCampaignGoal, campaignGoa
                                                 <img src={SharesIcon} alt="Target Icon" className="h-20" />
                                                 <div className="flex flex-row justify-center">
                                                     <PrimaryInput properties="text-center w-2/3 text-xs md:text-md"
-                                                                  value={tempCampaignGoal.sharesAllocation}
-                                                                  onChange={setCampaignGoalProperties('sharesAllocation')}
+                                                                  value={tempCampaignGoal.sharesAllocated}
+                                                                  onChange={setCampaignGoalProperties('sharesAllocated')}
                                                                   type="number" />
                                                     <p className="self-center font-bold font-Rubik text-xs md:text-md">%</p>
                                                 </div>
@@ -113,8 +132,8 @@ function CampaignGoalModal({ ModalFunc, showModal, editCampaignGoal, campaignGoa
                                                 <img src={MoneyIcon} alt="Target Icon" className="h-20" />
                                                 <div className="flex flex-row justify-center">
                                                     <PrimaryInput properties="text-center w-2/3 text-xs md:text-md"
-                                                                  value={tempCampaignGoal.tokensConverted}
-                                                                  onChange={setCampaignGoalProperties('tokensConverted')}
+                                                                  value={tempCampaignGoal.tokensMinted}
+                                                                  onChange={setCampaignGoalProperties('tokensMinted')}
                                                                   type="number" />
                                                 </div>
                                             </div>

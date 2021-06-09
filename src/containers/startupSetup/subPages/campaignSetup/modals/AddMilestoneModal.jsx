@@ -5,13 +5,22 @@ import PrimaryInput from "../../../../../components/PrimaryInput/PrimaryInput";
 import PrimaryTextArea from "../../../../../components/PrimaryTextArea/PrimaryTextArea";
 import { Range } from 'react-range';
 
-function AddMilestoneModal({ addMilestonesFunc }){
+// For redux
+import { useSelector } from 'react-redux'
+import { getStartupId } from '../../../../../store/auth'
+
+function AddMilestoneModal({ addMilestonesFunc, currentMilestoneLength}){
+
+    const startupId = useSelector(getStartupId)
+
     const [showModal, setShowModal] = useState(false);
     const [milestone, setMilestone] = useState({
+        companyId: startupId,
         title: "",
-        date: "",
+        endDate: "",
         description: "",
-        percentageFunds: null
+        amount: null,    // TODO: 'Amount' refers to percentage funds get Tinkit to change it
+        milestonePart: currentMilestoneLength + 1
     })
 
     function ModalFunc(){
@@ -31,21 +40,36 @@ function AddMilestoneModal({ addMilestonesFunc }){
     function setPercentageFunds(values){
         setMilestone(prevState => ({
             ...prevState,
-            percentageFunds: values[0]
+            amount: values[0]
         }))
     }
 
-    function addMileStone(){
+    const addMileStone = async () => {
         addMilestonesFunc(milestone)
         ModalFunc()
+
+        console.log(milestone)
+        // API to set milestone
+        const response = await fetch('http://localhost:8080/api/db/startup/setMilestone', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            body: JSON.stringify(milestone) 
+        })
+
+        const data = await response.json()
+        console.log(data)
     }
 
     useEffect(()=> {
         setMilestone({
+                companyId: startupId,
                 title: "",
-                date: "",
+                endDate: "",
                 description: "",
-                percentageFunds: null
+                amount: null,
+                milestonePart: currentMilestoneLength + 1
             })
     },[showModal])
 
@@ -80,7 +104,7 @@ function AddMilestoneModal({ addMilestonesFunc }){
                                     <PrimaryInput placeholder="Milestone Title" properties="self-stretch"
                                                   value={milestone.title} onChange={setMilestoneProperties('title')} />
                                     <PrimaryInput placeholder="DD/MM/Y" type="date"
-                                                  value={milestone.date} onChange={setMilestoneProperties('date')} />
+                                                  value={milestone.endDate} onChange={setMilestoneProperties('endDate')} />
                                     <PrimaryTextArea placeholder="Description" value={milestone.description}
                                                      onChangeFunc={setMilestoneProperties('description')}
                                                      alt={true} properties="m-4"/>
@@ -92,7 +116,7 @@ function AddMilestoneModal({ addMilestonesFunc }){
                                             step={0.1}
                                             min={0}
                                             max={100}
-                                            values={milestone.percentageFunds !== null ? [milestone.percentageFunds] : [0]}
+                                            values={milestone.amount !== null ? [milestone.amount] : [0]}
                                             onChange={setPercentageFunds}
                                             renderTrack={({ props, children }) => (
                                                 <div
@@ -108,15 +132,15 @@ function AddMilestoneModal({ addMilestonesFunc }){
                                                     className="w-5 h-5 transform translate-x-10 bg-indigo-500 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                                 >
                                                     <div className="absolute font-Inter text-sm font-bold -top-7 p-1 -left-3 w-10">
-                                                        <p className="text-active-purple text-center">{milestone.percentageFunds !== null ? [milestone.percentageFunds] : [0]}%</p>
+                                                        <p className="text-active-purple text-center">{milestone.amount !== null ? [milestone.amount] : [0]}%</p>
                                                     </div>
                                                 </div>
                                             )}
                                         />
                                         <br/>
                                         {
-                                            milestone.percentageFunds !== null ?
-                                                <p className="text-lg font-bold font-Rubik text-center">{milestone.percentageFunds}% of remaining funds</p>
+                                            milestone.amount !== null ?
+                                                <p className="text-lg font-bold font-Rubik text-center">{milestone.amount}% of remaining funds</p>
                                                 :
                                                 null
                                         }
@@ -136,7 +160,8 @@ function AddMilestoneModal({ addMilestonesFunc }){
 }
 
 AddMilestoneModal.propTypes = {
-    addMilestonesFunc: PropTypes.func
+    addMilestonesFunc: PropTypes.func,
+    currentMilestoneLength: PropTypes.number
 }
 
 export default AddMilestoneModal;
