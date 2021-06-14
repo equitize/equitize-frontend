@@ -5,11 +5,24 @@ import PrimaryButton from "../../../../components/PrimaryButton/PrimaryButton";
 import ZoomSessionModal from "./modals/ZoomSessionModal";
 import MilestoneModal from "./modals/MilestoneModal";
 
+// React query
+import { useQuery } from 'react-query'
+
 // For redux
 import { useSelector } from 'react-redux'
 import { getStartupId } from '../../../../store/auth'
 
+const fetchCampaign = async (key) => {
+    const res = await fetch('http://localhost:8080/api/db/startup/getCampaign/' + key.queryKey[1])
+    return res.json()
+}
+
 function CampaignSetup(){
+    let goal = 500000
+    let sharesAllocated = 10
+    let tokensMinted = 1000000
+
+    // Redux useSelector
     const startupId = useSelector(getStartupId)
 
     const [campaignDetails, setCampaignDetails] = useState({
@@ -20,12 +33,30 @@ function CampaignSetup(){
             endTime: ""
         },
         campaignGoal: {
-            goal: 500000,
-            sharesAllocated: 10,
-            tokensMinted: 1000000
+            goal: goal,
+            sharesAllocated: sharesAllocated,
+            tokensMinted: tokensMinted
         },
         milestones:[]
     })
+
+    // React query fetch request
+    const { data, status } = useQuery(['campaignGoal', startupId], fetchCampaign, {
+        refetchInterval: 1000
+    })
+    
+    if (data) {
+        if (data[0]) {
+            console.log(data[0])
+            goal = data[0].goal
+            sharesAllocated = data[0].sharesAllocated
+            tokensMinted = data[0].tokensMinted
+
+            const campaignGoalSubmission = {goal, sharesAllocated, tokensMinted}
+            campaignDetails.campaignGoal = campaignGoalSubmission
+        }
+    }
+    console.log("STATUS: ", status)
 
     function setCampaignDescription(value){
         setCampaignDetails(prevState => ({

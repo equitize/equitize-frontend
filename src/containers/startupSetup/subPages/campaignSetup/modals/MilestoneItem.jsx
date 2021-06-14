@@ -5,21 +5,21 @@ import PropTypes from 'prop-types';
 import EditMilestoneModal from "./EditMilestoneModal";
 import CampaignGoalModal from "./CampaignGoalModal";
 
-function MilestoneItem({ editMilestoneFunc, milestone, goal, editCampaignGoal, deleteMilestoneFunc }){
+function MilestoneItem({ editMilestoneFunc, milestone, campaignGoal, editCampaignGoal, deleteMilestoneFunc }){
     const [showModal, setShowModal] = useState(false);
 
     function openEditModal(){
         setShowModal(!showModal)
     }
 
-    if (goal){
+    if (campaignGoal){
         return (
             <div className="flex flex-row justify-between lg:justify-center items-center sm:space-x-6 px-12 w-full my-2">
                 <img src={PurpleDot} alt="Purple Dot" className="h-6"/>
-                <p className="font-bold font-Rubik text-sm lg:text-xl  w-1/2">Campaign Goal (S${goal.goal})</p>
+                <p className="font-bold font-Rubik text-sm lg:text-xl  w-1/2">Campaign Goal (S${campaignGoal.goal})</p>
                 <img src={EditIcon} alt="Edit Details" onClick={openEditModal} className="h-7" />
                 <CampaignGoalModal ModalFunc={openEditModal} showModal={showModal}
-                                   editCampaignGoal={editCampaignGoal} campaignGoal={goal} />
+                                   editCampaignGoal={editCampaignGoal} campaignGoal={campaignGoal} />
             </div>
         )
     }
