@@ -12,9 +12,7 @@ import RegisterPage from "./containers/registerPage/RegisterPage";
 import StartupRegistration from "./containers/startupRegistration/StartupRegistration";
 import StartupSetup from "./containers/startupSetup/StartupSetup";
 import SetupCompleted from "./containers/startupSetup/SetupCompleted";
-
-// Test components
-import Example from "./components/Filter/FilterDropdown"
+import LoginPage from "./containers/loginPage/LoginPage";
 
 function App() {
 
@@ -38,8 +36,8 @@ function App() {
               <Route exact path="/startup/setup/completed">
                   <SetupCompleted />
               </Route>
-              <Route exact path="/test">
-                  <Example />
+              <Route exact path="/login">
+                  <LoginPage />
               </Route>
               <Route path="*">
                   <InvalidPage />
