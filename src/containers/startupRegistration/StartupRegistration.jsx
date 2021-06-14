@@ -25,8 +25,7 @@ function StartupRegistration(){
     const dispatch = useDispatch()
     const isLoggedIn = useSelector(getIsLoggedIn)
     console.log(isLoggedIn)
-
-
+    
     const { register, formState: { errors }, clearErrors, handleSubmit } = useForm();
 
     const onSubmit = (data, e) => {
@@ -68,11 +67,11 @@ function StartupRegistration(){
                     <br/>
                     <div className="bg-white px-24 py-16 rounded-xl space-y-10 shadow-lg h-full w-full flex flex-col items-center sm:w-2/3 lg:w-1/2">
                         <form className="flex flex-col items-center justify-start" onSubmit={handleSubmit(onSubmit)}>
-                            <PrimaryInput placeholder="Company Name" register={register("company_name", {required:true})}
+                            <PrimaryInput placeholder="Company Name" register={register("companyName", {required:true})}
                                           properties="text-center" />
-                            <PrimaryInput placeholder="Email Address" register={register("email_address", {required:true})}
+                            <PrimaryInput placeholder="Email Address" register={register("emailAddress", {required:true})}
                                           properties="text-center" />
-                            <PrimaryInput placeholder="Password" register={register("company_password", {required :true})}
+                            <PrimaryInput placeholder="Password" register={register("companyPassword", {required :true})}
                                           properties="text-center" />
 
                             {Object.keys(errors).length > 0 && <PrimaryErrorMessage text="All Fields are required" />}

@@ -16,7 +16,7 @@ function MilestoneItem({ editMilestoneFunc, milestone, goal, editCampaignGoal, d
         return (
             <div className="flex flex-row justify-between lg:justify-center items-center sm:space-x-6 px-12 w-full my-2">
                 <img src={PurpleDot} alt="Purple Dot" className="h-6"/>
-                <p className="font-bold font-Rubik text-sm lg:text-xl  w-1/2">Campaign Goal (S${goal.crowdfundingTarget})</p>
+                <p className="font-bold font-Rubik text-sm lg:text-xl  w-1/2">Campaign Goal (S${goal.goal})</p>
                 <img src={EditIcon} alt="Edit Details" onClick={openEditModal} className="h-7" />
                 <CampaignGoalModal ModalFunc={openEditModal} showModal={showModal}
                                    editCampaignGoal={editCampaignGoal} campaignGoal={goal} />

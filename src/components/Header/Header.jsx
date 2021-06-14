@@ -13,7 +13,6 @@ const Header = () => {
 
     const dispatch = useDispatch()
     const isLoggedIn = useSelector(getIsLoggedIn)
-    console.log(isLoggedIn)
 
     const [isOpen, setIsOpen] = useState(false)
 

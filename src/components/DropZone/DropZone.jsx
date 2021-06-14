@@ -3,11 +3,28 @@ import {useDropzone} from 'react-dropzone'
 import PlusIcon from './plusIcon.svg'
 import PropTypes from "prop-types";
 
-function DropZone({placeHolderText, acceptedFileTypes, endPoint}){
-    const onDrop = useCallback(acceptedFiles => {
-        // Do something with the files
-        console.log(acceptedFiles[0])
-        console.log(`Sending file to ${endPoint}`)
+function DropZone({placeHolderText, acceptedFileTypes, endPoint, startupId}){
+
+    const onDrop = useCallback(async acceptedFiles => {
+
+        const formData = new FormData()
+        formData.append('file', acceptedFiles[0])
+
+        //TODO: Hardcoded baseURL
+        const response = await fetch('http://localhost:8080/api/db' + endPoint + startupId, {
+            method: 'PUT',
+            body: formData
+        })
+
+        const data = await response.json()
+        
+        if (data.error) {
+            console.log(data.error)
+            alert(data.error)
+        } else {
+            console.log(data)
+        }
+
     }, [])
 
     const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
@@ -33,7 +50,8 @@ function DropZone({placeHolderText, acceptedFileTypes, endPoint}){
 DropZone.propTypes = {
     placeHolderText: PropTypes.string,
     acceptedFileTypes: PropTypes.string,
-    endPoint: PropTypes.string
+    endPoint: PropTypes.string,
+    startupId: PropTypes.number
 }
 
 export default DropZone;

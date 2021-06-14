@@ -7,10 +7,14 @@ const slice = createSlice({
     initialState: {
         isLoggedIn: false,
         data: {},
-        errorMessage: ''
+        debug: '',
+        stateChanged: false
     },
     reducers: {
         // Actions will only be implemented after passing api.js middleware
+        stateChanged: (state) => {
+            state.stateChanged = !state.stateChanged
+        },
         loggedIn: (state, action) => {
             state.isLoggedIn = true
             state.data = action.payload
@@ -20,18 +24,21 @@ const slice = createSlice({
             state.data = {}        // deletes state.data as action.payload.user is empty.
         },
         authRequestFailed: (state, action) => {
-            state.isLoggedIn = false,
-            state.errorMessage = action.payload
+            state.debug = action.payload
         },
 
         signedUp: (state, action) => {
             state.isLoggedIn = true
             state.data = action.payload
+        },
+
+        videoUploaded: (state, action) => {
+            state.debug = action.payload
         }
     }
 })
 
-export const { loggedIn, loggedOut, authRequestFailed, signedUp } = slice.actions
+export const { stateChanged, loggedIn, loggedOut, authRequestFailed, signedUp, videoUploaded } = slice.actions
 export default slice.reducer
 
 // Action creators
@@ -44,7 +51,7 @@ export const logIn = credentials => authApiCallBegan({
     onError: authRequestFailed.type
 })
 
-const signUpUrl = "/startup"
+const signUpUrl = "/startup"        //TODO: Update this
 export const signUp = credentials => apiCallBegan({
     url: signUpUrl,
     method: "post",
@@ -62,4 +69,12 @@ export const signUp = credentials => apiCallBegan({
 export const getIsLoggedIn = createSelector(
     state => state.auth,
     auth => auth.isLoggedIn
+)
+
+export const getStartupId = createSelector(
+    state => state.auth,
+    auth => {
+        if (auth.isLoggedIn) return auth.data.id
+        else return 0
+    }
 )

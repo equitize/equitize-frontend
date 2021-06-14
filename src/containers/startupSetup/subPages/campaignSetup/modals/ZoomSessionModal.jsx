@@ -3,15 +3,11 @@ import PrimaryInput from "../../../../../components/PrimaryInput/PrimaryInput";
 import PropTypes from "prop-types";
 import PrimaryButton from "../../../../../components/PrimaryButton/PrimaryButton";
 
-function ZoomSessionModal({ onChangeFunc, details }){
+function ZoomSessionModal({ onChangeFunc, details, onSubmitFunc }){
     const [showModal, setShowModal] = React.useState(false);
 
     function ModalFunc(){
         setShowModal(!showModal)
-    }
-
-    function submitZoomSession(){
-        // TODO Send API CALL or should I send this in Campaign Setup instead?
     }
 
     return (
@@ -67,7 +63,7 @@ function ZoomSessionModal({ onChangeFunc, details }){
                                         </div>
                                         <br />
                                         <br />
-                                        <PrimaryButton properties="self-end" text="Submit" onClick={submitZoomSession}/>
+                                        <PrimaryButton properties="self-end" text="Submit" onClick={ () => { onSubmitFunc(); ModalFunc() } }/>
                                     </div>
                                 </div>
                             </div>
@@ -82,6 +78,7 @@ function ZoomSessionModal({ onChangeFunc, details }){
 
 ZoomSessionModal.propTypes = {
     onChangeFunc: PropTypes.func,
+    onSubmitFunc: PropTypes.func,
     details: PropTypes.object
 }
 

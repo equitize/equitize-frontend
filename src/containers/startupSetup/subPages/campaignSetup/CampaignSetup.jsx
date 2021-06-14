@@ -5,7 +5,13 @@ import PrimaryButton from "../../../../components/PrimaryButton/PrimaryButton";
 import ZoomSessionModal from "./modals/ZoomSessionModal";
 import MilestoneModal from "./modals/MilestoneModal";
 
+// For redux
+import { useSelector } from 'react-redux'
+import { getStartupId } from '../../../../store/auth'
+
 function CampaignSetup(){
+    const startupId = useSelector(getStartupId)
+
     const [campaignDetails, setCampaignDetails] = useState({
         campaignDescription: "",
         zoomDetails: {
@@ -14,9 +20,9 @@ function CampaignSetup(){
             endTime: ""
         },
         campaignGoal: {
-            crowdfundingTarget: 500000,
-            sharesAllocation: 10,
-            tokensConverted: 1000000
+            goal: 500000,
+            sharesAllocated: 10,
+            tokensMinted: 1000000
         },
         milestones:[]
     })
@@ -83,24 +89,61 @@ function CampaignSetup(){
             ...prevState,
             campaignGoal: campaignGoalObj
         }))
+
+        console.log(campaignDetails.campaignGoal)
     }
 
-    function saveCampaignDescription(){
+    const saveCampaignDescription = async () => {
         console.log(campaignDetails.campaignDescription)
         // TODO More detailed logic such as no selection and error handling
+
+        // API to update/set campaign description
+        //TODO: Hardcoded baseURL
+        const response = await fetch('http://localhost:8080/api/db/startup/campaign/update/' + startupId, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'PUT',
+            body: JSON.stringify({ "campaignDescription": campaignDetails.campaignDescription }) 
+        })
+
+        const data = await response.json()
+        console.log(data)
+    }
+
+    const submitZoomDetails = async () => {
+
+        const dateTrimmed = campaignDetails.zoomDetails.date.replace(/-/g, "")
+        const dateFormatted = dateTrimmed.slice(6,8) + dateTrimmed.slice(4, 6) + dateTrimmed.slice(0, 4)
+        
+        const data = {
+            zoomDatetime: campaignDetails.zoomDetails.startTime + ', ' + campaignDetails.zoomDetails.endTime + ', ' + dateFormatted
+        }
+
+        // //TODO: Hardcoded baseURL
+        const response = await fetch('http://localhost:8080/api/db/startup/' + startupId, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'PUT',
+            body: JSON.stringify(data) 
+        })
+
+        const res = await response.json()
+        console.log(res)
     }
 
     return (
         <>
             <div className="bg-white px-6 sm:px-24 py-16 rounded-xl space-y-4 shadow-lg h-full w-full flex flex-wrap flex-col items-center">
-                <DropZone placeHolderText="Drop Video Material (MP4, MOV)" acceptedFileTypes="video/*" />
-                <DropZone placeHolderText="Drop Pitch Deck Materials (pdf, jpg)" acceptedFileTypes=".jpg, .pdf" />
+                <DropZone placeHolderText="Drop Video Material (MP4, MOV)" acceptedFileTypes="video/*" endPoint="/startup/video/" startupId={startupId} />
+                <DropZone placeHolderText="Drop Pitch Deck Materials (pdf, jpg)" acceptedFileTypes=".jpg, .pdf" endPoint="/startup/pitchDeck/" startupId={startupId} />
                 <PrimaryTextArea placeholder="Campaign Description" onChangeFunc={setCampaignDescription}
                                  properties="w-full h-40" value={campaignDetails.campaignDescription} />
                 <MilestoneModal addMilestonesFunc={addMilestonesDetails} details={campaignDetails}
                                 editMilestoneFunc={editMilestoneFunc} deleteMilestoneFunc={deleteMilestoneFunc}
                                 setCampaignGoal={setCampaignGoal} />
-                <ZoomSessionModal onChangeFunc={setZoomDetails} details={campaignDetails.zoomDetails}/>
+                <ZoomSessionModal onChangeFunc={setZoomDetails} details={campaignDetails.zoomDetails} onSubmitFunc={submitZoomDetails} />
                 <br />
                 <br />
                 <br />
