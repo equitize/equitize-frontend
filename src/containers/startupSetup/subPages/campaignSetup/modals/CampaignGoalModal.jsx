@@ -31,6 +31,8 @@ function CampaignGoalModal({ ModalFunc, showModal, editCampaignGoal, campaignGoa
         editCampaignGoal(tempCampaignGoal)
         ModalFunc()
 
+        console.log("TempCampaignGoal: ", tempCampaignGoal)
+
         // API to update/set campaign goals
         //TODO: Hardcoded baseURL
         const response = await fetch('http://localhost:8080/api/db/startup/campaign/update/' + startupId, {

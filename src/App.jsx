@@ -14,7 +14,6 @@ import StartupSetup from "./containers/startupSetup/StartupSetup";
 import SetupCompleted from "./containers/startupSetup/SetupCompleted";
 
 // Test components
-import Example from "./components/Filter/FilterDropdown"
 
 function App() {
 
@@ -39,7 +38,6 @@ function App() {
                   <SetupCompleted />
               </Route>
               <Route exact path="/test">
-                  <Example />
               </Route>
               <Route path="*">
                   <InvalidPage />

@@ -1,11 +1,21 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
 import PlusIcon from './plusIcon.svg'
 import PropTypes from "prop-types";
 
 function DropZone({placeHolderText, acceptedFileTypes, endPoint, startupId}){
 
+    const [ dropFile, setDropFile ] = useState({
+        file: ""
+    })
+    
     const onDrop = useCallback(async acceptedFiles => {
+
+        console.log('In onDrop received file: ', acceptedFiles[0])
+        setDropFile(prevState => ({
+            ...prevState,
+            file: acceptedFiles[0]
+        }))
 
         const formData = new FormData()
         formData.append('file', acceptedFiles[0])
@@ -32,18 +42,32 @@ function DropZone({placeHolderText, acceptedFileTypes, endPoint, startupId}){
         onDrop: onDrop
     })
 
+    const showFiles = () => {
+        console.log('In show files received file:', dropFile.file)
+
+        return(
+            <div>
+                <h3>Current file: {dropFile.file.name}</h3>
+            </div>
+        )
+    }
+
     return (
-        <div {...getRootProps()} className="flex flex-wrap flex-col bg-gray-100 placeholder-gray-400 hover:bg-gray-300 self-stretch text-center font-bold w-full lg:px-4 py-2 xl:text-xl sm:m-4 rounded-xl text-sm">
-            <input {...getInputProps()} />
-            {
-                acceptedFiles.length > 0 ?
-                    <p>{acceptedFiles[0].name}</p>
-                    : <>
-                        <img src={PlusIcon} alt="Add File Here"/>
-                        <p className="text-gray-400">{placeHolderText}</p>
-                    </>
-            }
+        <div>
+            <div {...getRootProps()} className="flex flex-wrap flex-col bg-gray-100 placeholder-gray-400 hover:bg-gray-300 self-stretch text-center font-bold w-full lg:px-4 py-2 xl:text-xl sm:m-4 rounded-xl text-sm">
+                <input {...getInputProps()} />
+                {
+                    acceptedFiles.length > 0 ?
+                        <p>{acceptedFiles[0].name}</p>
+                        : <>
+                            <img src={PlusIcon} alt="Add File Here"/>
+                            <p className="text-gray-400">{placeHolderText}</p>
+                        </>
+                }
+            </div>
+            {showFiles()}
         </div>
+    
     )
 }
 

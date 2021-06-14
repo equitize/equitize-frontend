@@ -30,7 +30,7 @@ function MilestoneItem({ editMilestoneFunc, milestone, goal, editCampaignGoal, d
                 <img src={PurpleDot} alt="Purple Dot" className="h-6 self-start"/>
                 <div className="flex flex-col w-1/2 md:flex-grow lg:flex-none ">
                     <p className="font-bold font-Rubik text-sm md:text-md lg:text-xl">{milestone.title}</p>
-                    <p className="text-gray-500 font-Rubik text-xs lg:text-md ">START DATE : {milestone.date}</p>
+                    <p className="text-gray-500 font-Rubik text-xs lg:text-md ">END DATE : {milestone.endDate}</p>
                     <p className="text-gray-400 font-Rubik text-xs lg:text-sm ">{milestone.description}</p>
                     <p className="font-Rubik text-xs lg:text-md self-center">{milestone.percentageFunds}% OF THE FUNDS UNLOCKED</p>
                 </div>

@@ -15,12 +15,12 @@ function AddMilestoneModal({ addMilestonesFunc, currentMilestoneLength}){
 
     const [showModal, setShowModal] = useState(false);
     const [milestone, setMilestone] = useState({
-        companyId: startupId,
+        startupId: startupId,
         title: "",
         endDate: "",
         description: "",
-        amount: null,    // TODO: 'Amount' refers to percentage funds get Tinkit to change it
-        milestonePart: currentMilestoneLength + 1
+        percentageFunds: null,
+        part: currentMilestoneLength + 1
     })
 
     function ModalFunc(){
@@ -40,7 +40,7 @@ function AddMilestoneModal({ addMilestonesFunc, currentMilestoneLength}){
     function setPercentageFunds(values){
         setMilestone(prevState => ({
             ...prevState,
-            amount: values[0]
+            percentageFunds: values[0]
         }))
     }
 
@@ -50,7 +50,7 @@ function AddMilestoneModal({ addMilestonesFunc, currentMilestoneLength}){
 
         console.log(milestone)
         // API to set milestone
-        const response = await fetch('http://localhost:8080/api/db/startup/setMilestone', {
+        const response = await fetch('http://localhost:8080/api/db/startup/milestone/addPart', {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -64,12 +64,12 @@ function AddMilestoneModal({ addMilestonesFunc, currentMilestoneLength}){
 
     useEffect(()=> {
         setMilestone({
-                companyId: startupId,
+                startupId: startupId,
                 title: "",
                 endDate: "",
                 description: "",
-                amount: null,
-                milestonePart: currentMilestoneLength + 1
+                percentageFunds: null,
+                part: currentMilestoneLength + 1
             })
     },[showModal])
 
@@ -116,7 +116,7 @@ function AddMilestoneModal({ addMilestonesFunc, currentMilestoneLength}){
                                             step={0.1}
                                             min={0}
                                             max={100}
-                                            values={milestone.amount !== null ? [milestone.amount] : [0]}
+                                            values={milestone.percentageFunds !== null ? [milestone.percentageFunds] : [0]}
                                             onChange={setPercentageFunds}
                                             renderTrack={({ props, children }) => (
                                                 <div
@@ -132,15 +132,15 @@ function AddMilestoneModal({ addMilestonesFunc, currentMilestoneLength}){
                                                     className="w-5 h-5 transform translate-x-10 bg-indigo-500 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                                 >
                                                     <div className="absolute font-Inter text-sm font-bold -top-7 p-1 -left-3 w-10">
-                                                        <p className="text-active-purple text-center">{milestone.amount !== null ? [milestone.amount] : [0]}%</p>
+                                                        <p className="text-active-purple text-center">{milestone.percentageFunds !== null ? [milestone.percentageFunds] : [0]}%</p>
                                                     </div>
                                                 </div>
                                             )}
                                         />
                                         <br/>
                                         {
-                                            milestone.amount !== null ?
-                                                <p className="text-lg font-bold font-Rubik text-center">{milestone.amount}% of remaining funds</p>
+                                            milestone.percentageFunds !== null ?
+                                                <p className="text-lg font-bold font-Rubik text-center">{milestone.percentageFunds}% of remaining funds</p>
                                                 :
                                                 null
                                         }
