@@ -13,6 +13,8 @@ import StartupRegistration from "./containers/startupRegistration/StartupRegistr
 import StartupSetup from "./containers/startupSetup/StartupSetup";
 import SetupCompleted from "./containers/startupSetup/SetupCompleted";
 import LoginPage from "./containers/loginPage/LoginPage";
+import RetailInvestorHomePage from "./containers/retailInvestorHomePage/RetailInvestorHomePage";
+import StartupCampaign from "./containers/retailInvestor/startupCampaign/StartupCampaign";
 
 function App() {
 
@@ -36,8 +38,14 @@ function App() {
               <Route exact path="/startup/setup/completed">
                   <SetupCompleted />
               </Route>
+              <Route exact path='/startup/:id'>
+                <StartupCampaign />
+              </Route>
               <Route exact path="/login">
                   <LoginPage />
+              </Route>
+              <Route exact path="/home">
+                  <RetailInvestorHomePage />
               </Route>
               <Route path="*">
                   <InvalidPage />

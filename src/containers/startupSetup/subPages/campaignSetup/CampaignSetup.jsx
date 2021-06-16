@@ -97,7 +97,7 @@ function CampaignSetup(){
         console.log(campaignDetails.campaignDescription)
         // TODO More detailed logic such as no selection and error handling
 
-        // API to update/set campaign description
+        // API to update/set campaignDetails description
         //TODO: Hardcoded baseURL
         const response = await fetch('http://localhost:8080/api/db/startup/campaign/update/' + startupId, {
             headers: {

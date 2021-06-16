@@ -5,8 +5,8 @@ import SignUp from './signup.svg'
 import { Link } from "react-router-dom";
 import SignUp2 from './signup2.svg'
 
-
 function RegisterPage(){
+
     return(
         <div className="container mx-auto flex flex-wrap p-5 flex-col items-center my-auto">
             <p className="text-xl sm:text-4xl lg:text-6xl font-Rubik self-center">Sign Up As:</p>
