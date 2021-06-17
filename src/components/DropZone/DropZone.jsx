@@ -1,21 +1,39 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback} from 'react'
 import {useDropzone} from 'react-dropzone'
 import PlusIcon from './plusIcon.svg'
 import PropTypes from "prop-types";
 
+// Redux
+import { useDispatch, useSelector } from 'react-redux'
+import { videoUploaded, getStartupVideo,getStartupPitchDeck, pitchDeckUploaded } from '../../store/auth'
+
 function DropZone({placeHolderText, acceptedFileTypes, endPoint, startupId}){
 
-    const [ dropFile, setDropFile ] = useState({
-        file: ""
-    })
+    const dispatch = useDispatch()
+    let file = ""
+    if (endPoint === "/startup/video/") {
+        file = useSelector(getStartupVideo)
+    } else if (endPoint === "/startup/pitchDeck/") {
+        file = useSelector(getStartupPitchDeck)
+    }
+
+    // const [ dropFile, setDropFile ] = useState({
+    //     file: ""
+    // })
     
     const onDrop = useCallback(async acceptedFiles => {
 
-        console.log('In onDrop received file: ', acceptedFiles[0])
-        setDropFile(prevState => ({
-            ...prevState,
-            file: acceptedFiles[0]
-        }))
+        // console.log('In onDrop received file: ', acceptedFiles[0])
+        // setDropFile(prevState => ({
+        //     ...prevState,
+        //     file: acceptedFiles[0]
+        // }))
+
+        if (endPoint === "/startup/video/") {
+            dispatch(videoUploaded({ fileName: acceptedFiles[0].name }))
+        } else if (endPoint === "/startup/pitchDeck/") {
+            dispatch(pitchDeckUploaded({ fileName: acceptedFiles[0].name }))
+        }
 
         const formData = new FormData()
         formData.append('file', acceptedFiles[0])
@@ -43,17 +61,15 @@ function DropZone({placeHolderText, acceptedFileTypes, endPoint, startupId}){
     })
 
     const showFiles = () => {
-        console.log('In show files received file:', dropFile.file)
-
         return(
             <div>
-                <h3>Current file: {dropFile.file.name}</h3>
+                <h3>Current file: {file === 0 ? "NIL" : file}</h3>
             </div>
         )
     }
 
     return (
-        <div>
+        <>
             <div {...getRootProps()} className="flex flex-wrap flex-col bg-gray-100 placeholder-gray-400 hover:bg-gray-300 self-stretch text-center font-bold w-full lg:px-4 py-2 xl:text-xl sm:m-4 rounded-xl text-sm">
                 <input {...getInputProps()} />
                 {
@@ -66,7 +82,7 @@ function DropZone({placeHolderText, acceptedFileTypes, endPoint, startupId}){
                 }
             </div>
             {showFiles()}
-        </div>
+        </>
     
     )
 }

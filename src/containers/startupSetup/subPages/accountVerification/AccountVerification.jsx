@@ -35,8 +35,19 @@ function AccountVerification(){
         return changeSelectedModalState;
     }
 
-    function saveBusinessDescription(){
+    const saveBusinessDescription = async () => {
         console.log(businessDescription)
+
+        const response = await fetch('http://localhost:8080/api/db/startup/' + startupId, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'PUT',
+            body: JSON.stringify({ "profileDescription": businessDescription }) 
+        })
+
+        const data = await response.json()
+        console.log(data)
     }
 
     return(

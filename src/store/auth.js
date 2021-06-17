@@ -33,12 +33,15 @@ const slice = createSlice({
         },
 
         videoUploaded: (state, action) => {
-            state.debug = action.payload
+            state.data.video = action.payload
+        },
+        pitchDeckUploaded: (state, action) => {
+            state.data.pitchDeck = action.payload
         }
     }
 })
 
-export const { stateChanged, loggedIn, loggedOut, authRequestFailed, signedUp, videoUploaded } = slice.actions
+export const { stateChanged, loggedIn, loggedOut, authRequestFailed, signedUp, videoUploaded, pitchDeckUploaded } = slice.actions
 export default slice.reducer
 
 // Action creators
@@ -75,6 +78,22 @@ export const getStartupId = createSelector(
     state => state.auth,
     auth => {
         if (auth.isLoggedIn) return auth.data.id
+        else return 0
+    }
+)
+
+export const getStartupVideo = createSelector(
+    state => state.auth,
+    auth => {
+        if (auth.data.video) return auth.data.video.fileName
+        else return 0
+    }
+)
+
+export const getStartupPitchDeck = createSelector(
+    state => state.auth,
+    auth => {
+        if (auth.data.pitchDeck) return auth.data.pitchDeck.fileName
         else return 0
     }
 )

@@ -2,15 +2,27 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-function PrimaryUploadImageButton({ text, properties, labelId, errorFunc }){
+function PrimaryUploadImageButton({ text, properties, labelId, errorFunc, startupId }){
     let cssProperties = classNames(properties,
         "flex flex-wrap bg-gray-100 placeholder-gray-400 hover:bg-gray-300 w-full self-stretch text-center font-bold py-4 px-4 m-1 rounded-xl text-sm lg:text-xl")
 
     const [image, setImage] = useState(null)
 
-    function fileUpload(fileToUpload){
+    const fileUpload = async (fileToUpload) => {
         // TODO API CALL
         console.log(fileToUpload)
+        
+        const formData = new FormData()
+        formData.append('file', fileToUpload)
+        // TODO: Hardcoded baseURL
+        const response = await fetch('http://localhost:8080/api/db/startup/' + labelId + '/' + startupId, {
+            method: 'PUT',
+            body: formData
+        })
+
+        const data = await response.json()
+        console.log(data)
+
         return true
     }
 
@@ -63,7 +75,8 @@ PrimaryUploadImageButton.propTypes = {
     text: PropTypes.string,
     properties: PropTypes.any,
     labelId: PropTypes.string,
-    errorFunc: PropTypes.func
+    errorFunc: PropTypes.func,
+    startupId: PropTypes.number
 }
 
 
