@@ -31,16 +31,14 @@ function CampaignGoalModal({ ModalFunc, showModal, editCampaignGoal, campaignGoa
         editCampaignGoal(tempCampaignGoal)
         ModalFunc()
 
-        console.log("TempCampaignGoal: ", tempCampaignGoal)
-
-        // API to update/set campaign goals
+        // API to update/set campaignDetails goals
         //TODO: Hardcoded baseURL
         const response = await fetch('http://localhost:8080/api/db/startup/campaign/update/' + startupId, {
             headers: {
                 'Content-Type': 'application/json',
             },
             method: 'PUT',
-            body: JSON.stringify(tempCampaignGoal) 
+            body: JSON.stringify(tempCampaignGoal)
         })
 
         const data = await response.json()

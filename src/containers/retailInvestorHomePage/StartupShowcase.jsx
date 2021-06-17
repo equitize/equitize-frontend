@@ -1,0 +1,114 @@
+import React from "react";
+import PropTypes from "prop-types";
+import FeaturedStartup from "./FeaturedStartup";
+import RecommendedStartups from "./RecommendedStartups";
+import MeetupMouse from './tempImages/MeetupMouse.svg'
+import Gover from './tempImages/Gover.png'
+import Invern from './tempImages/Invern.png'
+import Rocketeer from './tempImages/Rocketeer.png'
+import IceBerk from './tempImages/IceBerk.png'
+import PlantPeace from './tempImages/PlantPeace.png'
+import ShareNow from './tempImages/ShareNow.png'
+
+function StartupShowcase({ searchTerms }){
+
+    // TODO Details for object TBC
+    const featuredStartupObject = {
+        name: "Meetup Mouse",
+        description: "Meetup Mouse suggests the BEST hand-picked places for your group’s needs so you and your friends NEVER worry about where to eat again!",
+        fundedAmount: 200000,
+        sharesAllocated: "20",
+        campaignGoal: 500000,
+        endTime: "47",
+        id: 1,
+        imageLink: MeetupMouse
+    }
+
+    const recommendedStartups = [
+        {
+            name: "Gover",
+            description: "Easily plan, navigate and track great cycle routes with Gover from over 30,000 registered riders",
+            fundedAmount: 300000,
+            sharesAllocated: 15,
+            campaignGoal: 375000,
+            endTime: "14",
+            id: 2,
+            imageLink: Gover
+        },
+        {
+            name: "Invern",
+            description: "Bespoke lamps that change its colour based on the temperature and the time of the day",
+            fundedAmount: 30000,
+            sharesAllocated: 15,
+            campaignGoal: 60000,
+            endTime: "39",
+            id: 3,
+            imageLink: Invern
+        },
+        {
+            name: "Rocketeer",
+            description: "Ever wanted to build your own mini rocket? Now you can at your backyard with Rocketeer!",
+            fundedAmount: 90000,
+            sharesAllocated: 20,
+            campaignGoal: 100000,
+            endTime: "24",
+            id: 4,
+            imageLink: Rocketeer
+        },
+        {
+            name: "ShareNow",
+            description: "A mobile based application that helps you connect Android and iOS devices so you can share media easily!",
+            fundedAmount: 100000,
+            sharesAllocated: 25,
+            campaignGoal: 125000,
+            endTime: "16",
+            id: 5,
+            imageLink: ShareNow
+        },
+        {
+            name: "PlantPeace",
+            description: "Suffering from anxiety or bouts of stress? PlantPeace offers cirriculums on mediation for you to grow spiritually.",
+            fundedAmount: 80000,
+            sharesAllocated: 15,
+            campaignGoal: 100000,
+            endTime: "27",
+            id: 6,
+            imageLink: PlantPeace
+        },
+        {
+            name: "IceBerk",
+            description: "Slow Network speeds at home? IceBerk Technologies helps homes improve network reliability and speed on a simple click.",
+            fundedAmount: 45000,
+            sharesAllocated: 20,
+            campaignGoal: 450000,
+            endTime: "14",
+            id: 7,
+            imageLink: IceBerk
+        }
+    ]
+
+    // TODO Search Results Implementation
+
+    return(
+        <>
+            {
+                searchTerms !== "" ?
+                    <div>
+                        <p>{searchTerms}</p>
+                    </div>
+                    :
+                    <div className="w-full flex flex-col space-y-4">
+                        <FeaturedStartup info={featuredStartupObject}/>
+                        <RecommendedStartups startups={recommendedStartups}/>
+                    </div>
+            }
+        </>
+    )
+}
+
+
+StartupShowcase.propTypes = {
+    searchTerms: PropTypes.string
+}
+
+export default StartupShowcase;

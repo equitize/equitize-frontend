@@ -6,12 +6,12 @@ function TabButton({ text, onClick, active }){
         <>
             {
                 active ?
-                    <button className="bg-gray-50 bg-opacity-40 hover:bg-gray-300 text-active-purple font-bold py-4 px-2 rounded-sm self-center text-sm lg:text-base"
+                    <button className="font-Rubik bg-gray-50 bg-opacity-40 text-active-purple font-bold py-4 px-2 rounded-sm self-center text-sm lg:text-xl"
                             onClick={onClick} >
                         {text}
                     </button>
                     :
-                    <button className="bg-gray-50 bg-opacity-40 hover:bg-gray-300 text-gray-400 font-bold py-4 px-2 rounded-sm self-center text-sm lg:text-base"
+                    <button className="font-Rubik bg-gray-50 bg-opacity-40 hover:text-active-purple text-gray-400 font-bold py-4 px-2 rounded-sm self-center text-sm lg:text-xl"
                             onClick={onClick} >
                         {text}
                     </button>

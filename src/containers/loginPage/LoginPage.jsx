@@ -1,15 +1,15 @@
 import React from 'react';
-import StartupIcon from './startups.svg'
-import InvestorsIcon from './investors.svg'
-import SignUp from './signup.svg'
+import StartupIcon from "../registerPage/startups.svg";
 import { Link } from "react-router-dom";
-import SignUp2 from './signup2.svg'
+import SignUp from "../registerPage/signup.svg";
+import InvestorsIcon from "../registerPage/investors.svg";
+import SignUp2 from "../registerPage/signup2.svg";
 
-function RegisterPage(){
+function LoginPage(){
 
     return(
         <div className="container mx-auto flex flex-wrap p-5 flex-col items-center my-auto">
-            <p className="text-xl sm:text-4xl lg:text-6xl font-Rubik self-center">Sign Up As:</p>
+            <p className="text-xl sm:text-4xl lg:text-6xl font-Rubik self-center">Who are you?</p>
             <br/>
             <div className="inline-flex mx-0 sm:space-x-6 md:space-x-20 lg:space-x-40 my-6">
                 <div className="w-1/2">
@@ -17,7 +17,7 @@ function RegisterPage(){
                         <img src={StartupIcon} alt="Startup Icon" />
                         <p className="text-center text-2xl font-Rubik">Startups</p>
                         <p className="text-center text-gray-500">Founders who are looking to raise funds for your startup</p>
-                        <Link to="/register/startup">
+                        <Link to="/">
                             <img src={SignUp} alt="Register as Startup" />
                         </Link>
                     </div>
@@ -27,7 +27,7 @@ function RegisterPage(){
                         <img src={InvestorsIcon} alt="Retail Investors Icon" />
                         <p className="text-center text-2xl font-Rubik">Retail Investors</p>
                         <p className="text-center ">Public Investors who are seeking to invest in startups</p>
-                        <Link to="/register/investor">
+                        <Link to="/home">
                             <img src={SignUp2} alt="Register as Retail Investor" />
                         </Link>
                     </div>
@@ -37,4 +37,5 @@ function RegisterPage(){
     )
 }
 
-export default RegisterPage;
+
+export default LoginPage;
