@@ -4,6 +4,10 @@ export function getKeyByValue(object, value) {
 
 export const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
 
+export function formattedSum(sum){
+    return Number(sum).toLocaleString()
+}
+
 export function getTailwindWidthFraction(width){
     const roundedNumber = round5(width)
     const NumberMapping = {

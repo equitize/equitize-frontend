@@ -18,16 +18,16 @@ function CampaignDetails({ campaignPDF }){
 
     function getPdfWidth(windowWidth){
         if (windowWidth >= 1280){
-            return "800"
+            return 800
         }
         else if (windowWidth >= 1024){
-            return "700"
+            return 700
         }
         else if (windowWidth >= 768){
-            return "500"
+            return 500
         }
         else if (windowWidth >= 640){
-            return "450"
+            return 450
         }
         else {
             return windowWidth * 2/3

@@ -13,7 +13,9 @@ import CampaignDetails from "./subPages/campaignDetails/CampaignDetails";
 import CampaignMilestones from "./subPages/campaignMilestones/CampaignMilestones";
 import CampaignFAQs from "./subPages/campaignFAQs/CampaignFAQs";
 import CampaignResearch from "./subPages/campaignResearch/CampaignResearch";
-// Need to store when retrieving from API
+//TODO Need to store when retrieving from API
+import tempVideo from "./tempVideo.mp4"
+//TODO Need to store when retrieving from API
 import tempPDF from "./temp.pdf"
 
 function StartupCampaign(){
@@ -64,6 +66,23 @@ function StartupCampaign(){
         }
     ]
 
+    const campaignMilestones = [
+        {
+            id: 0,
+            title: "Complete first prototype",
+            date: "23/01/21",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras iaculis blandit enim, ac fringilla dui.",
+            percentageFunds: 15
+        },
+        {
+            id: 1,
+            title: "Complete second prototype",
+            date: "13/06/21",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+            percentageFunds: 40
+        }
+    ]
+
     function returnToHomePage(){
         history.push("/home")
     }
@@ -81,7 +100,7 @@ function StartupCampaign(){
             <div className="w-full flex flex-row">
                 <div className="w-2/3 flex flex-col md:ml-3 space-y-2">
                     <br />
-                    <StartupVideo />
+                    <StartupVideo video={tempVideo}/>
                     <ProgressBar width={progressBarWidth} />
                     <CampaignTabs setIsActiveTab={setIsActiveTab} isActiveTab={isActiveTab}/>
                     <br/>
@@ -92,7 +111,7 @@ function StartupCampaign(){
                     }
                     {
                         isActiveTab.second ?
-                            <CampaignMilestones />
+                            <CampaignMilestones startupObject={startupObject} campaignMilestones={campaignMilestones}/>
                             : null
                     }
                     {
