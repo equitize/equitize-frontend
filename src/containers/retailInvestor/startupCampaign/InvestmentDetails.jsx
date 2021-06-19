@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
-
+import { formattedSum } from "../../../helpers";
 
 function InvestmentDetails({info}){
     const history = useHistory()
@@ -14,8 +14,8 @@ function InvestmentDetails({info}){
     return (
         <>
             <div className="flex flex-row space-x-4">
-                <p className="font-Inter text-green-500 font-bold text-xs md:text-xl lg:text-2xl w-1/2 text-right self-center">S${Number(info.fundedAmount).toLocaleString()}</p>
-                <p className="font-Inter text-xs md:text-base lg:text-sm lg:text-base text-gray-500 w-1/2 self-center">of ${Number(info.campaignGoal).toLocaleString()} raised</p>
+                <p className="font-Inter text-green-500 font-bold text-xs md:text-xl lg:text-2xl w-1/2 text-right self-center">S${formattedSum(info.fundedAmount)}</p>
+                <p className="font-Inter text-xs md:text-base lg:text-sm lg:text-base text-gray-500 w-1/2 self-center">of ${formattedSum(info.campaignGoal)} raised</p>
             </div>
             <div className="flex flex-row space-x-4">
                 <p className="font-Inter text-sm md:text-xl lg:text-2xl w-1/2 text-right">{info.fundedAmount/info.campaignGoal * 100}%</p>

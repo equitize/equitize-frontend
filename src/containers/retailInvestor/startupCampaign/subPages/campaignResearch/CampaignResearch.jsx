@@ -3,7 +3,7 @@ import React from 'react'
 function CampaignResearch(){
 
     // TODO Special Cases for links not done yet like clickable and blue text color
-    // TODO Where is this FAQs obtained from??
+    // TODO Where is this research obtained from??
     const researchObject = [
         {
             id:0,

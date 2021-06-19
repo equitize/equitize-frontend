@@ -15,6 +15,9 @@ import SetupCompleted from "./containers/startupSetup/SetupCompleted";
 import LoginPage from "./containers/loginPage/LoginPage";
 import RetailInvestorHomePage from "./containers/retailInvestorHomePage/RetailInvestorHomePage";
 import StartupCampaign from "./containers/retailInvestor/startupCampaign/StartupCampaign";
+import StartupCampaignInvestment
+    from "./containers/retailInvestor/startupCampaign/InvestmentPage/StartupCampaignInvestment";
+import InvestmentSuccess from "./containers/retailInvestor/startupCampaign/InvestmentPage/InvestmentSuccess";
 
 function App() {
 
@@ -40,6 +43,12 @@ function App() {
               </Route>
               <Route exact path='/startup/:id'>
                 <StartupCampaign />
+              </Route>
+              <Route exact path='/startup/:id/invest'>
+                  <StartupCampaignInvestment />
+              </Route>
+              <Route exact path='/startup/:id/invest/transactionSuccess'>
+                  <InvestmentSuccess />
               </Route>
               <Route exact path="/login">
                   <LoginPage />

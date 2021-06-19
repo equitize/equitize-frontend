@@ -1,16 +1,32 @@
 import React from "react";
-import VideoImg from "./Video.svg"
+import PropTypes from 'prop-types';
+import ReactPlayer from 'react-player/lazy'
 
-function StartupVideo(){
+function StartupVideo({ video }){
 
     // TODO
     //  Replace with actual video & libraries to render it
     //  Temporary Placeholder
     return (
-        <>
-            <img src={VideoImg} alt="Video for introducing the startup"/>
-        </>
+        <div className="flex">
+            <ReactPlayer url={video}
+                         config={{
+                             file: {
+                                 forceVideo: true
+                             }
+                         }}
+                         controls={true}
+                         volume={1}
+                         width="100%"
+                         height="100%"
+            />
+        </div>
     )
+}
+
+//TODO Change Proptype when using link instead
+StartupVideo.propTypes = {
+    video: PropTypes.any
 }
 
 export default StartupVideo;
