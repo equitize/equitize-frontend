@@ -76,37 +76,37 @@ function StartupCampaign(){
     }
 
     // TODO Figure out the format for this, can be just a single key dateTime as well
-    const zoomSessions = [
-        {
-            id:0,
-            date: "14th August 2021",
-            time: "2000",
-            zoomLink: ""
-        },
-        {
-            id:1,
-            date: "15th August 2021",
-            time: "2030",
-            zoomLink: ""
-        }
-    ]
+    // const zoomSessions = [
+    //     {
+    //         id:0,
+    //         date: "14th August 2021",
+    //         time: "2000",
+    //         zoomLink: ""
+    //     },
+    //     {
+    //         id:1,
+    //         date: "15th August 2021",
+    //         time: "2030",
+    //         zoomLink: ""
+    //     }
+    // ]
 
-    const campaignMilestones = [
-        {
-            id: 0,
-            title: "Complete first prototype",
-            date: "23/01/21",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras iaculis blandit enim, ac fringilla dui.",
-            percentageFunds: 15
-        },
-        {
-            id: 1,
-            title: "Complete second prototype",
-            date: "13/06/21",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
-            percentageFunds: 40
-        }
-    ]
+    // const campaignMilestones = [
+    //     {
+    //         id: 0,
+    //         title: "Complete first prototype",
+    //         date: "23/01/21",
+    //         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras iaculis blandit enim, ac fringilla dui.",
+    //         percentageFunds: 15
+    //     },
+    //     {
+    //         id: 1,
+    //         title: "Complete second prototype",
+    //         date: "13/06/21",
+    //         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+    //         percentageFunds: 40
+    //     }
+    // ]
 
     function returnToHomePage(){
         history.push("/home")
@@ -136,7 +136,7 @@ function StartupCampaign(){
                     }
                     {
                         isActiveTab.second ?
-                            <CampaignMilestones startupObject={startupObject} campaignMilestones={campaignMilestones}/>
+                            <CampaignMilestones campaign={ data.campaigns[0] } campaignMilestones={data.milestones}/>
                             : null
                     }
                     {
@@ -155,7 +155,7 @@ function StartupCampaign(){
                     <br />
                     <ScoreCard ratings={ratings}/>
                     <br />
-                    <ZoomCampaignDetails zoomSessions={zoomSessions} />
+                    <ZoomCampaignDetails zoomSessions={ status === "success" ? data.campaigns[0].zoomDatetime : null } />
                 </div>
             </div>
         </div>
