@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import FeaturedStartup from "./FeaturedStartup";
 import RecommendedStartups from "./RecommendedStartups";
-import MeetupMouse from './tempImages/MeetupMouse.svg'
+// import MeetupMouse from './tempImages/MeetupMouse.svg'
 import Gover from './tempImages/Gover.png'
 import Invern from './tempImages/Invern.png'
 import Rocketeer from './tempImages/Rocketeer.png'
@@ -10,19 +10,33 @@ import IceBerk from './tempImages/IceBerk.png'
 import PlantPeace from './tempImages/PlantPeace.png'
 import ShareNow from './tempImages/ShareNow.png'
 
+// React query
+import { useQuery } from 'react-query'
+
+// React query fetch functions
+const getRecommendedStartups = async (key) => {
+    const res = await fetch('http://localhost:8080/api/db/retailInvestors/recommender/' + key.queryKey[1])
+    return res.json()
+}
+
 function StartupShowcase({ searchTerms }){
 
+    // React query fetch requests
+    const { data, status } = useQuery(['recommendedStartups', 1], getRecommendedStartups)   //TODO: Hardcoded 1 for retail investor I
+
+    // console.log("First startup", firstStartup)
+
     // TODO Details for object TBC
-    const featuredStartupObject = {
-        name: "Meetup Mouse",
-        description: "Meetup Mouse suggests the BEST hand-picked places for your group’s needs so you and your friends NEVER worry about where to eat again!",
-        fundedAmount: 200000,
-        sharesAllocated: "20",
-        campaignGoal: 500000,
-        endTime: "47",
-        id: 1,
-        imageLink: MeetupMouse
-    }
+    // const featuredStartupObject = {
+    //     name: "Meetup Mouse",
+    //     description: "Meetup Mouse suggests the BEST hand-picked places for your group’s needs so you and your friends NEVER worry about where to eat again!",
+    //     fundedAmount: 200000,
+    //     sharesAllocated: "20",
+    //     campaignGoal: 500000,
+    //     endTime: "47",
+    //     id: 1,
+    //     imageLink: MeetupMouse
+    // }
 
     const recommendedStartups = [
         {
@@ -91,17 +105,29 @@ function StartupShowcase({ searchTerms }){
 
     return(
         <>
-            {
-                searchTerms !== "" ?
-                    <div>
-                        <p>{searchTerms}</p>
-                    </div>
-                    :
-                    <div className="w-full flex flex-col space-y-4">
-                        <FeaturedStartup info={featuredStartupObject}/>
-                        <RecommendedStartups startups={recommendedStartups}/>
-                    </div>
-            }
+            {status === 'loading' && (
+                <div>Loading data...</div>
+            )}
+
+            {status === 'error' && (
+                <div>Error fetching data</div>
+            )}
+
+            {status === 'success' && (  
+                <>
+                {
+                    searchTerms !== "" ?
+                        <div>
+                            <p>{searchTerms}</p>
+                        </div>
+                        :
+                        <div className="w-full flex flex-col space-y-4">
+                            <FeaturedStartup info={data[1]}/>
+                            <RecommendedStartups startups={recommendedStartups}/>
+                        </div>
+                }
+                </>
+            )}
         </>
     )
 }

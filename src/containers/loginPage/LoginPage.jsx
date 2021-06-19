@@ -7,6 +7,44 @@ import SignUp2 from "../registerPage/signup2.svg";
 
 function LoginPage(){
 
+    // PUSH API TO CREATE FAKE RI AND ADD INDUSTRIES
+    const pushFakeData = async () => {
+        const createRI = await fetch('http://localhost:8080/api/db/retailInvestors/', {
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': 'Bearer ~jwttoken~'
+            },
+            method: 'POST',
+            body: JSON.stringify({
+                "firstName" : "asdfasdf",
+                "lastName": "aaasdfas@asldfkjsha.xyz",
+                "userPassword" : "kajlshdf!aslkdjh@#",
+                "emailAddress": "test@gmail.com",
+                "singPass": "singpass",
+                "incomeStatement": "incomeStatement",
+                "incomeTaxReturn": "incomeTaxReturn"
+            })
+        })
+
+        const createRIRes= await createRI.json()
+        console.log(createRIRes)
+
+        const addIndustries = await fetch('http://localhost:8080/api/db/retailInvestors/industries/addIndustries/', {
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': 'Bearer ~jwttoken~'
+            },
+            method: 'POST',
+            body: JSON.stringify({
+                "industryNames": ["Finance", "Tech", "Farming"],
+                "id": 1,
+                "accountType": "retailInvestor"
+            })
+        })
+        const addIndustriesRes = await addIndustries.json()
+        console.log(addIndustriesRes)
+    }
+
     return(
         <div className="container mx-auto flex flex-wrap p-5 flex-col items-center my-auto">
             <p className="text-xl sm:text-4xl lg:text-6xl font-Rubik self-center">Who are you?</p>
@@ -18,7 +56,7 @@ function LoginPage(){
                         <p className="text-center text-2xl font-Rubik">Startups</p>
                         <p className="text-center text-gray-500">Founders who are looking to raise funds for your startup</p>
                         <Link to="/">
-                            <img src={SignUp} alt="Register as Startup" />
+                            <img src={SignUp} alt="Log in as Startup" />
                         </Link>
                     </div>
                 </div>
@@ -27,8 +65,8 @@ function LoginPage(){
                         <img src={InvestorsIcon} alt="Retail Investors Icon" />
                         <p className="text-center text-2xl font-Rubik">Retail Investors</p>
                         <p className="text-center ">Public Investors who are seeking to invest in startups</p>
-                        <Link to="/home">
-                            <img src={SignUp2} alt="Register as Retail Investor" />
+                        <Link to="/home" onClick={pushFakeData}>
+                            <img src={SignUp2} alt="Log in Retail Investor" />
                         </Link>
                     </div>
                 </div>

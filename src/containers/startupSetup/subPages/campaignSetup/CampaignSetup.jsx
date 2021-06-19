@@ -13,15 +13,10 @@ import { useSelector } from 'react-redux'
 import { getStartupId } from '../../../../store/auth'
 
 // React query fetch functions
-const fetchCampaign = async (key) => {
-    const res = await fetch('http://localhost:8080/api/db/startup/getCampaign/' + key.queryKey[1])
+const fetchStartupById = async (key) => {
+    const res = await fetch('http://localhost:8080/api/db/startup/' + key.queryKey[1])
     return res.json()
 }
-
-// const fetchZoomDetails = async (key) => {
-//     const res = await fetch('http://localhost:8080/api/db/startup/' + key.queryKey[1])
-//     return res.json()
-// }
 
 function CampaignSetup(){
     let goal = 500000
@@ -47,23 +42,19 @@ function CampaignSetup(){
     })
 
     // React query fetch requests
-    const { data } = useQuery(['campaignGoal', startupId], fetchCampaign, {
-        refetchInterval: 1000
+    const { data, refetch } = useQuery(['startupDetails', startupId], fetchStartupById, {
+        enabled: false
     })
+
     if (data) {
-        if (data[0]) {
-            if (data[0].goal) {
-                // console.log(data[0])
-                goal = data[0].goal
-                sharesAllocated = data[0].sharesAllocated
-                tokensMinted = data[0].tokensMinted
+        if (data.campaigns[0]) {
+            if (data.campaigns[0].goal) {
+                goal = data.campaigns[0].goal
+                sharesAllocated = data.campaigns[0].sharesAllocated
+                tokensMinted = data.campaigns[0].tokensMinted
 
                 const campaignGoalSubmission = {goal, sharesAllocated, tokensMinted}
                 campaignDetails.campaignGoal = campaignGoalSubmission
-            }
-            
-            if (data[0].campaignDescription) {
-                campaignDetails.campaignDescription = data[0].campaignDescription
             }
         }
         
@@ -73,15 +64,24 @@ function CampaignSetup(){
         const res = await fetch('http://localhost:8080/api/db/startup/' + startupId)
         const result = await res.json()
 
-        const zoomDateTimeArray = result.zoomDatetime.split(",")
-        campaignDetails.zoomDetails.date = zoomDateTimeArray[0]
-        campaignDetails.zoomDetails.startTime = zoomDateTimeArray[1]
-        campaignDetails.zoomDetails.endTime = zoomDateTimeArray[2]
+        if (result.campaigns[0] != null) {
+            if (result.campaigns[0].zoomDatetime != null) {
+                const zoomDateTimeArray = result.campaigns[0].zoomDatetime.split(",")
+                campaignDetails.zoomDetails.date = zoomDateTimeArray[0]
+                campaignDetails.zoomDetails.startTime = zoomDateTimeArray[1]
+                campaignDetails.zoomDetails.endTime = zoomDateTimeArray[2]
+            }
+
+            if (result.campaigns[0].campaignDescription != null) {
+                campaignDetails.campaignDescription = result.campaigns[0].campaignDescription
+            }
+        }
 
     }
 
     if (campaignDetails.zoomDetails.date === "") {
         updateZoomDatetimeQuery()
+        refetch()
     }
 
     const updateMilestonesQuery = async () => {
@@ -93,21 +93,6 @@ function CampaignSetup(){
     if (campaignDetails.milestones.length === 0) {
         updateMilestonesQuery()
     }
-
-    // function callStartupQuery() {
-    //     const startupQuery = useQuery(['startupDetails', startupId], fetchZoomDetails, {
-    //     })
-    //     // console.log(startupQuery.data)
-    //     if (startupQuery.data) {
-    //         if (startupQuery.data.zoomDatetime != "") {
-    //             const zoomDateTimeArray = startupQuery.data.zoomDatetime.split(",")
-    //             // campaignDetails.zoomDetails.date = zoomDateTimeArray[0]
-    //             // campaignDetails.zoomDetails.startTime = zoomDateTimeArray[1]
-    //             // campaignDetails.zoomDetails.endTime = zoomDateTimeArray[2]
-    //             console.log(zoomDateTimeArray)
-    //         }
-    //     }
-    // }
 
     function setCampaignDescription(value){
         setCampaignDetails(prevState => ({
@@ -200,7 +185,7 @@ function CampaignSetup(){
         }
 
         // //TODO: Hardcoded baseURL
-        const response = await fetch('http://localhost:8080/api/db/startup/' + startupId, {
+        const response = await fetch('http://localhost:8080/api/db/startup/campaign/update/' + startupId, {
             headers: {
                 'Content-Type': 'application/json',
                 // 'Authorization': 'Bearer ~jwttoken~'
@@ -215,20 +200,27 @@ function CampaignSetup(){
 
     return (
         <>
-            <div className="bg-white px-6 sm:px-24 py-16 rounded-xl space-y-4 shadow-lg h-full w-full flex flex-wrap flex-col items-center">
-                <DropZone placeHolderText="Drop Video Material (MP4, MOV)" acceptedFileTypes="video/*" endPoint="/startup/video/" startupId={startupId} />
-                <DropZone placeHolderText="Drop Pitch Deck Materials (pdf, jpg)" acceptedFileTypes=".jpg, .pdf" endPoint="/startup/pitchDeck/" startupId={startupId} />
-                <PrimaryTextArea placeholder="Campaign Description" onChangeFunc={setCampaignDescription}
-                                 properties="w-full h-40" value={campaignDetails.campaignDescription} />
-                <MilestoneModal addMilestonesFunc={addMilestonesDetails} details={campaignDetails}
-                                editMilestoneFunc={editMilestoneFunc} deleteMilestoneFunc={deleteMilestoneFunc}
-                                setCampaignGoal={setCampaignGoal} />
-                <ZoomSessionModal onChangeFunc={setZoomDetails} details={campaignDetails.zoomDetails} onSubmitFunc={submitZoomDetails} startupId={startupId} />
-                <br />
-                <br />
-                <br />
-                <PrimaryButton text="Submit" properties="self-end" onClick={saveCampaignDescription}/>
-            </div>
+            {/* { status === 'loading' && (
+                <div>Updating...</div>
+            )} */}
+
+            {/* { status === 'success' && ( */}
+                <div className="bg-white px-6 sm:px-24 py-16 rounded-xl space-y-4 shadow-lg h-full w-full flex flex-wrap flex-col items-center">
+                    <DropZone placeHolderText="Drop Video Material (MP4, MOV)" acceptedFileTypes="video/*" endPoint="video/" startupId={startupId} />
+                    <DropZone placeHolderText="Drop Pitch Deck Materials (pdf, jpg)" acceptedFileTypes=".jpg, .pdf" endPoint="pitchDeck/" startupId={startupId} />
+                    <PrimaryTextArea placeholder="Campaign Description" onChangeFunc={setCampaignDescription}
+                                    properties="w-full h-40" value={campaignDetails.campaignDescription} />
+                    <MilestoneModal addMilestonesFunc={addMilestonesDetails} details={campaignDetails}
+                                    editMilestoneFunc={editMilestoneFunc} deleteMilestoneFunc={deleteMilestoneFunc}
+                                    setCampaignGoal={setCampaignGoal} />
+                    <ZoomSessionModal onChangeFunc={setZoomDetails} details={campaignDetails.zoomDetails} onSubmitFunc={submitZoomDetails} startupId={startupId} />
+                    <br />
+                    <br />
+                    <br />
+                    <PrimaryButton text="Submit" properties="self-end" onClick={saveCampaignDescription}/>
+                </div>
+            {/* )} */}
+            
         </>
     )
 }

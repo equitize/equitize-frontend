@@ -16,9 +16,17 @@ import CampaignResearch from "./subPages/campaignResearch/CampaignResearch";
 // Need to store when retrieving from API
 import tempPDF from "./temp.pdf"
 
+// React query
+import { useQuery } from 'react-query'
+
+// React query fetch functions
+const viewStartupDetails = async (key) => {
+    const res = await fetch('http://localhost:8080/api/db/startup/' + key.queryKey[1])
+    return res.json()
+}
+
 function StartupCampaign(){
     let { id } = useParams()
-    console.log(id)
     const history = useHistory()
     const [isActiveTab, setIsActiveTab] = useState({
         first: true,
@@ -26,6 +34,9 @@ function StartupCampaign(){
         third: false,
         fourth: false
     })
+
+    const { data, status } = useQuery(['viewStartupDetails', id], viewStartupDetails)
+    console.log(status, data)
 
     // TODO CALL API FOR DATA
     const startupObject = {
