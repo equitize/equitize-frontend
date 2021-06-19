@@ -14,16 +14,26 @@ import CampaignMilestones from "./subPages/campaignMilestones/CampaignMilestones
 import CampaignFAQs from "./subPages/campaignFAQs/CampaignFAQs";
 import CampaignResearch from "./subPages/campaignResearch/CampaignResearch";
 //TODO Need to store when retrieving from API
-import tempVideo from "./tempVideo.mp4"
+// import tempVideo from "./tempVideo.mp4"
 //TODO Need to store when retrieving from API
-import tempPDF from "./temp.pdf"
+// import tempPDF from "./temp.pdf"
 
 // React query
 import { useQuery } from 'react-query'
 
 // React query fetch functions
-const viewStartupDetails = async (key) => {
+const getStartupDetails = async (key) => {
     const res = await fetch('http://localhost:8080/api/db/startup/' + key.queryKey[1])
+    return res.json()
+}
+
+const getStartupVideo = async (key) => {
+    const res = await fetch('http://localhost:8080/api/db/startup/getSignedURLPlus/video/' + key.queryKey[1])
+    return res.json()
+}
+
+const getStartupPitchDeck = async (key) => {
+    const res = await fetch('http://localhost:8080/api/db/startup/getSignedURLPlus/pitchDeck/' + key.queryKey[1])
     return res.json()
 }
 
@@ -37,8 +47,12 @@ function StartupCampaign(){
         fourth: false
     })
 
-    const { data, status } = useQuery(['viewStartupDetails', id], viewStartupDetails)
+    const { data, status } = useQuery(['viewStartupDetails', id], getStartupDetails)
     console.log(status, data)
+
+    const videoData = useQuery(['startupVideo', id], getStartupVideo)
+    const pitchDeck = useQuery(['startupPitchDeck', id], getStartupPitchDeck)
+    console.log(pitchDeck.data)
 
     // TODO CALL API FOR DATA
     const startupObject = {
@@ -111,13 +125,13 @@ function StartupCampaign(){
             <div className="w-full flex flex-row">
                 <div className="w-2/3 flex flex-col md:ml-3 space-y-2">
                     <br />
-                    <StartupVideo video={tempVideo}/>
+                    <StartupVideo video={ videoData.status === "success" ? videoData.data.signedURL : null}/>
                     <ProgressBar width={progressBarWidth} />
                     <CampaignTabs setIsActiveTab={setIsActiveTab} isActiveTab={isActiveTab}/>
                     <br/>
                     {
                         isActiveTab.first ?
-                            <CampaignDetails campaignPDF={tempPDF} />
+                            <CampaignDetails campaignPDF={ pitchDeck.status === "success" ? pitchDeck.data.signedURL : null } />
                             : null
                     }
                     {
