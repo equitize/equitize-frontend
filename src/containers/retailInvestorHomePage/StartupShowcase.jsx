@@ -113,7 +113,7 @@ function StartupShowcase({ searchTerms }){
                 <div>Error fetching data</div>
             )}
 
-            {status === 'success' && (  
+            {data != undefined && (  
                 <>
                 {
                     searchTerms !== "" ?
@@ -122,7 +122,7 @@ function StartupShowcase({ searchTerms }){
                         </div>
                         :
                         <div className="w-full flex flex-col space-y-4">
-                            <FeaturedStartup info={data[1]}/>
+                            <FeaturedStartup info={data[0]}/>
                             <RecommendedStartups startups={recommendedStartups}/>
                         </div>
                 }

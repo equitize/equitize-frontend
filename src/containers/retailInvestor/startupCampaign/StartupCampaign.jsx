@@ -48,11 +48,9 @@ function StartupCampaign(){
     })
 
     const { data, status } = useQuery(['viewStartupDetails', id], getStartupDetails)
-    console.log(status, data)
 
     const videoData = useQuery(['startupVideo', id], getStartupVideo)
     const pitchDeck = useQuery(['startupPitchDeck', id], getStartupPitchDeck)
-    console.log(pitchDeck.data)
 
     // TODO CALL API FOR DATA
     const startupObject = {
@@ -151,7 +149,7 @@ function StartupCampaign(){
                     }
                 </div>
                 <div className="w-1/3 flex flex-col">
-                    <InvestmentDetails info={startupObject} />
+                    <InvestmentDetails info={ status === "success" ? { campaignDetails: data.campaigns[0], startupId: data.id } : null } />
                     <br />
                     <ScoreCard ratings={ratings}/>
                     <br />

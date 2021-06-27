@@ -9,6 +9,7 @@ import MeetupMouse from './tempImages/MeetupMouse.svg'
 
 // React query
 import { useQuery } from 'react-query'
+import { useEffect } from "react";
 
 // React query fetch functions
 const getStartupPhoto = async (key) => {
@@ -18,11 +19,22 @@ const getStartupPhoto = async (key) => {
 
 function FeaturedStartup({ info }){
     const history = useHistory()
-    // const percentageRaised = info.fundedAmount/info.campaignGoal * 100
-    const percentageRaised = info.campaigns[0].currentlyRaised / info.campaigns[0].goal * 100
-    const progressBarWidth = getTailwindWidthFraction(percentageRaised)
-
     console.log(info)
+    // const percentageRaised = info.fundedAmount/info.campaignGoal * 100
+    // const percentageRaised = info.campaigns[0].currentlyRaised / info.campaigns[0].goal * 100
+    // const progressBarWidth = getTailwindWidthFraction(percentageRaised)
+    let percentageRaised = 20
+    let progressBarWidth = 0
+
+    useEffect(() => {
+        getProgressBarWidth()
+    }, [])
+
+    const getProgressBarWidth = () => {
+        percentageRaised = info.campaigns[0].currentlyRaised / info.campaigns[0].goal * 100
+        progressBarWidth = getTailwindWidthFraction(percentageRaised)
+    }
+
 
     const featuredPhoto = useQuery(['featuredStartupPhoto', info.id], getStartupPhoto)
     console.log(featuredPhoto.data)
