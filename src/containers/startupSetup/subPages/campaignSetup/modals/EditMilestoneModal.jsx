@@ -10,7 +10,7 @@ import DeleteMilestoneModal from "./DeleteMilestoneModal";
 function EditMilestoneModal({ details, editMilestoneFunc, deleteMilestoneFunc, showModal, ModalFunc }){
     const [milestone, setMilestone] = useState({
         title: details.title,
-        date: details.date,
+        endDate: details.endDate,
         description: details.description,
         percentageFunds: details.percentageFunds
     })
@@ -66,7 +66,7 @@ function EditMilestoneModal({ details, editMilestoneFunc, deleteMilestoneFunc, s
                                     <PrimaryInput placeholder="Milestone Title" properties="self-stretch"
                                                   value={milestone.title} onChange={setMilestoneProperties('title')} />
                                     <PrimaryInput placeholder="DD/MM/Y" type="date"
-                                                  value={milestone.date} onChange={setMilestoneProperties('date')} />
+                                                  value={milestone.endDate} onChange={setMilestoneProperties('endDate')} />
                                     <PrimaryTextArea placeholder="Description" value={milestone.description}
                                                      onChangeFunc={setMilestoneProperties('description')}
                                                      alt={true} properties="m-4"/>

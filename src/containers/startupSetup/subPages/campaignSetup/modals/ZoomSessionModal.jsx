@@ -79,7 +79,8 @@ function ZoomSessionModal({ onChangeFunc, details, onSubmitFunc }){
 ZoomSessionModal.propTypes = {
     onChangeFunc: PropTypes.func,
     onSubmitFunc: PropTypes.func,
-    details: PropTypes.object
+    details: PropTypes.object,
+    startupId: PropTypes.number
 }
 
 

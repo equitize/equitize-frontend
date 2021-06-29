@@ -14,13 +14,31 @@ import CampaignMilestones from "./subPages/campaignMilestones/CampaignMilestones
 import CampaignFAQs from "./subPages/campaignFAQs/CampaignFAQs";
 import CampaignResearch from "./subPages/campaignResearch/CampaignResearch";
 //TODO Need to store when retrieving from API
-import tempVideo from "./tempVideo.mp4"
+// import tempVideo from "./tempVideo.mp4"
 //TODO Need to store when retrieving from API
-import tempPDF from "./temp.pdf"
+// import tempPDF from "./temp.pdf"
+
+// React query
+import { useQuery } from 'react-query'
+
+// React query fetch functions
+const getStartupDetails = async (key) => {
+    const res = await fetch('http://localhost:8080/api/db/startup/' + key.queryKey[1])
+    return res.json()
+}
+
+const getStartupVideo = async (key) => {
+    const res = await fetch('http://localhost:8080/api/db/startup/getSignedURLPlus/video/' + key.queryKey[1])
+    return res.json()
+}
+
+const getStartupPitchDeck = async (key) => {
+    const res = await fetch('http://localhost:8080/api/db/startup/getSignedURLPlus/pitchDeck/' + key.queryKey[1])
+    return res.json()
+}
 
 function StartupCampaign(){
     let { id } = useParams()
-    console.log(id)
     const history = useHistory()
     const [isActiveTab, setIsActiveTab] = useState({
         first: true,
@@ -28,6 +46,11 @@ function StartupCampaign(){
         third: false,
         fourth: false
     })
+
+    const { data, status } = useQuery(['viewStartupDetails', id], getStartupDetails)
+
+    const videoData = useQuery(['startupVideo', id], getStartupVideo)
+    const pitchDeck = useQuery(['startupPitchDeck', id], getStartupPitchDeck)
 
     // TODO CALL API FOR DATA
     const startupObject = {
@@ -51,37 +74,37 @@ function StartupCampaign(){
     }
 
     // TODO Figure out the format for this, can be just a single key dateTime as well
-    const zoomSessions = [
-        {
-            id:0,
-            date: "14th August 2021",
-            time: "2000",
-            zoomLink: ""
-        },
-        {
-            id:1,
-            date: "15th August 2021",
-            time: "2030",
-            zoomLink: ""
-        }
-    ]
+    // const zoomSessions = [
+    //     {
+    //         id:0,
+    //         date: "14th August 2021",
+    //         time: "2000",
+    //         zoomLink: ""
+    //     },
+    //     {
+    //         id:1,
+    //         date: "15th August 2021",
+    //         time: "2030",
+    //         zoomLink: ""
+    //     }
+    // ]
 
-    const campaignMilestones = [
-        {
-            id: 0,
-            title: "Complete first prototype",
-            date: "23/01/21",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras iaculis blandit enim, ac fringilla dui.",
-            percentageFunds: 15
-        },
-        {
-            id: 1,
-            title: "Complete second prototype",
-            date: "13/06/21",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
-            percentageFunds: 40
-        }
-    ]
+    // const campaignMilestones = [
+    //     {
+    //         id: 0,
+    //         title: "Complete first prototype",
+    //         date: "23/01/21",
+    //         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras iaculis blandit enim, ac fringilla dui.",
+    //         percentageFunds: 15
+    //     },
+    //     {
+    //         id: 1,
+    //         title: "Complete second prototype",
+    //         date: "13/06/21",
+    //         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+    //         percentageFunds: 40
+    //     }
+    // ]
 
     function returnToHomePage(){
         history.push("/home")
@@ -100,18 +123,18 @@ function StartupCampaign(){
             <div className="w-full flex flex-row">
                 <div className="w-2/3 flex flex-col md:ml-3 space-y-2">
                     <br />
-                    <StartupVideo video={tempVideo}/>
+                    <StartupVideo video={ videoData.status === "success" ? videoData.data.signedURL : null}/>
                     <ProgressBar width={progressBarWidth} />
                     <CampaignTabs setIsActiveTab={setIsActiveTab} isActiveTab={isActiveTab}/>
                     <br/>
                     {
                         isActiveTab.first ?
-                            <CampaignDetails campaignPDF={tempPDF} />
+                            <CampaignDetails campaignPDF={ pitchDeck.status === "success" ? pitchDeck.data.signedURL : null } />
                             : null
                     }
                     {
                         isActiveTab.second ?
-                            <CampaignMilestones startupObject={startupObject} campaignMilestones={campaignMilestones}/>
+                            <CampaignMilestones campaign={ data.campaigns[0] } campaignMilestones={data.milestones}/>
                             : null
                     }
                     {
@@ -126,11 +149,11 @@ function StartupCampaign(){
                     }
                 </div>
                 <div className="w-1/3 flex flex-col">
-                    <InvestmentDetails info={startupObject} />
+                    <InvestmentDetails info={ status === "success" ? { campaignDetails: data.campaigns[0], startupId: data.id } : null } />
                     <br />
                     <ScoreCard ratings={ratings}/>
                     <br />
-                    <ZoomCampaignDetails zoomSessions={zoomSessions} />
+                    <ZoomCampaignDetails zoomSessions={ status === "success" ? data.campaigns[0].zoomDatetime : null } />
                 </div>
             </div>
         </div>

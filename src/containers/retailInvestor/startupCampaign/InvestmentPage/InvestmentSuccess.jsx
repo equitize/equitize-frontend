@@ -1,11 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import MeetupMouse from "../../../retailInvestorHomePage/tempImages/MeetupMouse.svg";
 import Zilliqa from './Zilliqa.svg'
 import PrimaryButton from "../../../../components/PrimaryButton/PrimaryButton";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import queryString from 'query-string';
+import Loading from '../../../../components/Loading/Loading'
 
-function InvestmentSuccess(){
+const InvestmentSuccess = () => {
+    let { id } = useParams()
+    const [pledgeResult, setPledgeResult] = useState('')
+    const [done, setDone] = useState(undefined)
+    const [loading, setLoading] = useState(undefined)
+    
     const history = useHistory()
+
+    let params = queryString.parse(history.location.search)
+    const { deposit } = params
+
+    useEffect(() => {
+        pledgeAmount();
+    }, [])
+
+    const pledgeAmount = async () => {
+
+        // //TODO: Hardcoded baseURL
+        const response = await fetch('http://localhost:8080/api/db/retailInvestors/campaign/pledge/' + id, {
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': 'Bearer ~jwttoken~'
+            },
+            method: 'PUT',
+            body: JSON.stringify({
+                "pledgeAmount": deposit
+            }) 
+        })
+
+        const res = await response.json()
+
+        if (res.message === "Milestone SC and Fungible Token SC succesfully deployed.") {
+            setPledgeResult(res)
+            setLoading(true)
+            setTimeout(() => {
+                setDone(true)
+            }, 3000)
+        }
+    }
 
     // TODO CALL API FOR DATA (ONLY Startup Name)
     const startupObject = {
@@ -33,9 +73,23 @@ function InvestmentSuccess(){
             <br />
             <img src={Zilliqa} alt="Zilliqa Icon" className="w-1/3" />
             <br />
-            <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">When the funding succeeds, you will be given</p>
-            <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2 text-secondary">2000 tokens</p>
-            <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2"> for your investment amount</p>
+            {!done ? (
+                <>
+                <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">Congratutions! Campaign has reached its goal.</p>
+                <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">Deploying smart contracts...</p>
+                <Loading loading={loading}/>
+                <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">Do not navigate away from this page.</p>
+                {/* <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">When the funding succeeds, you will be given</p>
+                <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2 text-secondary">2000 tokens</p>
+                <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2"> for your investment amount</p> */}
+                </>
+            ) : (
+                <>
+                <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">Milestone Smart Contract Address: {pledgeResult.milestoneSCaddress}</p>
+                <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">Fungible Token Address: {pledgeResult.fungibleTokenSCaddress}</p>
+                </>
+            )}
+            
             <br />
             <div className="flex flex-row justify-between w-full sm:w-2/3 md:w-1/2">
                 <PrimaryButton text="View Investment" onClick={returnToHomePage} />
@@ -48,6 +102,9 @@ function InvestmentSuccess(){
     )
 }
 
+InvestmentSuccess.propTypes = {
+    location: PropTypes.object
+}
 
 
 export default InvestmentSuccess;

@@ -38,7 +38,7 @@ function CampaignGoalModal({ ModalFunc, showModal, editCampaignGoal, campaignGoa
                 'Content-Type': 'application/json',
             },
             method: 'PUT',
-            body: JSON.stringify(tempCampaignGoal) 
+            body: JSON.stringify(tempCampaignGoal)
         })
 
         const data = await response.json()

@@ -40,7 +40,7 @@ function MilestoneModal({ details, addMilestonesFunc, editMilestoneFunc, deleteM
                                 </div>
                                 {/*body*/}
                                 <div className="p-6 flex flex-wrap align-middle justify-center flex-col w-full">
-                                    <MilestoneItem goal={details.campaignGoal} editCampaignGoal={setCampaignGoal} />
+                                    <MilestoneItem campaignGoal={details.campaignGoal} editCampaignGoal={setCampaignGoal} />
                                     {
                                         details.milestones.length > 0 ?
                                             details.milestones.map((milestone, index) => (
