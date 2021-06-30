@@ -10,6 +10,7 @@ import PublicPage from "./containers/publicPage/PublicPage";
 import Footer from "./components/Footer/Footer";
 import RegisterPage from "./containers/registerPage/RegisterPage";
 import StartupRegistration from "./containers/startupRegistration/StartupRegistration";
+import RetailInvestorRegistration from "./containers/retailInvestorRegistration/RetailInvestorRegistration"
 import StartupSetup from "./containers/startupSetup/StartupSetup";
 import SetupCompleted from "./containers/startupSetup/SetupCompleted";
 import LoginPage from "./containers/loginPage/LoginPage";
@@ -34,6 +35,9 @@ function App() {
               </Route>
               <Route exact path="/register/startup">
                   <StartupRegistration />
+              </Route>
+              <Route exact path="/register/investor">
+                  <RetailInvestorRegistration />
               </Route>
               <Route exact path="/startup/setup">
                   <StartupSetup />

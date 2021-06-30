@@ -61,7 +61,7 @@ function LoginPage(){
                     </div>
                 </div>
                 <div className="w-1/2">
-                    <div className="flex flex-col bg-white px-1 sm:px-8 py-4 sm:py-10 rounded-xl space-y-10 items-center shadow-lg bg-secondary text-white h-full">
+                    <div className="flex flex-col px-1 sm:px-8 py-4 sm:py-10 rounded-xl space-y-10 items-center shadow-lg bg-secondary text-white h-full">
                         <img src={InvestorsIcon} alt="Retail Investors Icon" />
                         <p className="text-center text-2xl font-Rubik">Retail Investors</p>
                         <p className="text-center ">Public Investors who are seeking to invest in startups</p>
