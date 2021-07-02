@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 // For redux
 import { useDispatch, useSelector } from 'react-redux'
-import { signUp, getIsLoggedIn } from '../../store/auth'
+import { signedUp, getIsLoggedIn } from '../../store/auth'
 
 function StartupRegistration(){
     const [isFirstPage, setIsFirstPage] = useState(true)
@@ -23,18 +23,39 @@ function StartupRegistration(){
     })
     // Redux useDispatch hook
     const dispatch = useDispatch()
+
     const isLoggedIn = useSelector(getIsLoggedIn)
-    console.log(isLoggedIn)
+    console.log("isLoggedIn:", isLoggedIn)
     
     const { register, formState: { errors }, clearErrors, handleSubmit } = useForm();
 
-    const onSubmit = (data, e) => {
+    const onSubmit = async (data, e) => {
         console.log(data, e);
         clearErrors()
-        dispatch(signUp(data))
+        
+        //TODO: Hardcoded URL
+        const signUp = await fetch('http://localhost:8080/api/db/startup', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+        
+        const status = await signUp.status
+        if (status === 200) {
+            const res = await signUp.json()
+            console.log(res)
 
-        //TODO: PLEASE HELP
-        setIsFirstPage(!isFirstPage)
+            dispatch(signedUp())
+
+            setIsFirstPage(!isFirstPage)
+        } else {
+            const error = await signUp.json()
+            console.log("Error", error)
+        }
+        
+        
     }
 
     function readContent(sequence){

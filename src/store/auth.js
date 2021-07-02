@@ -15,21 +15,19 @@ const slice = createSlice({
         stateChanged: (state) => {
             state.stateChanged = !state.stateChanged
         },
-        loggedIn: (state, action) => {
+        loggedIn: (state) => {
             state.isLoggedIn = true
-            state.data = action.payload
         },
         loggedOut: (state) => {
             state.isLoggedIn = false
-            state.data = {}        // deletes state.data as action.payload.user is empty.
+            state = undefined       // deletes state.data as action.payload.user is empty.
         },
         authRequestFailed: (state, action) => {
             state.debug = action.payload
         },
 
-        signedUp: (state, action) => {
+        signedUp: (state) => {
             state.isLoggedIn = true
-            state.data = action.payload
         },
 
         videoUploaded: (state, action) => {

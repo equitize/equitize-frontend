@@ -19,6 +19,8 @@ import StartupCampaign from "./containers/retailInvestor/startupCampaign/Startup
 import StartupCampaignInvestment
     from "./containers/retailInvestor/startupCampaign/InvestmentPage/StartupCampaignInvestment";
 import InvestmentSuccess from "./containers/retailInvestor/startupCampaign/InvestmentPage/InvestmentSuccess";
+import RetailInvestorsLogin from "./containers/loginPage/RetailInvestorsLogin"
+import StartupsLogin from "./containers/loginPage/StartupsLogin"
 
 function App() {
 
@@ -57,6 +59,13 @@ function App() {
               <Route exact path="/login">
                   <LoginPage />
               </Route>
+              <Route exact path="/RILogin">
+                  <RetailInvestorsLogin />
+              </Route>
+              <Route exact path="/StartupsLogin">
+                  <StartupsLogin />
+              </Route>
+
               <Route exact path="/home">
                   <RetailInvestorHomePage />
               </Route>

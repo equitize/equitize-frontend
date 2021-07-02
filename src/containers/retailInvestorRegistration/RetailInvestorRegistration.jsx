@@ -13,8 +13,8 @@ import allCategories from './allCategories'
 import IndustrySearchBarDropdown from "./IndustrySearchBarDropdown";
 
 // For redux
-// import { useDispatch, useSelector } from 'react-redux'
-// import { signUp, getIsLoggedIn } from '../../store/auth'
+import { useDispatch, useSelector } from 'react-redux'
+import { signedUp, getIsLoggedIn } from '../../store/auth'
 
 function RetailInvestorRegistration(){
     const [page, setPage] = useState("first")
@@ -26,11 +26,12 @@ function RetailInvestorRegistration(){
     })
     const [age, setAge] = useState(21)
     const [ interestedIndustries, setInterestedIndustries ] = useState([])
+    const [ finalForm, setFinalForm ] = useState({})
 
     // Redux useDispatch hook
-    // const dispatch = useDispatch()
-    // const isLoggedIn = useSelector(getIsLoggedIn)
-    // console.log(isLoggedIn)
+    const dispatch = useDispatch()
+    const isLoggedIn = useSelector(getIsLoggedIn)
+    console.log("isLoggedIn:", isLoggedIn)
     
     const { register, formState: { errors }, clearErrors, handleSubmit } = useForm();
     
@@ -41,21 +42,46 @@ function RetailInvestorRegistration(){
     const onSubmitUserDetails = (data, e) => {
         console.log(data, e);
         clearErrors()
-        // dispatch(signUp(data))
 
-        //TODO: PLEASE HELP
-        setPage("second")
+        function addToRegistrationForm(form) {
+            setFinalForm(form)
+            setPage("second")
+        }
+
+        return addToRegistrationForm(data)
+        
     }
 
-    const onSubmitUserPreferences = (data, e) => {
-        console.log(data, e)
+    const onSubmitUserPreferences = async (data) => {
+        const { age, gender } = data
+        console.log(finalForm)
         const industryPreferences = interestedIndustries
 
-        const allPrefs = {industryPreferences, ...data}
+        const allPrefs = {industryPreferences, age, gender, ...finalForm}
         console.log(allPrefs)
-        //TODO: API to update retail investor preferences
 
-        setPage("third")
+        //TODO: Hardcoded URL
+        const signUp = await fetch('http://localhost:8080/api/db/retailInvestors/', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            body: JSON.stringify(allPrefs)
+        })
+        
+        const status = signUp.status
+        if (status === 200) {
+            const res = await signUp.json()
+            console.log(res)
+
+            dispatch(signedUp())
+
+            setPage("third")
+        } else {
+            const error = await signUp.json()
+            console.log("Error", error)
+        }
+
     }
 
     function addInterestedIndustriesFunc(industry) {
@@ -205,7 +231,7 @@ function RetailInvestorRegistration(){
                                                 checkBoxAlt="Read this document" checked={isRead.third}/>
                                 <br />
                                 <br />
-                                <Link to="/startup/setup" className="self-center">
+                                <Link to="/home" className="self-center">
                                     <PrimaryButton text="Submit" disabled={isDisabled} />
                                 </Link>
                                 <br />
