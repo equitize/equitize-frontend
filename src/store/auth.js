@@ -15,8 +15,9 @@ const slice = createSlice({
         stateChanged: (state) => {
             state.stateChanged = !state.stateChanged
         },
-        loggedIn: (state) => {
+        loggedIn: (state, action) => {
             state.isLoggedIn = true
+            state.data = action.payload
         },
         loggedOut: (state) => {
             state.isLoggedIn = false

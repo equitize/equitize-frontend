@@ -1,72 +1,40 @@
 const allCategories = [
     {
-        name: "AI",
+        name: "Agriculture",
         id: 1
     },
     {
-        name: "AR/VR",
+        name: "Education",
         id: 2
     },
     {
-        name: "Adtech",
+        name: "Entertainment",
         id: 3
     },
     {
-        name: "Aerospace",
+        name: "Environment",
         id: 4
     },
     {
-        name: "Agritech",
+        name: "Finance",
         id: 5
     },
     {
-        name: "Big Data",
+        name: "Food and Beverages",
         id: 6
     },
     {
-        name: "Biotech",
+        name: "Healthcare and Medical",
         id: 7
     },
     {
-        name: "Blockchain",
+        name: "Telecommunications",
         id: 8
     },
     {
-        name: "Cleantech",
+        name: "Others",
         id: 9
-    },
-    {
-        name: "Cloud",
-        id: 10
-    },
-    {
-        name: "Complementary Health Products",
-        id: 11
-    },
-    {
-        name: "Consumer Electronics",
-        id: 12
-    },
-    {
-        name: "Data Analysis",
-        id: 13
-    },
-    {
-        name: "Digital Health",
-        id: 14
-    },
-    {
-        name: "E-Commerce",
-        id: 15
-    },
-    {
-        name: "Education",
-        id: 16
-    },
-    {
-        name: "Enterprise Solutions",
-        id: 17
-    },
+    }
 
 ]
 

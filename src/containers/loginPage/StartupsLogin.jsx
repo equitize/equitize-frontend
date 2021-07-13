@@ -1,55 +1,97 @@
-import React from "react";
+import React, { useState } from "react";
 import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
 import { useForm } from "react-hook-form";
 import PrimaryInput from "../../components/PrimaryInput/PrimaryInput";
 import PrimaryErrorMessage from "../../components/PrimaryErrorMessage/PrimaryErrorMessage";
+import ConfigData from "../../config";
+import TextModal from "../../components/Modal/TextModal";
+import { useHistory } from "react-router-dom";
 
 // For redux
-import {useSelector } from 'react-redux'
-import { getIsLoggedIn } from '../../store/auth'
+import {useSelector, useDispatch } from 'react-redux'
+import { getIsLoggedIn, loggedIn } from '../../store/auth'
 
 function StartupsLogin(){
-
+    const history = useHistory()
 
     // Redux useDispatch hook
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
     const isLoggedIn = useSelector(getIsLoggedIn)
     console.log("isLoggedIn:", isLoggedIn)
     
     const { register, formState: { errors }, clearErrors, handleSubmit } = useForm();
+    const [showError, setShowError] = useState(false)
+    const [resError, setResError] = useState("")
 
     const onSubmit = async (data, e) => {
         console.log(data, e);
         console.log("LOGGING IN!")
         clearErrors()
-        
-        //TODO: Hardcoded URL
-        // const signUp = await fetch('http://localhost:8080/api/db/startup', {
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     method: 'POST',
-        //     body: JSON.stringify(data)
-        // })
-        
-        // const status = await signUp.status
-        // if (status === 200) {
-        //     const res = await signUp.json()
-        //     console.log(res)
 
-        //     dispatch(signedUp())
+        const logInCred = {
+            "username": data.emailAddress,
+            "password": data.companyPassword,
+            "grant_type": "http://auth0.com/oauth/grant-type/password-realm",
+            "client_id": "rnJseEODgHtBwSezZuzc0nsoATkhRTeX",
+            "audience": "BackendAPI",
+            "realm": "Username-Password-Authentication"
+        }
 
-        //     setIsFirstPage(!isFirstPage)
-        // } else {
-        //     const error = await signUp.json()
-        //     console.log("Error", error)
-        // }
+        const logIn = await fetch(ConfigData.AUTH_URL + "/oauth/token", {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            body: JSON.stringify(logInCred)
+        })
         
+        const status = await logIn.status
+        if (status === 200) {
+            const res = await logIn.json()
+
+            getIDAndRedirect(data.emailAddress, res.access_token)
+
+        } else {
+            const error = await logIn.json()
+            console.log("Error", error)
+            setShowError(true)
+            setResError("Error " + error.error + ": " + error.error_description)
+        }
+    }
+
+    const getIDAndRedirect = async (email, accessToken) => {
+        const getID = await fetch(ConfigData.SERVER_URL + "/db/startup/email/" + email)
         
+        const status = await getID.status
+        if (status === 200) {
+            const data = await getID.json()
+            const { id } = data[0]
+            
+            const reduxPayload = { "access_token": accessToken, "id": id }
+            dispatch(loggedIn(reduxPayload))
+
+            const URL = `/startup/setup`
+            history.push(URL)
+
+        } else {
+            const error = await getID.json()
+            console.log("Error", error)
+
+        }
+    }
+
+    function closeModal() {
+        function changeSelectedModalState() {
+            setShowError(false)
+        }
+        return changeSelectedModalState;
     }
 
     return (
         <>
+            <TextModal header="Error" showModal={showError} setShowModal={closeModal()} 
+                                content={resError}
+                                />
             <div className="container mx-auto flex flex-wrap p-5 flex-col items-center my-auto">
                 <div className="text-6xl font-Rubik">
                     <p>Startup Login</p>

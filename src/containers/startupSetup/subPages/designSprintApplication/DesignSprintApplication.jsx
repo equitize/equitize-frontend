@@ -56,6 +56,10 @@ function DesignSprintApplication(){
         history.push('/startup/setup/completed')
     }
 
+    const launchCampaign = async () => {
+        console.log("Launch campaign!")
+    }
+
     return (
         <>
             <div className="bg-white px-6 sm:px-24 py-16 rounded-xl space-y-4 shadow-lg h-full w-full flex flex-wrap flex-col items-center">
@@ -81,6 +85,8 @@ function DesignSprintApplication(){
                         <PrimaryButton text="Submit" properties="self-end" onClick={saveDesignSprint}/>
                         : null
                 }
+
+                <PrimaryButton text="Launch Campaign" onClick={launchCampaign} />
             </div>
 
         </>
