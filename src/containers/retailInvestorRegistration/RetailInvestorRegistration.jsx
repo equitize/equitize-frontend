@@ -61,7 +61,6 @@ function RetailInvestorRegistration(){
         const allPrefs = {industryPreferences, age, gender, ...finalForm}
         console.log(allPrefs)
 
-        //TODO: Hardcoded URL
         const signUp = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/', {
             headers: {
                 'Content-Type': 'application/json',

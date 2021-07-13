@@ -58,9 +58,16 @@ function AddMilestoneModal({ addMilestonesFunc, currentMilestoneLength}){
             method: 'POST',
             body: JSON.stringify(milestone) 
         })
+        
+        const status = await response.status
+        if (status === 200) {
+            const data = await response.json()
+            console.log(data)
 
-        const data = await response.json()
-        console.log(data)
+        } else {
+            const error = await response.json()
+            console.log("Error", error)
+        }
     }
 
     useEffect(()=> {

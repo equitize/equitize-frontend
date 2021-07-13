@@ -32,7 +32,7 @@ function PrimaryUploadButton({ text, properties, moreInfo, labelId, moreInfoFunc
             method: 'PUT',
             body: formData
         })
-
+        
         const status = await response.status
         if (status === 200) {
             const res = await response.json()

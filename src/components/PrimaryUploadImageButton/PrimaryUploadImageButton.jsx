@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import ConfigData from "../../config";
+import TextModal from "../Modal/TextModal";
 
 function PrimaryUploadImageButton({ text, properties, labelId, errorFunc, startupId }){
     let cssProperties = classNames(properties,
         "flex flex-wrap bg-gray-100 placeholder-gray-400 hover:bg-gray-300 w-full self-stretch text-center font-bold py-4 px-4 m-1 rounded-xl text-sm lg:text-xl")
 
     const [image, setImage] = useState(null)
+    const [showError, setShowError] = useState(false)
+    const [resError, setResError] = useState("")
 
     const fileUpload = async (fileToUpload) => {
-        // TODO API CALL
-        console.log(fileToUpload)
         
         const formData = new FormData()
         formData.append('file', fileToUpload)
@@ -21,10 +22,28 @@ function PrimaryUploadImageButton({ text, properties, labelId, errorFunc, startu
             body: formData
         })
 
-        const data = await response.json()
-        console.log(data)
+        const status = await response.status
+        if (status === 200) {
+            const data = await response.json()
+            console.log(data)
+
+        } else {
+            const error = await response.json()
+            console.log("Error", error)
+
+            setImage(null)
+            setShowError(true)
+            setResError("Error " + error.error.status + ": " + error.error.message)
+        }
 
         return true
+    }
+
+    function closeModal() {
+        function changeSelectedModalState() {
+            setShowError(false)
+        }
+        return changeSelectedModalState;
     }
 
     const fileSelectedHandler = (event) => {
@@ -45,6 +64,9 @@ function PrimaryUploadImageButton({ text, properties, labelId, errorFunc, startu
 
     return(
         <>
+            <TextModal header="Error" showModal={showError} setShowModal={closeModal()} 
+                                content={resError}
+                                />
             {
                 image ?
                         <>

@@ -41,8 +41,15 @@ function CampaignGoalModal({ ModalFunc, showModal, editCampaignGoal, campaignGoa
             body: JSON.stringify(tempCampaignGoal)
         })
 
-        const data = await response.json()
-        console.log(data)
+        const status = await response.status
+        if (status === 200) {
+            const res = await response.json()
+            console.log(res)
+
+        } else {
+            const error = await response.json()
+            console.log("Error", error)
+        }
     }
 
     useEffect(()=>{
