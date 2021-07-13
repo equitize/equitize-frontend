@@ -6,6 +6,7 @@ import PrimaryButton from "../../../../components/PrimaryButton/PrimaryButton";
 import { useHistory, useParams } from "react-router-dom";
 import queryString from 'query-string';
 import Loading from '../../../../components/Loading/Loading'
+import ConfigData from "../../../../config";
 
 const InvestmentSuccess = () => {
     let { id } = useParams()
@@ -25,7 +26,7 @@ const InvestmentSuccess = () => {
     const pledgeAmount = async () => {
 
         // //TODO: Hardcoded baseURL
-        const response = await fetch('http://localhost:8080/api/db/retailInvestors/campaign/pledge/' + id, {
+        const response = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/campaign/pledge/' + id, {
             headers: {
                 'Content-Type': 'application/json',
                 // 'Authorization': 'Bearer ~jwttoken~'

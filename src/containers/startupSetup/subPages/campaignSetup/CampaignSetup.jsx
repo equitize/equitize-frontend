@@ -4,6 +4,7 @@ import PrimaryTextArea from "../../../../components/PrimaryTextArea/PrimaryTextA
 import PrimaryButton from "../../../../components/PrimaryButton/PrimaryButton";
 import ZoomSessionModal from "./modals/ZoomSessionModal";
 import MilestoneModal from "./modals/MilestoneModal";
+import ConfigData from "../../../../config";
 
 // React query
 import { useQuery } from 'react-query'
@@ -14,7 +15,7 @@ import { getStartupId } from '../../../../store/auth'
 
 // React query fetch functions
 const fetchStartupById = async (key) => {
-    const res = await fetch('http://localhost:8080/api/db/startup/' + key.queryKey[1])
+    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/' + key.queryKey[1])
     return res.json()
 }
 
@@ -42,16 +43,16 @@ function CampaignSetup(){
     })
 
     // React query fetch requests
-    const { data, refetch } = useQuery(['startupDetails', startupId], fetchStartupById, {
+    const { data } = useQuery(['startupDetails', startupId], fetchStartupById, {
         enabled: false
     })
 
     if (data) {
-        if (data.campaigns[0]) {
-            if (data.campaigns[0].goal) {
-                goal = data.campaigns[0].goal
-                sharesAllocated = data.campaigns[0].sharesAllocated
-                tokensMinted = data.campaigns[0].tokensMinted
+        if (data.campaign) {
+            if (data.campaign.goal) {
+                goal = data.campaign.goal
+                sharesAllocated = data.campaign.sharesAllocated
+                tokensMinted = data.campaign.tokensMinted
 
                 const campaignGoalSubmission = {goal, sharesAllocated, tokensMinted}
                 campaignDetails.campaignGoal = campaignGoalSubmission
@@ -61,19 +62,20 @@ function CampaignSetup(){
     }
 
     const updateZoomDatetimeQuery = async () => {
-        const res = await fetch('http://localhost:8080/api/db/startup/' + startupId)
+        const res = await fetch(ConfigData.SERVER_URL + '/db/startup/' + startupId)
         const result = await res.json()
+        // console.log(result)         //TODO: REPEATS FORVER
 
-        if (result.campaigns[0] != null) {
-            if (result.campaigns[0].zoomDatetime != null) {
-                const zoomDateTimeArray = result.campaigns[0].zoomDatetime.split(",")
+        if (result.campaign != null) {
+            if (result.campaign.zoomDatetime != null) {
+                const zoomDateTimeArray = result.campaign.zoomDatetime.split(",")
                 campaignDetails.zoomDetails.date = zoomDateTimeArray[0]
                 campaignDetails.zoomDetails.startTime = zoomDateTimeArray[1]
                 campaignDetails.zoomDetails.endTime = zoomDateTimeArray[2]
             }
 
-            if (result.campaigns[0].campaignDescription != null) {
-                campaignDetails.campaignDescription = result.campaigns[0].campaignDescription
+            if (result.campaign.campaignDescription != null) {
+                campaignDetails.campaignDescription = result.campaign.campaignDescription
             }
         }
 
@@ -81,13 +83,17 @@ function CampaignSetup(){
 
     if (campaignDetails.zoomDetails.date === "") {
         updateZoomDatetimeQuery()
-        refetch()
+        // refetch()
     }
 
     const updateMilestonesQuery = async () => {
-        const res = await fetch('http://localhost:8080/api/db/startup/' + startupId)
+        const res = await fetch(ConfigData.SERVER_URL + '/db/startup/' + startupId)
         const result = await res.json()
-        campaignDetails.milestones = result.milestones
+        // console.log(result)             //TODO: REPEATS FOREVER
+        setCampaignDetails(prevState => ({
+            ...prevState,
+            milestones: result.milestones
+        })) 
     }
 
     if (campaignDetails.milestones.length === 0) {
@@ -166,7 +172,7 @@ function CampaignSetup(){
 
         // API to update/set campaignDetails description
         //TODO: Hardcoded baseURL
-        const response = await fetch('http://localhost:8080/api/db/startup/campaign/update/' + startupId, {
+        const response = await fetch(ConfigData.SERVER_URL + '/db/startup/campaign/update/' + startupId, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -183,9 +189,9 @@ function CampaignSetup(){
         const data = {
             zoomDatetime: campaignDetails.zoomDetails.date + ',' +  campaignDetails.zoomDetails.startTime + ',' + campaignDetails.zoomDetails.endTime
         }
+        console.log(data)
 
-        // //TODO: Hardcoded baseURL
-        const response = await fetch('http://localhost:8080/api/db/startup/campaign/update/' + startupId, {
+        const response = await fetch(ConfigData.SERVER_URL + '/db/startup/campaign/update/' + startupId, {
             headers: {
                 'Content-Type': 'application/json',
                 // 'Authorization': 'Bearer ~jwttoken~'

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
+import ConfigData from "../../config";
 
 function PrimaryUploadImageButton({ text, properties, labelId, errorFunc, startupId }){
     let cssProperties = classNames(properties,
@@ -14,8 +15,8 @@ function PrimaryUploadImageButton({ text, properties, labelId, errorFunc, startu
         
         const formData = new FormData()
         formData.append('file', fileToUpload)
-        // TODO: Hardcoded baseURL
-        const response = await fetch('http://localhost:8080/api/db/startup/' + labelId + '/' + startupId, {
+
+        const response = await fetch(ConfigData.SERVER_URL + '/db/startup/' + labelId + '/' + startupId, {
             method: 'PUT',
             body: formData
         })

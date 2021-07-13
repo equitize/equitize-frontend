@@ -9,13 +9,14 @@ import Rocketeer from './tempImages/Rocketeer.png'
 import IceBerk from './tempImages/IceBerk.png'
 import PlantPeace from './tempImages/PlantPeace.png'
 import ShareNow from './tempImages/ShareNow.png'
+import ConfigData from "../../config";
 
 // React query
 import { useQuery } from 'react-query'
 
 // React query fetch functions
 const getRecommendedStartups = async (key) => {
-    const res = await fetch('http://localhost:8080/api/db/retailInvestors/recommender/' + key.queryKey[1])
+    const res = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/recommender/' + key.queryKey[1])
     return res.json()
 }
 

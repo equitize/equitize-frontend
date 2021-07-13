@@ -4,6 +4,7 @@ import PrimaryButton from "../../../../../components/PrimaryButton/PrimaryButton
 import PrimaryInput from "../../../../../components/PrimaryInput/PrimaryInput";
 import PrimaryTextArea from "../../../../../components/PrimaryTextArea/PrimaryTextArea";
 import { Range } from 'react-range';
+import ConfigData from "../../../../../config";
 
 // For redux
 import { useSelector } from 'react-redux'
@@ -50,7 +51,7 @@ function AddMilestoneModal({ addMilestonesFunc, currentMilestoneLength}){
 
         console.log(milestone)
         // API to set milestone
-        const response = await fetch('http://localhost:8080/api/db/startup/milestone/addPart', {
+        const response = await fetch(ConfigData.SERVER_URL + '/db/startup/milestone/addPart', {
             headers: {
                 'Content-Type': 'application/json',
             },

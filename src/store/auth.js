@@ -20,14 +20,15 @@ const slice = createSlice({
         },
         loggedOut: (state) => {
             state.isLoggedIn = false
-            state = undefined       // deletes state.data as action.payload.user is empty.
+            state.data = {}       // deletes state.data as action.payload.user is empty.
         },
         authRequestFailed: (state, action) => {
             state.debug = action.payload
         },
 
-        signedUp: (state) => {
+        signedUp: (state, action) => {
             state.isLoggedIn = true
+            state.data = action.payload
         },
 
         videoUploaded: (state, action) => {

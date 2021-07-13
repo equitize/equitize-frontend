@@ -7,6 +7,7 @@ import SharesIcon from "./shares.svg"
 import MoneyIcon from "./money.svg"
 import InfoIcon from "./info.svg"
 import ReactTooltip from 'react-tooltip';
+import ConfigData from '../../../../../config';
 
 // For redux
 import { useSelector } from 'react-redux'
@@ -32,8 +33,7 @@ function CampaignGoalModal({ ModalFunc, showModal, editCampaignGoal, campaignGoa
         ModalFunc()
 
         // API to update/set campaignDetails goals
-        //TODO: Hardcoded baseURL
-        const response = await fetch('http://localhost:8080/api/db/startup/campaign/update/' + startupId, {
+        const response = await fetch(ConfigData.SERVER_URL + '/db/startup/campaign/update/' + startupId, {
             headers: {
                 'Content-Type': 'application/json',
             },

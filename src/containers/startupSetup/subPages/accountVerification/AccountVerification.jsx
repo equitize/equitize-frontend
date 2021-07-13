@@ -7,6 +7,8 @@ import CapTableModal from "./infoModals/CapTableModal";
 import IdProofModal from "./infoModals/IdProofModal";
 import BankInfoModal from "./infoModals/BankInfoModal";
 import AcraDocModal from "./infoModals/AcraDocModal";
+import ConfigData from "../../../../config";
+import TextModal from "../../../../components/Modal/TextModal";
 
 // For redux
 import { useSelector } from 'react-redux'
@@ -24,6 +26,10 @@ function AccountVerification(){
         bankInfo: false,
         idProof: false
     });
+    const [showError, setShowError] = useState(false)
+    const [resError, setResError] = useState("")
+    const [showSuccess, setShowSuccess] = useState(false)
+    const [successMessage, setSuccessMessage] = useState("")
 
     function launchInfoModal(selected) {
         function changeSelectedModalState() {
@@ -38,7 +44,7 @@ function AccountVerification(){
     const saveBusinessDescription = async () => {
         console.log(businessDescription)
 
-        const response = await fetch('http://localhost:8080/api/db/startup/' + startupId, {
+        const response = await fetch(ConfigData.SERVER_URL + '/db/startup/' + startupId, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -46,8 +52,29 @@ function AccountVerification(){
             body: JSON.stringify({ "profileDescription": businessDescription }) 
         })
 
-        const data = await response.json()
-        console.log(data)
+        const status = await response.status
+        if (status === 200) {
+            const res = await response.json()
+            console.log(res)
+
+            setShowSuccess(true)
+            setSuccessMessage("Submitted: " + res.message)
+
+        } else {
+            const error = await response.json()
+            console.log("Error", error)
+
+            setShowError(true)
+            setResError("Error " + error.error.status + ": " + error.error.message)
+        }
+    }
+
+    function closeModal() {
+        function changeSelectedModalState() {
+            setShowError(false)
+            setShowSuccess(false)
+        }
+        return changeSelectedModalState;
     }
 
     return(
@@ -56,6 +83,9 @@ function AccountVerification(){
                 <p className="bg-red-400 text-white px-4 rounded-md">{errorMessage}</p>
                 <div className="h-1/2 flex flex-wrap md:flex-row w-full flex-col justify-between m-0">
                     <div className="flex flex-wrap flex-col justify-items-stretch md:w-1/2 h-full w-full">
+                        <TextModal header="Error" showModal={showError} setShowModal={closeModal()} 
+                                content={resError}
+                                />
                         <PrimaryUploadButton text="Upload CAP Table" moreInfo={true} labelId="capTable"
                                              moreInfoFunc={launchInfoModal} errorFunc={setErrorMessage}
                                              Modal={
@@ -69,7 +99,7 @@ function AccountVerification(){
                                              moreInfoFunc={launchInfoModal} errorFunc={setErrorMessage}
                                              Modal={
                                                  <>
-                                                     <AcraDocModal showModal={showModal.acraDoc} setShowModal={launchInfoModal} id="acraDocuments"/>
+                                                    <AcraDocModal showModal={showModal.acraDoc} setShowModal={launchInfoModal} id="acraDocuments"/>
                                                  </>
                                              }
                                              startupId={startupId}
@@ -99,6 +129,8 @@ function AccountVerification(){
                     </div>
                 </div>
                 <PrimaryTextArea placeholder="Short Description of your Business" properties="w-full h-40" onChangeFunc={setBusinessDescription}/>
+                <TextModal header="Success" showModal={showSuccess} setShowModal={closeModal()} 
+                                content={successMessage}/>
                 <PrimaryButton text="Submit" properties="self-end" onClick={saveBusinessDescription}/>
             </div>
         </>

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import InfoIcon from './info.svg'
+import TextModal from "../Modal/TextModal";
+import ConfigData from "../../config"
 
 function PrimaryUploadButton({ text, properties, moreInfo, labelId, moreInfoFunc, errorFunc, Modal, startupId }){
     let cssProperties;
@@ -18,20 +20,32 @@ function PrimaryUploadButton({ text, properties, moreInfo, labelId, moreInfoFunc
     const [file, setFile] = useState({
         "name": ""
     })
+    const [showError, setShowError] = useState(false)
+    const [resError, setResError] = useState("")
 
     const fileUpload = async (fileToUpload) => {
-        // TODO API CALL
         const formData = new FormData()
         formData.append('file', fileToUpload)
 
-        // TODO: Hardcoded baseURL
-        const response = await fetch('http://localhost:8080/api/db/startup/' + labelId + '/' + startupId, {
+        console.log(ConfigData.SERVER_URL + '/db/startup/' + labelId + '/' + startupId)
+        const response = await fetch(ConfigData.SERVER_URL + '/db/startup/' + labelId + '/' + startupId, {
             method: 'PUT',
             body: formData
         })
 
-        const data = await response.json()
-        console.log(data)
+        const status = await response.status
+        if (status === 200) {
+            const res = await response.json()
+            console.log(res)
+
+        } else {
+            const error = await response.json()
+            console.log("Error", error)
+
+            setFile({ "name": '' })
+            setShowError(true)
+            setResError("Error " + error.error.status + ": " + error.error.message)
+        }
 
         return true
     }
@@ -49,8 +63,18 @@ function PrimaryUploadButton({ text, properties, moreInfo, labelId, moreInfoFunc
         }
     };
 
+    function closeModal() {
+        function changeSelectedModalState() {
+            setShowError(false)
+        }
+        return changeSelectedModalState;
+    }
+
     return(
         <>
+            <TextModal header="Error" showModal={showError} setShowModal={closeModal()} 
+                                content={resError}
+                                />
             {
                 moreInfo ?
                     file.name !== ''?

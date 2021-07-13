@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import InterestedIndustries from './InterestedIndustries'
 import allCategories from './allCategories'
 import IndustrySearchBarDropdown from "./IndustrySearchBarDropdown";
+import ConfigData from "../../config";
 
 // For redux
 import { useDispatch, useSelector } from 'react-redux'
@@ -61,7 +62,7 @@ function RetailInvestorRegistration(){
         console.log(allPrefs)
 
         //TODO: Hardcoded URL
-        const signUp = await fetch('http://localhost:8080/api/db/retailInvestors/', {
+        const signUp = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/', {
             headers: {
                 'Content-Type': 'application/json',
             },

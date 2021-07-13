@@ -4,13 +4,14 @@ import PrimaryButton from "../../../../components/PrimaryButton/PrimaryButton";
 // import MeetupMouse from "../../../retailInvestorHomePage/tempImages/MeetupMouse.svg";
 import { formattedSum } from "../../../../helpers";
 import { Range } from "react-range";
+import ConfigData from "../../../../config";
 
 // React query
 import { useQuery } from 'react-query'
 
 // React query fetch functions
 const getStartupDetails = async (key) => {
-    const res = await fetch('http://localhost:8080/api/db/startup/' + key.queryKey[1])
+    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/' + key.queryKey[1])
     return res.json()
 }
 
@@ -47,23 +48,6 @@ function StartupCampaignInvestment(){
         history.push(
             `/startup/${id}/invest/transactionSuccess?deposit=${investmentAmount[0]}`
         )
-
-        // //TODO: Hardcoded baseURL
-        // const response = await fetch('http://localhost:8080/api/db/retailInvestors/campaign/pledge/' + id, {
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         // 'Authorization': 'Bearer ~jwttoken~'
-        //     },
-        //     method: 'PUT',
-        //     body: JSON.stringify({
-        //         "pledgeAmount": investmentAmount[0]
-        //     }) 
-        // })
-        // const res = await response.json()
-        // console.log(res)
-        // if (res.message === "Campaign was updated successfully.") {
-        //     history.push(`/startup/${id}/invest/transactionSuccess`)
-        // }
     }
 
     return (

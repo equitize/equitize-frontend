@@ -13,27 +13,24 @@ import CampaignDetails from "./subPages/campaignDetails/CampaignDetails";
 import CampaignMilestones from "./subPages/campaignMilestones/CampaignMilestones";
 import CampaignFAQs from "./subPages/campaignFAQs/CampaignFAQs";
 import CampaignResearch from "./subPages/campaignResearch/CampaignResearch";
-//TODO Need to store when retrieving from API
-// import tempVideo from "./tempVideo.mp4"
-//TODO Need to store when retrieving from API
-// import tempPDF from "./temp.pdf"
+import ConfigData from "../../../config";
 
 // React query
 import { useQuery } from 'react-query'
 
 // React query fetch functions
 const getStartupDetails = async (key) => {
-    const res = await fetch('http://localhost:8080/api/db/startup/' + key.queryKey[1])
+    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/' + key.queryKey[1])
     return res.json()
 }
 
 const getStartupVideo = async (key) => {
-    const res = await fetch('http://localhost:8080/api/db/startup/getSignedURLPlus/video/' + key.queryKey[1])
+    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/getSignedURLPlus/video/' + key.queryKey[1])
     return res.json()
 }
 
 const getStartupPitchDeck = async (key) => {
-    const res = await fetch('http://localhost:8080/api/db/startup/getSignedURLPlus/pitchDeck/' + key.queryKey[1])
+    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/getSignedURLPlus/pitchDeck/' + key.queryKey[1])
     return res.json()
 }
 

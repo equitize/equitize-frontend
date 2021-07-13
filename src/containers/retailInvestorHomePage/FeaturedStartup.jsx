@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import ProgressBar from "../../components/ProgressBar/ProgressBar";
 import { getTailwindWidthFraction } from "../../helpers";
 import { useHistory } from "react-router-dom";
+import ConfigData from "../../config";
 
 // Default image
 import MeetupMouse from './tempImages/MeetupMouse.svg'
@@ -13,7 +14,7 @@ import { useEffect } from "react";
 
 // React query fetch functions
 const getStartupPhoto = async (key) => {
-    const res = await fetch('http://localhost:8080/api/db/startup/getSignedURL/profilePhoto/' + key.queryKey[1])
+    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/getSignedURL/profilePhoto/' + key.queryKey[1])
     return res.json()
 }
 

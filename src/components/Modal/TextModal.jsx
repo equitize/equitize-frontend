@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import PrimaryButton from "../PrimaryButton/PrimaryButton";
 
 function TextModal({showModal, setShowModal, modalImg, header, content}){
     function closeModal(){
@@ -32,15 +33,18 @@ function TextModal({showModal, setShowModal, modalImg, header, content}){
                                     </button>
                                 </div>
                                 {/*body*/}
-                                <div className="p-6 flex flex-wrap align-middle justify-center ">
+                                <div className="pb-4 px-6 flex flex-wrap align-middle justify-center ">
                                     {
                                         modalImg ?
                                             <img src={modalImg} className="w-2/3" alt={header}/>
                                             : <></>
                                     }
-                                    <p className="my-4 text-blueGray-500 lg:text-lg leading-relaxed">
+                                    <p className="mt-4 text-blueGray-500 lg:text-lg leading-relaxed">
                                         {content}
                                     </p>
+                                </div>
+                                <div className="pb-4 flex flex-wrap align-middle justify-center ">
+                                    <PrimaryButton onClick={closeModal} text="Confirm"/>
                                 </div>
                             </div>
                         </div>
