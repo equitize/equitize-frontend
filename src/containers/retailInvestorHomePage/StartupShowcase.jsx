@@ -14,6 +14,10 @@ import ConfigData from "../../config";
 // React query
 import { useQuery } from 'react-query'
 
+// For redux
+import { useSelector } from 'react-redux'
+import { getID } from '../../store/auth'
+
 // React query fetch functions
 const getRecommendedStartups = async (key) => {
     const res = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/recommender/' + key.queryKey[1])
@@ -22,8 +26,12 @@ const getRecommendedStartups = async (key) => {
 
 function StartupShowcase({ searchTerms }){
 
+    // Redux useSelector
+    const retailInvestorID = useSelector(getID)
+    console.log(retailInvestorID)
+
     // React query fetch requests
-    const { data, status } = useQuery(['recommendedStartups', 1], getRecommendedStartups)   //TODO: Hardcoded 1 for retail investor I
+    const { data, status } = useQuery(['recommendedStartups', retailInvestorID], getRecommendedStartups)   //TODO: Hardcoded 1 for retail investor I
 
     // console.log("First startup", firstStartup)
 

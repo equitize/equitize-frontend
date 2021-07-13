@@ -8,11 +8,11 @@ import ConfigData from "../../../../../config";
 
 // For redux
 import { useSelector } from 'react-redux'
-import { getStartupId } from '../../../../../store/auth'
+import { getID } from '../../../../../store/auth'
 
 function AddMilestoneModal({ addMilestonesFunc, currentMilestoneLength}){
 
-    const startupId = useSelector(getStartupId)
+    const startupId = useSelector(getID)
 
     const [showModal, setShowModal] = useState(false);
     const [milestone, setMilestone] = useState({

@@ -35,7 +35,7 @@ function IndustrySearchBarDropdown({ options, addInterestedIndustriesFunc }) {
                 <input onClick={() => setIsComponentVisible(true)} onChange={handleFilter} type="search" className="bg-gray-100 placeholder-gray-400 px-2 py-2 xl:text-xl font-Inter text-xs sm:text-base" placeholder="Search..." />
             </div>
             {isComponentVisible && (
-                <div ref={ref} className="absolute bg-gray-100 w-1/6 h-auto max-h-48 overflow-hidden overflow-y-auto">
+                <div ref={ref} className="absolute bg-gray-100 sm:w-1/4 lg:w-1/5 h-auto max-h-48 overflow-hidden overflow-y-auto">
                     {
                         filteredData.map((option) => {
                             return (
@@ -43,7 +43,7 @@ function IndustrySearchBarDropdown({ options, addInterestedIndustriesFunc }) {
                                     <p>{option.name}</p>
                                     <AiOutlinePlusSquare
                                         onClick={() => addIndustry(option)}
-                                        className='fill-current text-black cursor-pointer text-base mx-1'
+                                        className='fill-current text-black cursor-pointer text-base mx-1 h-4 w-4'
                                         />
                                 </div>
                             )

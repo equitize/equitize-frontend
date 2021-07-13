@@ -32,7 +32,7 @@ function FeaturedStartup({ info }){
     }, [])
 
     const getProgressBarWidth = () => {
-        percentageRaised = info.campaigns[0].currentlyRaised / info.campaigns[0].goal * 100
+        percentageRaised = info.campaign.currentlyRaised / info.campaign.goal * 100
         progressBarWidth = getTailwindWidthFraction(percentageRaised)
     }
 
@@ -57,12 +57,12 @@ function FeaturedStartup({ info }){
                     <ProgressBar width={progressBarWidth} />
                     <div className="flex flex-row">
                         <div className="flex flex-col w-1/2">
-                            <p className="font-Inter text-sm md:text-md"><span className="text-green-500">S${info.campaigns[0].currentlyRaised}</span> funded</p>
+                            <p className="font-Inter text-sm md:text-md"><span className="text-green-500">S${info.campaign.currentlyRaised}</span> funded</p>
                             <p className="font-Inter text-sm md:text-md"><span className="text-secondary">{percentageRaised}%</span> Raised</p>
                         </div>
                         <div className="flex flex-col w-1/2">
-                            <p className="font-Inter text-sm md:text-md"><span className="text-active-purple">{info.campaigns[0].sharesAllocated}%</span> Equity Stake</p>
-                            <p className="font-Inter text-sm md:text-md"><span className="text-active-purple">{info.campaigns[0].endDate}</span> Hours left</p>
+                            <p className="font-Inter text-sm md:text-md"><span className="text-active-purple">{info.campaign.sharesAllocated}%</span> Equity Stake</p>
+                            <p className="font-Inter text-sm md:text-md"><span className="text-active-purple">{info.campaign.endDate}</span> Hours left</p>
                         </div>
                     </div>
                 </div>

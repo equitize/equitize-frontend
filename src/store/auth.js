@@ -74,7 +74,7 @@ export const getIsLoggedIn = createSelector(
     auth => auth.isLoggedIn
 )
 
-export const getStartupId = createSelector(
+export const getID = createSelector(
     state => state.auth,
     auth => {
         if (auth.isLoggedIn) return auth.data.id

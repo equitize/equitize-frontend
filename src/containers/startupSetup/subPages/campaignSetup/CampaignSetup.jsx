@@ -11,7 +11,7 @@ import { useQuery } from 'react-query'
 
 // For redux
 import { useSelector } from 'react-redux'
-import { getStartupId } from '../../../../store/auth'
+import { getID } from '../../../../store/auth'
 
 // React query fetch functions
 const fetchStartupById = async (key) => {
@@ -25,7 +25,7 @@ function CampaignSetup(){
     let tokensMinted = 1000000
 
     // Redux useSelector
-    const startupId = useSelector(getStartupId)
+    const startupId = useSelector(getID)
 
     const [campaignDetails, setCampaignDetails] = useState({
         campaignDescription: "",

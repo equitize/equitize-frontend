@@ -15,7 +15,7 @@ import ConfigData from "../../config";
 
 // For redux
 import { useDispatch, useSelector } from 'react-redux'
-import { signedUp, getIsLoggedIn } from '../../store/auth'
+import { signedUp, getIsLoggedIn, getID } from '../../store/auth'
 
 function RetailInvestorRegistration(){
     const [page, setPage] = useState("first")
@@ -27,11 +27,12 @@ function RetailInvestorRegistration(){
     })
     const [age, setAge] = useState(21)
     const [ interestedIndustries, setInterestedIndustries ] = useState([])
-    const [ finalForm, setFinalForm ] = useState({})
 
     // Redux useDispatch hook
     const dispatch = useDispatch()
     const isLoggedIn = useSelector(getIsLoggedIn)
+    const retailInvestorID = useSelector(getID)
+
     console.log("isLoggedIn:", isLoggedIn)
     
     const { register, formState: { errors }, clearErrors, handleSubmit } = useForm();
@@ -40,46 +41,80 @@ function RetailInvestorRegistration(){
     const registerPreferences = preferencesForm.register
     const handleSubmitPreferences = preferencesForm.handleSubmit
 
-    const onSubmitUserDetails = (data, e) => {
+    const onSubmitUserDetails = async (data, e) => {
         console.log(data, e);
         clearErrors()
-
-        function addToRegistrationForm(form) {
-            setFinalForm(form)
-            setPage("second")
-        }
-
-        return addToRegistrationForm(data)
-        
-    }
-
-    const onSubmitUserPreferences = async (data) => {
-        const { age, gender } = data
-        console.log(finalForm)
-        const industryPreferences = interestedIndustries
-
-        const allPrefs = {industryPreferences, age, gender, ...finalForm}
-        console.log(allPrefs)
 
         const signUp = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/', {
             headers: {
                 'Content-Type': 'application/json',
             },
             method: 'POST',
-            body: JSON.stringify(allPrefs)
+            body: JSON.stringify(data)
         })
         
         const status = signUp.status
         if (status === 200) {
             const res = await signUp.json()
             console.log(res)
+            const reduxPayload = { "access_token": res.auth0.access_token, "id": res.retailInv.id }
 
-            dispatch(signedUp())
+            dispatch(signedUp(reduxPayload))
 
-            setPage("third")
+            setPage("second")
         } else {
             const error = await signUp.json()
             console.log("Error", error)
+        }
+        
+    }
+
+    const onSubmitUserPreferences = async (data) => {
+        const industryPreferences = interestedIndustries
+
+        // Update retail investor fields (age and gender)
+        const updateRI = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/' + retailInvestorID, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'PUT',
+            body: JSON.stringify(data)
+        })
+        
+        const updateRIStatus = updateRI.status
+        if (updateRIStatus === 200) {
+            const res = await updateRI.json()
+            console.log(res)
+
+        } else {
+            const error = await updateRI.json()
+            console.log("Error updating user fields: ", error)
+        }
+
+        
+        // Update RI interested industries
+        const updateIndustryData = {
+            "industryArr": industryPreferences,
+            "id": retailInvestorID,
+            "accountType": "retailInvestor"
+        }
+        
+        const updateIndustry = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/industries/addIndustries/', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            body: JSON.stringify(updateIndustryData)
+        })
+        
+        const updateIndustryStatus = updateIndustry.status
+        if (updateIndustryStatus === 200) {
+            const res = await updateIndustry.json()
+            console.log(res)
+            setPage("third")
+        } else {
+            const error = await updateIndustry.json()
+            console.log("Error updating user fields: ", error)
         }
 
     }
@@ -148,7 +183,7 @@ function RetailInvestorRegistration(){
                                           properties="text-center" />
                             <PrimaryInput placeholder="Email Address" register={register("emailAddress", {required:true})}
                                           properties="text-center" />
-                            <PrimaryInput placeholder="Password" register={register("userPassword", {required :true})}
+                            <PrimaryInput placeholder="Password" register={register("password", {required :true})}
                                           properties="text-center" />
 
                             {Object.keys(errors).length > 0 && <PrimaryErrorMessage text="All Fields are required" />}

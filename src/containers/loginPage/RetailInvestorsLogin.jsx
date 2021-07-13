@@ -64,7 +64,7 @@ function RetailInvestorsLogin(){
                     <form className="flex flex-col items-center justify-start" onSubmit={handleSubmit(onSubmit)}>
                         <PrimaryInput placeholder="Email Address" register={register("emailAddress", {required:true})}
                                         properties="text-center" />
-                        <PrimaryInput placeholder="Password" register={register("userPassword", {required :true})}
+                        <PrimaryInput placeholder="Password" register={register("password", {required :true})}
                                         properties="text-center" />
 
                         {Object.keys(errors).length > 0 && <PrimaryErrorMessage text="All Fields are required" />}
