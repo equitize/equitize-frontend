@@ -24,7 +24,7 @@ const InvestmentSuccess = () => {
 
     const pledgeAmount = async () => {
 
-        // //TODO: Hardcoded baseURL
+        //TODO: Hardcoded baseURL
         const response = await fetch('http://localhost:8080/api/db/retailInvestors/campaign/pledge/' + id, {
             headers: {
                 'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ const InvestmentSuccess = () => {
 
         const res = await response.json()
 
-        if (res.message === "Milestone SC and Fungible Token SC succesfully deployed.") {
+        if (res.message === "Milestone SC and Fungible Token SC successfully deployed.") {
             setPledgeResult(res)
             setLoading(true)
             setTimeout(() => {
@@ -75,7 +75,7 @@ const InvestmentSuccess = () => {
             <br />
             {!done ? (
                 <>
-                <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">Congratutions! Campaign has reached its goal.</p>
+                <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">Congratulations! Campaign has reached its goal.</p>
                 <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">Deploying smart contracts...</p>
                 <Loading loading={loading}/>
                 <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">Do not navigate away from this page.</p>

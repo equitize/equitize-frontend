@@ -38,6 +38,47 @@ function StartupShowcase({ searchTerms }){
     //     imageLink: MeetupMouse
     // }
 
+    const featuredStartupPlaceholder = {
+        "id": 1,
+        "companyName": "wingkit",
+        "emailAddress": "wingkit@gmail.xyz",
+        "companyPassword": "Password123!",
+        "profileDescription": "describe",
+        "profilePhoto": "",
+        "capTable": "",
+        "acraDocuments": "",
+        "pitchDeckCloudID": "",
+        "pitchDeckOriginalName": "",
+        "videoCloudID": "",
+        "videoOriginalName": "",
+        "commericalChampion": "",
+        "designSprintDatetime": "",
+        "bankInfo": "",
+        "idProof": "",
+        "zilAddr": "",
+        "createdAt": "2021-06-30T10:39:48.000Z",
+        "updatedAt": "2021-06-30T10:39:48.000Z",
+        "milestones": [],
+        "industries": [],
+        "campaigns": [{
+            "id": 1,
+            "goal": 500000,
+            "currentlyRaised": 5224,
+            "zoomDatetime": "2021-06-22,21:45,20:45",
+            "startDate": null,
+            "endDate": null,
+            "sharesAllocated": 10,
+            "campaignDescription": "fdgfg",
+            "tokensMinted": 100000,
+            "campaignAddr": null,
+            "fungibleTokenAddr": null,
+            "liveStatus": false,
+            "createdAt": "2021-06-30T10:44:50.000Z",
+            "updatedAt": "2021-06-30T10:47:41.000Z",
+            "startupId": 1
+        }]
+    }
+
     const recommendedStartups = [
         {
             name: "Gover",
@@ -113,21 +154,38 @@ function StartupShowcase({ searchTerms }){
                 <div>Error fetching data</div>
             )}
 
-            {data != undefined && (  
-                <>
-                {
-                    searchTerms !== "" ?
-                        <div>
-                            <p>{searchTerms}</p>
-                        </div>
-                        :
-                        <div className="w-full flex flex-col space-y-4">
-                            <FeaturedStartup info={data[0]}/>
-                            <RecommendedStartups startups={recommendedStartups}/>
-                        </div>
-                }
-                </>
-            )}
+            {
+                data.id === undefined ? (
+                    <>
+                        {
+                            searchTerms !== "" ?
+                                <div>
+                                    <p>{searchTerms}</p>
+                                </div>
+                                :
+                                <div className="w-full flex flex-col space-y-4">
+                                    <FeaturedStartup info={featuredStartupPlaceholder}/>
+                                    <RecommendedStartups startups={recommendedStartups}/>
+                                </div>
+                        }
+                    </>
+                    )
+                    : (
+                        <>
+                            {
+                                searchTerms !== "" ?
+                                    <div>
+                                        <p>{searchTerms}</p>
+                                    </div>
+                                    :
+                                    <div className="w-full flex flex-col space-y-4">
+                                        <FeaturedStartup info={data[0]}/>
+                                        <RecommendedStartups startups={recommendedStartups}/>
+                                    </div>
+                            }
+                            </>
+                    )
+            }
         </>
     )
 }

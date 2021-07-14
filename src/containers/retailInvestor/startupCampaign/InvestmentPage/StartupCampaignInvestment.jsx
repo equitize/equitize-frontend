@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import PrimaryButton from "../../../../components/PrimaryButton/PrimaryButton";
-// import MeetupMouse from "../../../retailInvestorHomePage/tempImages/MeetupMouse.svg";
 import { formattedSum } from "../../../../helpers";
 import { Range } from "react-range";
-
+import ZilpayModal from "./ZilpayModal";
 // React query
 import { useQuery } from 'react-query'
 
@@ -39,14 +38,14 @@ function StartupCampaignInvestment(){
     }
 
     // TODO Loading Page? Unique URL? Actual ZILPAY integration?
-    const submitInvestment = async () => {
-        console.log(investmentAmount[0])
-
+    const getInvestmentData = () => {
+        const investmentData = {...data, "pledgeAmount": investmentAmount[0]}
         // const investmentData = { "pledgeAmount": investmentAmount[0] }
 
-        history.push(
-            `/startup/${id}/invest/transactionSuccess?deposit=${investmentAmount[0]}`
-        )
+        return investmentData
+        //history.push(
+        //    `/startup/${id}/invest/transactionSuccess?deposit=${investmentAmount[0]}`
+        //)
 
         // //TODO: Hardcoded baseURL
         // const response = await fetch('http://localhost:8080/api/db/retailInvestors/campaign/pledge/' + id, {
@@ -149,17 +148,12 @@ function StartupCampaignInvestment(){
                 </p>
                 <br />
                 <br />
-                <PrimaryButton text="Submit" properties="self-end" onClick={submitInvestment} />
+                <ZilpayModal getInvestmentData={getInvestmentData()} />
                 <br />
             </div>
             )}
-        
         </>
     )
-
 }
-
-
-
 
 export default StartupCampaignInvestment;
