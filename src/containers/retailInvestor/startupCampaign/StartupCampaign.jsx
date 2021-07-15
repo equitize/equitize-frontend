@@ -131,7 +131,7 @@ function StartupCampaign(){
                     }
                     {
                         isActiveTab.second ?
-                            <CampaignMilestones campaign={ data.campaigns[0] } campaignMilestones={data.milestones}/>
+                            <CampaignMilestones campaign={ data.campaign } campaignMilestones={data.milestones}/>
                             : null
                     }
                     {
@@ -146,11 +146,11 @@ function StartupCampaign(){
                     }
                 </div>
                 <div className="w-1/3 flex flex-col">
-                    <InvestmentDetails info={ status === "success" ? { campaignDetails: data.campaigns[0], startupId: data.id } : null } />
+                    <InvestmentDetails info={ status === "success" ? { campaignDetails: data.campaign, startupId: data.id } : null } />
                     <br />
                     <ScoreCard ratings={ratings}/>
                     <br />
-                    <ZoomCampaignDetails zoomSessions={ status === "success" ? data.campaigns[0].zoomDatetime : null } />
+                    <ZoomCampaignDetails zoomSessions={ status === "success" ? data.campaign.zoomDatetime : null } />
                 </div>
             </div>
         </div>

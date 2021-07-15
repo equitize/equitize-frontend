@@ -5,6 +5,7 @@ import PrimaryButton from "../../../../components/PrimaryButton/PrimaryButton";
 import { formattedSum } from "../../../../helpers";
 import { Range } from "react-range";
 import ConfigData from "../../../../config";
+import moment from "moment";
 
 // React query
 import { useQuery } from 'react-query'
@@ -22,6 +23,25 @@ function StartupCampaignInvestment(){
 
     const { data, status } = useQuery(['viewStartupDetails', id], getStartupDetails)
     console.log(status, data)
+
+    var days = 0
+    var hours = 0
+    var minutes = 0
+    if (status === 'success') {
+        // Find number of days/hours/mins left
+        const now = moment()
+        const exp = moment(data.campaign.endDate)
+        days = exp.diff(now, 'days');
+        hours = exp.subtract(days, 'days').diff(now, 'hours');
+        minutes = exp.subtract(hours, 'hours').diff(now, 'minutes');
+    }
+
+    function isLastHour() {
+        if (days <= 0 && hours <= 0) {
+            return true
+        }
+        else return false
+    }
 
     // TODO CALL API FOR DATA
     // const startupObject = {
@@ -76,16 +96,26 @@ function StartupCampaignInvestment(){
                 <br />
                 <div className="flex flex-row w-full">
                     <div className="flex flex-col w-1/3">
-                        <p className="font-Inter text-green-500 font-bold text-xs md:text-xl lg:text-2xl self-center">S${formattedSum(data.campaigns[0].currentlyRaised)}</p>
-                        <p className="font-Inter text-xs md:text-base lg:text-sm lg:text-base text-gray-500 text-center">of ${formattedSum(data.campaigns[0].goal)} raised</p>
+                        <p className="font-Inter text-green-500 font-bold text-xs md:text-xl lg:text-2xl self-center">S${formattedSum(data.campaign.currentlyRaised)}</p>
+                        <p className="font-Inter text-xs md:text-base lg:text-sm lg:text-base text-gray-500 text-center">of ${formattedSum(data.campaign.goal)} raised</p>
                     </div>
                     <div className="flex flex-col w-1/3">
-                        <p className="font-Inter text-sm md:text-xl lg:text-2xl text-center">{data.campaigns[0].sharesAllocated}%</p>
+                        <p className="font-Inter text-sm md:text-xl lg:text-2xl text-center">{data.campaign.sharesAllocated}%</p>
                         <p className="font-Inter text-xs md:text-base lg:text-sm lg:text-base text-gray-500 text-center">Equity Stake to Investors</p>
                     </div>
                     <div className="flex flex-col w-1/3">
-                        <p className="font-Inter text-sm md:text-xl lg:text-2xl text-center">{data.campaigns[0].endDate ? data.campaigns[0].endDate : 9 }</p>
-                        <p className="font-Inter text-xs md:text-base lg:text-sm lg:text-base text-gray-500 text-center">Hours Left</p>
+                        <p className="font-Inter text-sm md:text-xl lg:text-2xl text-center">
+                                { isLastHour() ? 
+                                    <>
+                                        {minutes} minutes left
+                                    </>
+                                : 
+                                <>
+                                    {days} days & {hours} hours left
+                                </>
+                                }
+                        </p>
+                        {/* <p className="font-Inter text-xs md:text-base lg:text-sm lg:text-base text-gray-500 text-center">Hours Left</p> */}
                     </div>
                 </div>
                 <br />
@@ -122,7 +152,7 @@ function StartupCampaignInvestment(){
                     </div>
                     <div className="flex flex-col space-y-3">
                         <p className="font-Inter font-bold text-sm md:text-base lg:text-lg text-center">Equity Received</p>
-                        <p className="text-secondary font-Rubik text-base text-lg md:text-2xl lg:text-3xl text-center">{Math.round(investmentAmount[0]/data.campaigns[0].goal * 100 * 100) / 100}%</p>
+                        <p className="text-secondary font-Rubik text-base text-lg md:text-2xl lg:text-3xl text-center">{Math.round(investmentAmount[0]/data.campaign.goal * 100 * 100) / 100}%</p>
                     </div>
                 </div>
                 <br />

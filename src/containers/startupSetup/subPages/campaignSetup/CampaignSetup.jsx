@@ -46,7 +46,8 @@ function CampaignSetup(){
 
     useEffect(() => {
         if (data !== undefined){
-            if (data?.campaign?.goal !== undefined) {
+            console.log(data)
+            if (data?.campaign?.goal != undefined) {
                 setCampaignGoal({
                     goal: data.campaign.goal,
                     sharesAllocated: data.campaign.sharesAllocated,
@@ -54,7 +55,7 @@ function CampaignSetup(){
                 })
             }
 
-            if (data?.campaign?.zoomDatetime !== undefined){
+            if (data?.campaign?.zoomDatetime != undefined){
                 const zoomDateTimeArray = data.campaign.zoomDatetime.split(",")
                 setZoomDetails({
                     date: zoomDateTimeArray[0],
@@ -70,7 +71,7 @@ function CampaignSetup(){
                 }))
             }
 
-            if (data?.campaign?.campaignDescription !== null) {
+            if (data?.campaign?.campaignDescription != null) {
                 setCampaignDescription(data.campaign.campaignDescription)
             }
         }
@@ -142,7 +143,6 @@ function CampaignSetup(){
         // TODO More detailed logic such as no selection and error handling
 
         // API to update/set campaignDetails description
-        //TODO: Hardcoded baseURL
         const response = await fetch(ConfigData.SERVER_URL + '/db/startup/campaign/update/' + startupId, {
             headers: {
                 'Content-Type': 'application/json',

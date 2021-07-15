@@ -4,6 +4,7 @@ import ProgressBar from "../../components/ProgressBar/ProgressBar";
 import { getTailwindWidthFraction } from "../../helpers";
 import { useHistory } from "react-router-dom";
 import ConfigData from "../../config";
+import moment from "moment";
 
 // Default image
 import MeetupMouse from './tempImages/MeetupMouse.svg'
@@ -20,12 +21,23 @@ const getStartupPhoto = async (key) => {
 
 function FeaturedStartup({ info }){
     const history = useHistory()
-    console.log(info)
-    // const percentageRaised = info.fundedAmount/info.campaignGoal * 100
-    // const percentageRaised = info.campaigns[0].currentlyRaised / info.campaigns[0].goal * 100
-    // const progressBarWidth = getTailwindWidthFraction(percentageRaised)
-    let percentageRaised = 20
-    let progressBarWidth = 0
+
+    var percentageRaised = info.campaign.currentlyRaised / info.campaign.goal * 100
+    var progressBarWidth = getTailwindWidthFraction(percentageRaised)
+
+    // Find number of days/hours/mins left
+    const now = moment()
+    const exp = moment(info.campaign.endDate)
+    const days = exp.diff(now, 'days');
+    const hours = exp.subtract(days, 'days').diff(now, 'hours');
+    const minutes = exp.subtract(hours, 'hours').diff(now, 'minutes');
+
+    function isLastHour() {
+        if (days <= 0 && hours <= 0) {
+            return true
+        }
+        else return false
+    }
 
     useEffect(() => {
         getProgressBarWidth()
@@ -38,7 +50,7 @@ function FeaturedStartup({ info }){
 
 
     const featuredPhoto = useQuery(['featuredStartupPhoto', info.id], getStartupPhoto)
-    console.log(featuredPhoto.data)
+    // console.log(featuredPhoto.data)
 
     function viewStartup(){
         const URL = `/startup/${info.id}`
@@ -62,7 +74,17 @@ function FeaturedStartup({ info }){
                         </div>
                         <div className="flex flex-col w-1/2">
                             <p className="font-Inter text-sm md:text-md"><span className="text-active-purple">{info.campaign.sharesAllocated}%</span> Equity Stake</p>
-                            <p className="font-Inter text-sm md:text-md"><span className="text-active-purple">{info.campaign.endDate}</span> Hours left</p>
+                            <p className="font-Inter text-sm md:text-md"><span className="text-active-purple"></span>
+                                { isLastHour() ? 
+                                    <>
+                                        {minutes} minutes left
+                                    </>
+                                : 
+                                <>
+                                    {days} days & {hours} hours left
+                                </>
+                                }
+                            </p>
                         </div>
                     </div>
                 </div>
