@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DropZone from "../../../../components/DropZone/DropZone";
 import PrimaryTextArea from "../../../../components/PrimaryTextArea/PrimaryTextArea";
 import PrimaryButton from "../../../../components/PrimaryButton/PrimaryButton";
@@ -7,7 +7,7 @@ import MilestoneModal from "./modals/MilestoneModal";
 import ConfigData from "../../../../config";
 
 // React query
-import { useQuery } from 'react-query'
+import { useQuery, useQueryClient } from 'react-query'
 
 // For redux
 import { useSelector } from 'react-redux'
@@ -16,16 +16,13 @@ import { getID } from '../../../../store/auth'
 // React query fetch functions
 const fetchStartupById = async (key) => {
     const res = await fetch(ConfigData.SERVER_URL + '/db/startup/' + key.queryKey[1])
-    return res.json()
+    return await res.json()
 }
 
 function CampaignSetup(){
-    let goal = 500000
-    let sharesAllocated = 10
-    let tokensMinted = 1000000
-
     // Redux useSelector
     const startupId = useSelector(getID)
+    const queryClient = useQueryClient()
 
     const [campaignDetails, setCampaignDetails] = useState({
         campaignDescription: "",
@@ -35,70 +32,49 @@ function CampaignSetup(){
             endTime: ""
         },
         campaignGoal: {
-            goal: goal,
-            sharesAllocated: sharesAllocated,
-            tokensMinted: tokensMinted
+            goal: 500000,
+            sharesAllocated: 10,
+            tokensMinted: 1000000
         },
         milestones:[]
     })
 
     // React query fetch requests
     const { data } = useQuery(['startupDetails', startupId], fetchStartupById, {
-        enabled: false
+        enabled: true
     })
 
-    if (data) {
-        if (data.campaign) {
-            if (data.campaign.goal) {
-                goal = data.campaign.goal
-                sharesAllocated = data.campaign.sharesAllocated
-                tokensMinted = data.campaign.tokensMinted
+    useEffect(() => {
+        if (data !== undefined){
+            if (data?.campaign?.goal !== undefined) {
+                setCampaignGoal({
+                    goal: data.campaign.goal,
+                    sharesAllocated: data.campaign.sharesAllocated,
+                    tokensMinted: data.campaign.tokensMinted
+                })
+            }
 
-                const campaignGoalSubmission = {goal, sharesAllocated, tokensMinted}
-                campaignDetails.campaignGoal = campaignGoalSubmission
+            if (data?.campaign?.zoomDatetime !== undefined){
+                const zoomDateTimeArray = data.campaign.zoomDatetime.split(",")
+                setZoomDetails({
+                    date: zoomDateTimeArray[0],
+                    startTime: zoomDateTimeArray[1],
+                    endTime: zoomDateTimeArray[2]
+                })
+            }
+
+            if(data?.milestones){
+                setCampaignDetails(prevState => ({
+                    ...prevState,
+                    milestones: data.milestones
+                }))
+            }
+
+            if (data?.campaign?.campaignDescription !== null) {
+                setCampaignDescription(data.campaign.campaignDescription)
             }
         }
-        
-    }
-
-    const updateZoomDatetimeQuery = async () => {
-        const res = await fetch(ConfigData.SERVER_URL + '/db/startup/' + startupId)
-        const result = await res.json()
-        // console.log(result)         //TODO: REPEATS FORVER
-
-        if (result.campaign != null) {
-            if (result.campaign.zoomDatetime != null) {
-                const zoomDateTimeArray = result.campaign.zoomDatetime.split(",")
-                campaignDetails.zoomDetails.date = zoomDateTimeArray[0]
-                campaignDetails.zoomDetails.startTime = zoomDateTimeArray[1]
-                campaignDetails.zoomDetails.endTime = zoomDateTimeArray[2]
-            }
-
-            if (result.campaign.campaignDescription != null) {
-                campaignDetails.campaignDescription = result.campaign.campaignDescription
-            }
-        }
-
-    }
-
-    if (campaignDetails.zoomDetails.date === "") {
-        updateZoomDatetimeQuery()
-        // refetch()
-    }
-
-    const updateMilestonesQuery = async () => {
-        const res = await fetch(ConfigData.SERVER_URL + '/db/startup/' + startupId)
-        const result = await res.json()
-        // console.log(result)             //TODO: REPEATS FOREVER
-        setCampaignDetails(prevState => ({
-            ...prevState,
-            milestones: result.milestones
-        })) 
-    }
-
-    if (campaignDetails.milestones.length === 0) {
-        updateMilestonesQuery()
-    }
+    }, [data])
 
     function setCampaignDescription(value){
         setCampaignDetails(prevState => ({
@@ -107,13 +83,10 @@ function CampaignSetup(){
         }))
     }
 
-    function setZoomDetails(key, value){
+    function setZoomDetails(zoomDetailsObj){
         setCampaignDetails(prevState => ({
             ...prevState,
-            zoomDetails: {
-                ...prevState.zoomDetails,
-                [key]: value
-            }
+            zoomDetails: zoomDetailsObj
         }))
     }
 
@@ -162,8 +135,6 @@ function CampaignSetup(){
             ...prevState,
             campaignGoal: campaignGoalObj
         }))
-
-        console.log(campaignDetails.campaignGoal)
     }
 
     const saveCampaignDescription = async () => {
@@ -182,12 +153,13 @@ function CampaignSetup(){
 
         const data = await response.json()
         console.log(data)
+
+        await queryClient.invalidateQueries('startupDetails')
     }
 
-    const submitZoomDetails = async () => {
-        
+    const submitZoomDetails = async (newZoomDetails) => {
         const data = {
-            zoomDatetime: campaignDetails.zoomDetails.date + ',' +  campaignDetails.zoomDetails.startTime + ',' + campaignDetails.zoomDetails.endTime
+            zoomDatetime: newZoomDetails.date + ',' +  newZoomDetails.startTime + ',' + newZoomDetails.endTime
         }
         console.log(data)
 
@@ -202,6 +174,8 @@ function CampaignSetup(){
 
         const res = await response.json()
         console.log(res)
+
+        await queryClient.invalidateQueries('startupDetails')
     }
 
     return (
@@ -219,11 +193,11 @@ function CampaignSetup(){
                     <MilestoneModal addMilestonesFunc={addMilestonesDetails} details={campaignDetails}
                                     editMilestoneFunc={editMilestoneFunc} deleteMilestoneFunc={deleteMilestoneFunc}
                                     setCampaignGoal={setCampaignGoal} />
-                    <ZoomSessionModal onChangeFunc={setZoomDetails} details={campaignDetails.zoomDetails} onSubmitFunc={submitZoomDetails} startupId={startupId} />
+                    <ZoomSessionModal details={campaignDetails.zoomDetails} onSubmitFunc={submitZoomDetails} startupId={startupId} />
                     <br />
                     <br />
                     <br />
-                    <PrimaryButton text="Submit" properties="self-end" onClick={saveCampaignDescription}/>
+                    <PrimaryButton text="Submit" properties="self-end" onClick={() => saveCampaignDescription()}/>
                 </div>
             {/* )} */}
             

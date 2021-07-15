@@ -21,61 +21,66 @@ import StartupCampaignInvestment
 import InvestmentSuccess from "./containers/retailInvestor/startupCampaign/InvestmentPage/InvestmentSuccess";
 import RetailInvestorsLogin from "./containers/loginPage/RetailInvestorsLogin"
 import StartupsLogin from "./containers/loginPage/StartupsLogin"
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient()
 
 function App() {
 
   return (
-      <Router>
-          <Header/>
+      <QueryClientProvider client={queryClient}>
+          <Router>
+              <Header/>
 
-          <Switch>
-              <Route exact path="/">
-                  <PublicPage />
-              </Route>
-              <Route exact path="/register">
-                <RegisterPage />
-              </Route>
-              <Route exact path="/register/startup">
-                  <StartupRegistration />
-              </Route>
-              <Route exact path="/register/investor">
-                  <RetailInvestorRegistration />
-              </Route>
-              <Route exact path="/startup/setup">
-                  <StartupSetup />
-              </Route>
-              <Route exact path="/startup/setup/completed">
-                  <SetupCompleted />
-              </Route>
-              <Route exact path='/startup/:id'>
-                <StartupCampaign />
-              </Route>
-              <Route exact path='/startup/:id/invest'>
-                  <StartupCampaignInvestment />
-              </Route>
-              <Route exact path='/startup/:id/invest/transactionSuccess'>
-                  <InvestmentSuccess />
-              </Route>
-              <Route exact path="/login">
-                  <LoginPage />
-              </Route>
-              <Route exact path="/RILogin">
-                  <RetailInvestorsLogin />
-              </Route>
-              <Route exact path="/StartupsLogin">
-                  <StartupsLogin />
-              </Route>
+              <Switch>
+                  <Route exact path="/">
+                      <PublicPage />
+                  </Route>
+                  <Route exact path="/register">
+                    <RegisterPage />
+                  </Route>
+                  <Route exact path="/register/startup">
+                      <StartupRegistration />
+                  </Route>
+                  <Route exact path="/register/investor">
+                      <RetailInvestorRegistration />
+                  </Route>
+                  <Route exact path="/startup/setup">
+                      <StartupSetup />
+                  </Route>
+                  <Route exact path="/startup/setup/completed">
+                      <SetupCompleted />
+                  </Route>
+                  <Route exact path='/startup/:id'>
+                    <StartupCampaign />
+                  </Route>
+                  <Route exact path='/startup/:id/invest'>
+                      <StartupCampaignInvestment />
+                  </Route>
+                  <Route exact path='/startup/:id/invest/transactionSuccess'>
+                      <InvestmentSuccess />
+                  </Route>
+                  <Route exact path="/login">
+                      <LoginPage />
+                  </Route>
+                  <Route exact path="/RILogin">
+                      <RetailInvestorsLogin />
+                  </Route>
+                  <Route exact path="/StartupsLogin">
+                      <StartupsLogin />
+                  </Route>
 
-              <Route exact path="/home">
-                  <RetailInvestorHomePage />
-              </Route>
-              <Route path="*">
-                  <InvalidPage />
-              </Route>
-          </Switch>
+                  <Route exact path="/home">
+                      <RetailInvestorHomePage />
+                  </Route>
+                  <Route path="*">
+                      <InvalidPage />
+                  </Route>
+              </Switch>
 
-          <Footer />
-      </Router>
+              <Footer />
+          </Router>
+      </QueryClientProvider>
   );
 }
 
