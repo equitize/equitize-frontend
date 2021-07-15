@@ -32,7 +32,7 @@ function StartupShowcase({ searchTerms }){
     console.log(retailInvestorID)
 
     // React query fetch requests
-    const { data, status } = useQuery(['recommendedStartups', retailInvestorID], getRecommendedStartups)   //TODO: Hardcoded 1 for retail investor I
+    const { data, status } = useQuery(['recommendedStartups', retailInvestorID], getRecommendedStartups)
     // console.log(status, data)
     // console.log(recommended)
     // console.log("First startup", firstStartup)
@@ -124,7 +124,7 @@ function StartupShowcase({ searchTerms }){
                 <div>Error fetching data</div>
             )}
 
-            {data != undefined && (  
+            {status === 'success' && (  
                 <>
                 {
                     searchTerms !== "" ?
@@ -134,7 +134,11 @@ function StartupShowcase({ searchTerms }){
                         :
                         <div className="w-full flex flex-col space-y-4">
                             <FeaturedStartup info={data[0]}/>
-                            <RecommendedStartups startups={ data.filter((v, i) => i !== 0) }/>
+                            {
+                                data.length > 1 ? <RecommendedStartups startups={ data.filter((v, i) => i !== 0) }/>
+                                : null
+                            }
+                            
                         </div>
                 }
                 </>

@@ -5,17 +5,17 @@ import PrimaryInput from "../../components/PrimaryInput/PrimaryInput";
 import PrimaryErrorMessage from "../../components/PrimaryErrorMessage/PrimaryErrorMessage";
 import ConfigData from "../../config";
 import TextModal from "../../components/Modal/TextModal";
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 // For redux
-import {useSelector } from 'react-redux'
-import { getIsLoggedIn } from '../../store/auth'
+import {useSelector, useDispatch } from 'react-redux'
+import { getIsLoggedIn, loggedIn } from '../../store/auth'
 
 function RetailInvestorsLogin(){
-    // const history = useHistory()
+    const history = useHistory()
 
     // Redux useDispatch hook
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
     const isLoggedIn = useSelector(getIsLoggedIn)
     console.log("isLoggedIn:", isLoggedIn)
     
@@ -29,15 +29,11 @@ function RetailInvestorsLogin(){
         clearErrors()
         
         const logInCred = {
-            "username": data.emailAddress,
+            "emailAddress": data.emailAddress,
             "password": data.password,
-            "grant_type": "http://auth0.com/oauth/grant-type/password-realm",
-            "client_id": "rnJseEODgHtBwSezZuzc0nsoATkhRTeX",
-            "audience": "BackendAPI",
-            "realm": "Username-Password-Authentication"
         }
 
-        const logIn = await fetch(ConfigData.AUTH_URL + "/oauth/token", {
+        const logIn = await fetch(ConfigData.SERVER_URL + "/db/retailInvestors/login", {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -48,7 +44,14 @@ function RetailInvestorsLogin(){
         const status = await logIn.status
         if (status === 200) {
             const res = await logIn.json()
-            console.log(res)
+            const ID = res.retailInvID.id
+            const accessToken = res.auth0.access_token
+
+            const reduxPayload = { "access_token": accessToken, "id": ID }
+            dispatch(loggedIn(reduxPayload))
+
+            const URL = `/home`
+            history.push(URL)
 
         } else {
             const error = await logIn.json()

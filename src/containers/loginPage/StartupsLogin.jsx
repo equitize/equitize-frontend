@@ -29,15 +29,11 @@ function StartupsLogin(){
         clearErrors()
 
         const logInCred = {
-            "username": data.emailAddress,
+            "emailAddress": data.emailAddress,
             "password": data.companyPassword,
-            "grant_type": "http://auth0.com/oauth/grant-type/password-realm",
-            "client_id": "rnJseEODgHtBwSezZuzc0nsoATkhRTeX",
-            "audience": "BackendAPI",
-            "realm": "Username-Password-Authentication"
         }
 
-        const logIn = await fetch(ConfigData.AUTH_URL + "/oauth/token", {
+        const logIn = await fetch(ConfigData.SERVER_URL + "/db/startup/login", {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -48,35 +44,20 @@ function StartupsLogin(){
         const status = await logIn.status
         if (status === 200) {
             const res = await logIn.json()
+            const ID = res.startupID.id
+            const accessToken = res.auth0.access_token
 
-            getIDAndRedirect(data.emailAddress, res.access_token)
-
-        } else {
-            const error = await logIn.json()
-            console.log("Error", error)
-            setShowError(true)
-            setResError("Error " + error.error + ": " + error.error_description)
-        }
-    }
-
-    const getIDAndRedirect = async (email, accessToken) => {
-        const getID = await fetch(ConfigData.SERVER_URL + "/db/startup/email/" + email)
-        
-        const status = await getID.status
-        if (status === 200) {
-            const data = await getID.json()
-            const { id } = data[0]
-            
-            const reduxPayload = { "access_token": accessToken, "id": id }
+            const reduxPayload = { "access_token": accessToken, "id": ID }
             dispatch(loggedIn(reduxPayload))
 
             const URL = `/startup/setup`
             history.push(URL)
 
         } else {
-            const error = await getID.json()
+            const error = await logIn.json()
             console.log("Error", error)
-
+            setShowError(true)
+            setResError("Error " + error.error + ": " + error.error_description)
         }
     }
 
