@@ -14,7 +14,9 @@
     "@testing-library/user-event": "^7.1.2",
     "add": "^2.0.6",
     "axios": "^0.21.1",
+    "chromedriver": "^91.0.1",
     "classnames": "^2.3.1",
+    "geckodriver": "^2.0.1",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",
@@ -58,10 +60,10 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss7-compat": "^2.1.2",
-    "autoprefixer": "^9.8.6",
+    "autoprefixer": "^10.3.1",
     "eslint": "^7.26.0",
     "eslint-plugin-react": "^7.23.2",
-    "postcss": "^7.0.36",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.4"
+    "postcss": "^8.3.5",
+    "tailwindcss": "^2.2.4"
   }
 }
