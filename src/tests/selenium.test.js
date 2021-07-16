@@ -23,4 +23,4 @@ it('Testing to see if Selenium works', async () => {
 
     //It is always a safe practice to quit the browser after execution
     await driver.quit();
-})
+}, 15000)
