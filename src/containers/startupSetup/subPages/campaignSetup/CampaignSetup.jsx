@@ -243,7 +243,7 @@ function CampaignSetup(){
                     <br />
                     <br />
                     <br />
-                    <PrimaryButton text="Submit" properties="self-end" onClick={() => saveCampaignDescription()}/>
+                    <PrimaryButton text="Submit" properties="self-end" className="test-submit" onClick={() => saveCampaignDescription()}/>
                 </div>
                 <br/>
                 <br/>

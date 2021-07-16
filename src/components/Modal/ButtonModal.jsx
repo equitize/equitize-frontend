@@ -51,7 +51,7 @@ function ButtonModal({ text, onClick, modalImg }) {
                                         Cras euismod tempor arcu. Nulla at lacus vel arcu euismod tristique ac sed odio. Etiam sed justo et quam vehicula vehicula non sed arcu. Nullam condimentum erat diam, sit amet pellentesque nulla elementum non. Nam et arcu a diam finibus pulvinar. Aliquam id consectetur nisl, vitae luctus odio. Maecenas malesuada turpis sit amet porttitor pulvinar.
                                     </p>
                                 </div>
-                                <div className="pb-4 flex flex-wrap align-middle justify-center ">
+                                <div className="pb-4 flex flex-wrap align-middle justify-center test-confirm">
                                     <PrimaryButton onClick={() => setShowModal(false)} text="Confirm"/>
                                 </div>
                             </div>
