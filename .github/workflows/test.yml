@@ -49,7 +49,7 @@ jobs:
     - run: yarn test sample
     - run: yarn test selenium
       if: always()
-    - run: yarn start
+    - run: yarn start &
       if: always()
     - run: yarn test frontpage
       if: always()
