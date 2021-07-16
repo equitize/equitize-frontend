@@ -48,8 +48,11 @@ jobs:
     - run: yarn install
     - run: yarn test sample
     - run: yarn test selenium
+      if: always()
     - run: yarn serve
+      if: always()
     - run: yarn test frontpage
+      if: always()
     # - run: yarn test campaign
     #   if: always()
     # - run: yarn test junctionTable

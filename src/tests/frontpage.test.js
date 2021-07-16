@@ -5,7 +5,7 @@ require("chromedriver");
 
 it('Testing to see if frontpage works', async () => {
 
-    var searchString = "Automation testing with Selenium";
+    // var searchString = "Automation testing with Selenium";
 
     //To wait for browser to build and launch properly
     let driver = await new Builder().forBrowser("chrome").build();
@@ -23,4 +23,4 @@ it('Testing to see if frontpage works', async () => {
 
     //It is always a safe practice to quit the browser after execution
     await driver.quit();
-})
+}, 20000)
