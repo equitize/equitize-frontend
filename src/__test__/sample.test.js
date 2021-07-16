@@ -1,3 +1,5 @@
+const webdriver = require('selenium-webdriver')
+
 // The only purpose of this test is to check if Github Actions can run Jest
 
 // import supertest from "supertest"
