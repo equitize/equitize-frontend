@@ -5,7 +5,7 @@ import classNames from "classnames";
 function PrimaryButton({ text, onClick, disabled, properties }){
     let cssProperties = classNames(properties, "bg-secondary text-white font-bold py-2 px-5 rounded-full")
     if (disabled){
-        cssProperties = classNames(cssProperties, "bg-opacity-40 hover:bg-gray-300")
+        cssProperties = classNames(cssProperties, "bg-opacity-40")
     }
     else{
         cssProperties = classNames(cssProperties, "hover:bg-blue-700")

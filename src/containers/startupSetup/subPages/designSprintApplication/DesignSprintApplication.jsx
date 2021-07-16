@@ -5,7 +5,6 @@ import PrimaryButton from "../../../../components/PrimaryButton/PrimaryButton";
 import { getKeyByValue } from "../../../../helpers";
 import { useHistory } from "react-router-dom";
 
-
 function DesignSprintApplication(){
     const [selected, setSelected] = useState(null)
     const [sprintPeriod, setSprintPeriod] = useState(null)
@@ -58,7 +57,7 @@ function DesignSprintApplication(){
 
     return (
         <>
-            <div className="bg-white px-6 sm:px-24 py-16 rounded-xl space-y-4 shadow-lg h-full w-full flex flex-wrap flex-col items-center">
+            <div className="bg-white px-6 sm:px-24 py-16 rounded-xl space-y-4 shadow-lg h-full w-full flex flex-wrap flex-col items-center divide-y divide-gray-500">
                 <div className="flex flex-wrap flex-row items-center w-full">
                     <img src={SprintImage} alt="Image of Man Sprinting" className="w-1/6 xl:w-1/4" />
                     <div className="flex flex-col xl:w-3/4 w-5/6 items-center align-top space-y-4 md:space-y-12">

@@ -7,13 +7,14 @@ import SharesIcon from "./shares.svg"
 import MoneyIcon from "./money.svg"
 import InfoIcon from "./info.svg"
 import ReactTooltip from 'react-tooltip';
+import ConfigData from '../../../../../config';
 
 // For redux
 import { useSelector } from 'react-redux'
-import { getStartupId } from '../../../../../store/auth'
+import { getID } from '../../../../../store/auth'
 
 function CampaignGoalModal({ ModalFunc, showModal, editCampaignGoal, campaignGoal }){
-    const startupId = useSelector(getStartupId)
+    const startupId = useSelector(getID)
 
     const [tempCampaignGoal, setTempCampaignGoal] = useState(campaignGoal)
 
@@ -32,8 +33,7 @@ function CampaignGoalModal({ ModalFunc, showModal, editCampaignGoal, campaignGoa
         ModalFunc()
 
         // API to update/set campaignDetails goals
-        //TODO: Hardcoded baseURL
-        const response = await fetch('http://localhost:8080/api/db/startup/campaign/update/' + startupId, {
+        const response = await fetch(ConfigData.SERVER_URL + '/db/startup/campaign/update/' + startupId, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -41,8 +41,15 @@ function CampaignGoalModal({ ModalFunc, showModal, editCampaignGoal, campaignGoa
             body: JSON.stringify(tempCampaignGoal)
         })
 
-        const data = await response.json()
-        console.log(data)
+        const status = await response.status
+        if (status === 200) {
+            const res = await response.json()
+            console.log(res)
+
+        } else {
+            const error = await response.json()
+            console.log("Error", error)
+        }
     }
 
     useEffect(()=>{

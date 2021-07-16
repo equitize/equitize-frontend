@@ -10,6 +10,7 @@ import PublicPage from "./containers/publicPage/PublicPage";
 import Footer from "./components/Footer/Footer";
 import RegisterPage from "./containers/registerPage/RegisterPage";
 import StartupRegistration from "./containers/startupRegistration/StartupRegistration";
+import RetailInvestorRegistration from "./containers/retailInvestorRegistration/RetailInvestorRegistration"
 import StartupSetup from "./containers/startupSetup/StartupSetup";
 import SetupCompleted from "./containers/startupSetup/SetupCompleted";
 import LoginPage from "./containers/loginPage/LoginPage";
@@ -18,10 +19,13 @@ import StartupCampaign from "./containers/retailInvestor/startupCampaign/Startup
 import StartupCampaignInvestment
     from "./containers/retailInvestor/startupCampaign/InvestmentPage/StartupCampaignInvestment";
 import InvestmentSuccess from "./containers/retailInvestor/startupCampaign/InvestmentPage/InvestmentSuccess";
+import RetailInvestorsLogin from "./containers/loginPage/RetailInvestorsLogin"
+import StartupsLogin from "./containers/loginPage/StartupsLogin"
 
 function App() {
 
   return (
+      <div className="bg-gradient-to-r from-indigo-50 to-indigo-100">
       <Router>
           <Header/>
 
@@ -30,10 +34,13 @@ function App() {
                   <PublicPage />
               </Route>
               <Route exact path="/register">
-                <RegisterPage />
+                  <RegisterPage />
               </Route>
               <Route exact path="/register/startup">
                   <StartupRegistration />
+              </Route>
+              <Route exact path="/register/investor">
+                  <RetailInvestorRegistration />
               </Route>
               <Route exact path="/startup/setup">
                   <StartupSetup />
@@ -42,7 +49,7 @@ function App() {
                   <SetupCompleted />
               </Route>
               <Route exact path='/startup/:id'>
-                <StartupCampaign />
+                  <StartupCampaign />
               </Route>
               <Route exact path='/startup/:id/invest'>
                   <StartupCampaignInvestment />
@@ -53,6 +60,13 @@ function App() {
               <Route exact path="/login">
                   <LoginPage />
               </Route>
+              <Route exact path="/RILogin">
+                  <RetailInvestorsLogin />
+              </Route>
+              <Route exact path="/StartupsLogin">
+                  <StartupsLogin />
+              </Route>
+
               <Route exact path="/home">
                   <RetailInvestorHomePage />
               </Route>
@@ -63,6 +77,7 @@ function App() {
 
           <Footer />
       </Router>
+      </div>
   );
 }
 

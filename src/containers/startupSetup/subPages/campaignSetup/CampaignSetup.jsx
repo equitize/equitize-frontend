@@ -1,30 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DropZone from "../../../../components/DropZone/DropZone";
 import PrimaryTextArea from "../../../../components/PrimaryTextArea/PrimaryTextArea";
 import PrimaryButton from "../../../../components/PrimaryButton/PrimaryButton";
 import ZoomSessionModal from "./modals/ZoomSessionModal";
 import MilestoneModal from "./modals/MilestoneModal";
+import ConfigData from "../../../../config";
+import PrimaryInput from "../../../../components/PrimaryInput/PrimaryInput";
+import moment from "moment";
+import jwt_decode from "jwt-decode"
 
 // React query
-import { useQuery } from 'react-query'
+import { useQuery, useQueryClient } from 'react-query'
 
 // For redux
 import { useSelector } from 'react-redux'
-import { getStartupId } from '../../../../store/auth'
+import { getID, getToken } from '../../../../store/auth'
 
 // React query fetch functions
 const fetchStartupById = async (key) => {
-    const res = await fetch('http://localhost:8080/api/db/startup/' + key.queryKey[1])
-    return res.json()
+    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/' + key.queryKey[1])
+    return await res.json()
 }
 
 function CampaignSetup(){
-    let goal = 500000
-    let sharesAllocated = 10
-    let tokensMinted = 1000000
-
     // Redux useSelector
-    const startupId = useSelector(getStartupId)
+    const startupId = useSelector(getID)
+    const accessToken = useSelector(getToken)
+    var decoded = jwt_decode(accessToken)
+    //TODO: Check for jwt InvalidTokenError if so dispatch SignOut
+    // console.log(decoded)
+
+    const queryClient = useQueryClient()
 
     const [campaignDetails, setCampaignDetails] = useState({
         campaignDescription: "",
@@ -34,65 +40,57 @@ function CampaignSetup(){
             endTime: ""
         },
         campaignGoal: {
-            goal: goal,
-            sharesAllocated: sharesAllocated,
-            tokensMinted: tokensMinted
+            goal: 500000,
+            sharesAllocated: 10,
+            tokensMinted: 1000000
         },
         milestones:[]
     })
 
-    // React query fetch requests
-    const { data, refetch } = useQuery(['startupDetails', startupId], fetchStartupById, {
-        enabled: false
+    const [campaignLaunchDate, setCampaignLaunchDate] = useState({
+        date: "",
+        time: ""
     })
 
-    if (data) {
-        if (data.campaigns[0]) {
-            if (data.campaigns[0].goal) {
-                goal = data.campaigns[0].goal
-                sharesAllocated = data.campaigns[0].sharesAllocated
-                tokensMinted = data.campaigns[0].tokensMinted
+    // React query fetch requests
+    const { data } = useQuery(['startupDetails', startupId], fetchStartupById, {
+        enabled: true
+    })
 
-                const campaignGoalSubmission = {goal, sharesAllocated, tokensMinted}
-                campaignDetails.campaignGoal = campaignGoalSubmission
-            }
-        }
+    useEffect(() => {
         
-    }
-
-    const updateZoomDatetimeQuery = async () => {
-        const res = await fetch('http://localhost:8080/api/db/startup/' + startupId)
-        const result = await res.json()
-
-        if (result.campaigns[0] != null) {
-            if (result.campaigns[0].zoomDatetime != null) {
-                const zoomDateTimeArray = result.campaigns[0].zoomDatetime.split(",")
-                campaignDetails.zoomDetails.date = zoomDateTimeArray[0]
-                campaignDetails.zoomDetails.startTime = zoomDateTimeArray[1]
-                campaignDetails.zoomDetails.endTime = zoomDateTimeArray[2]
+        if (data !== undefined){
+            console.log(data)
+            // console.log(typeof data.campaign.campaignDescription)
+            if (data?.campaign?.goal !== undefined && data?.campaign?.goal !== null) {
+                setCampaignGoal({
+                    goal: data.campaign.goal,
+                    sharesAllocated: data.campaign.sharesAllocated,
+                    tokensMinted: data.campaign.tokensMinted
+                })
             }
 
-            if (result.campaigns[0].campaignDescription != null) {
-                campaignDetails.campaignDescription = result.campaigns[0].campaignDescription
+            if (data?.campaign?.zoomDatetime !== null && data?.campaign?.zoomDatetime !== null){
+                const zoomDateTimeArray = data.campaign.zoomDatetime.split(",")
+                setZoomDetails({
+                    date: zoomDateTimeArray[0],
+                    startTime: zoomDateTimeArray[1],
+                    endTime: zoomDateTimeArray[2]
+                })
+            }
+
+            if(data?.milestones){
+                setCampaignDetails(prevState => ({
+                    ...prevState,
+                    milestones: data.milestones
+                }))
+            }
+
+            if (data?.campaign?.campaignDescription !== undefined) {
+                setCampaignDescription(data.campaign.campaignDescription)
             }
         }
-
-    }
-
-    if (campaignDetails.zoomDetails.date === "") {
-        updateZoomDatetimeQuery()
-        refetch()
-    }
-
-    const updateMilestonesQuery = async () => {
-        const res = await fetch('http://localhost:8080/api/db/startup/' + startupId)
-        const result = await res.json()
-        campaignDetails.milestones = result.milestones
-    }
-
-    if (campaignDetails.milestones.length === 0) {
-        updateMilestonesQuery()
-    }
+    }, [data])
 
     function setCampaignDescription(value){
         setCampaignDetails(prevState => ({
@@ -101,13 +99,10 @@ function CampaignSetup(){
         }))
     }
 
-    function setZoomDetails(key, value){
+    function setZoomDetails(zoomDetailsObj){
         setCampaignDetails(prevState => ({
             ...prevState,
-            zoomDetails: {
-                ...prevState.zoomDetails,
-                [key]: value
-            }
+            zoomDetails: zoomDetailsObj
         }))
     }
 
@@ -156,8 +151,6 @@ function CampaignSetup(){
             ...prevState,
             campaignGoal: campaignGoalObj
         }))
-
-        console.log(campaignDetails.campaignGoal)
     }
 
     const saveCampaignDescription = async () => {
@@ -165,8 +158,7 @@ function CampaignSetup(){
         // TODO More detailed logic such as no selection and error handling
 
         // API to update/set campaignDetails description
-        //TODO: Hardcoded baseURL
-        const response = await fetch('http://localhost:8080/api/db/startup/campaign/update/' + startupId, {
+        const response = await fetch(ConfigData.SERVER_URL + '/db/startup/campaign/update/' + startupId, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -176,16 +168,17 @@ function CampaignSetup(){
 
         const data = await response.json()
         console.log(data)
+
+        await queryClient.invalidateQueries('startupDetails')
     }
 
-    const submitZoomDetails = async () => {
-        
+    const submitZoomDetails = async (newZoomDetails) => {
         const data = {
-            zoomDatetime: campaignDetails.zoomDetails.date + ',' +  campaignDetails.zoomDetails.startTime + ',' + campaignDetails.zoomDetails.endTime
+            zoomDatetime: newZoomDetails.date + ',' +  newZoomDetails.startTime + ',' + newZoomDetails.endTime
         }
+        console.log(data)
 
-        // //TODO: Hardcoded baseURL
-        const response = await fetch('http://localhost:8080/api/db/startup/campaign/update/' + startupId, {
+        const response = await fetch(ConfigData.SERVER_URL + '/db/startup/campaign/update/' + startupId, {
             headers: {
                 'Content-Type': 'application/json',
                 // 'Authorization': 'Bearer ~jwttoken~'
@@ -196,6 +189,51 @@ function CampaignSetup(){
 
         const res = await response.json()
         console.log(res)
+
+        await queryClient.invalidateQueries('startupDetails')
+    }
+
+    const launchCampaign = async () => {
+
+        const campaignStartDate = moment(campaignLaunchDate.date + "T" + campaignLaunchDate.time).format()
+        const campaignEndDate = moment(campaignStartDate).add(1, 'M').format()
+
+        const response = await fetch(ConfigData.SERVER_URL + '/db/startup/campaign/update/' + startupId, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'PUT',
+            body: JSON.stringify({
+                "startDate": campaignStartDate,
+                "endDate": campaignEndDate
+            }) 
+        })
+
+        const status = await response.status
+        if (status === 200) {
+            const res = await response.json()
+            console.log(res)
+
+        } else {
+            const error = await response.json()
+            console.log("Error", error)
+        }
+    }
+
+    function setLaunchDate(key, value) {
+        setCampaignLaunchDate(prevState => ({
+            ...prevState,
+            [key]: value
+        }))
+    }
+
+    function isStartupVerified(msg) {
+        const isStartupVerified = msg.permissions[0]
+        if (isStartupVerified === "startup:unverified") {
+            // console.log("NOT VERIFIED!")
+            return false
+        }
+        return true
     }
 
     return (
@@ -213,11 +251,35 @@ function CampaignSetup(){
                     <MilestoneModal addMilestonesFunc={addMilestonesDetails} details={campaignDetails}
                                     editMilestoneFunc={editMilestoneFunc} deleteMilestoneFunc={deleteMilestoneFunc}
                                     setCampaignGoal={setCampaignGoal} />
-                    <ZoomSessionModal onChangeFunc={setZoomDetails} details={campaignDetails.zoomDetails} onSubmitFunc={submitZoomDetails} startupId={startupId} />
+                    <ZoomSessionModal details={campaignDetails.zoomDetails} onSubmitFunc={submitZoomDetails} startupId={startupId} />
                     <br />
                     <br />
                     <br />
-                    <PrimaryButton text="Submit" properties="self-end" onClick={saveCampaignDescription}/>
+                    <PrimaryButton text="Submit" properties="self-end" onClick={() => saveCampaignDescription()}/>
+                </div>
+                <br/>
+                <br/>
+                <div className="flex flex-wrap flex-col w-full">
+                    <div className="flex flex-row justify-center items-center">
+                        <p className="bg-secondary text-white font-bold px-2 py-2 rounded-xl text-center w-1/2 sm:w-1/3 text-sm sm:text-base">Campaign launch date</p>
+                        <PrimaryInput placeholder="dd/mm/yy" properties="text-center w-1/2 sm:w-1/3 text-xs md:text-md" onChange={(e) => setLaunchDate("date", e.target.value)} type="date" />
+                    </div>
+                    <div className="flex flex-row justify-center items-center">
+                        <p className="bg-secondary text-white font-bold px-2 py-2 rounded-xl text-center w-1/2 sm:w-1/3 text-sm sm:text-base">Campaign launch time</p>
+                        <div className="w-1/2 items-stretch sm:w-1/3 flex flex-col sm:flex-row justify-between sm:items-center m-4">
+                            <input className="rounded-xl w-1/2 bg-gray-100 placeholder-gray-400 font-Inter text-center py-2 text-xs sm:text-base"
+                                    placeholder="0000" onChange={(e) => setLaunchDate("time", e.target.value)}
+                                    type="time" />
+                        </div>
+                    </div>
+                    <div className="flex flex-wrap self-center bg-gray-100 font-bold py-4 px-10 m-2 w-1/2 justify-center rounded-xl text-sm">
+                        {
+                            isStartupVerified(decoded) ? <p className="text-center place-self-center font-Inter">Note: Campaign end date will be 1 month from start date</p>
+                            : <p className="text-center place-self-center font-Inter">Note: Unable to set a launch date as your startup is not KYC verified yet.</p>
+                        }
+                        
+                    </div>
+                    <PrimaryButton properties="self-end" text="Update" onClick={launchCampaign } disabled={ !isStartupVerified(decoded) }/>
                 </div>
             {/* )} */}
             

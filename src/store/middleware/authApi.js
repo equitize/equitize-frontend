@@ -14,14 +14,6 @@ const authApi = ({ dispatch }) => next => async action => {
     try {
 
         const response = await axios.request({
-            // withCredentials: true,
-            // credentials: 'include',
-            // headers: {
-            //     Accept: "application/json",
-            //     "Content-Type": "application/json",
-            //     "Access-Control-Allow-Credentials": true,
-            //     'Access-Control-Allow-Origin': true
-            //     },
             baseURL: 'https://dev-cus1s5do.au.auth0.com/oauth', // Store in configuration file for real life application
             url,
             method,

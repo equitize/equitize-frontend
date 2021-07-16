@@ -20,7 +20,7 @@ function RetailInvestorHomePage(){
     // TODO API Integration for different Tabs / Filtering on Front End
 
     return(
-        <div className="container mx-auto flex flex-wrap p-5 flex-col items-center my-auto">
+        <div className="container mx-auto flex flex-wrap p-5 flex-col items-center my-auto xl:px-40 lg:px-24 md:px-12 sm:px-8">
             <SearchBar onChangeFunc={setSearchTerms} />
             <RetailInvestorHomePageTabs setIsActiveTab={setIsActiveTab} isActiveTab={isActiveTab} />
             <StartupShowcase searchTerms={searchTerms} category={isActiveTab} />
