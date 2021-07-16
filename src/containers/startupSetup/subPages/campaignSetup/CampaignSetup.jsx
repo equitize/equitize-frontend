@@ -5,13 +5,16 @@ import PrimaryButton from "../../../../components/PrimaryButton/PrimaryButton";
 import ZoomSessionModal from "./modals/ZoomSessionModal";
 import MilestoneModal from "./modals/MilestoneModal";
 import ConfigData from "../../../../config";
+import PrimaryInput from "../../../../components/PrimaryInput/PrimaryInput";
+import moment from "moment";
+import jwt_decode from "jwt-decode"
 
 // React query
 import { useQuery, useQueryClient } from 'react-query'
 
 // For redux
 import { useSelector } from 'react-redux'
-import { getID } from '../../../../store/auth'
+import { getID, getToken } from '../../../../store/auth'
 
 // React query fetch functions
 const fetchStartupById = async (key) => {
@@ -22,6 +25,10 @@ const fetchStartupById = async (key) => {
 function CampaignSetup(){
     // Redux useSelector
     const startupId = useSelector(getID)
+    const accessToken = useSelector(getToken)
+    var decoded = jwt_decode(accessToken)
+    console.log(decoded)
+
     const queryClient = useQueryClient()
 
     const [campaignDetails, setCampaignDetails] = useState({
@@ -37,6 +44,11 @@ function CampaignSetup(){
             tokensMinted: 1000000
         },
         milestones:[]
+    })
+
+    const [campaignLaunchDate, setCampaignLaunchDate] = useState({
+        date: "",
+        time: ""
     })
 
     // React query fetch requests
@@ -178,6 +190,40 @@ function CampaignSetup(){
         await queryClient.invalidateQueries('startupDetails')
     }
 
+    const launchCampaign = async () => {
+
+        const campaignStartDate = moment(campaignLaunchDate.date + "T" + campaignLaunchDate.time).format()
+        const campaignEndDate = moment(campaignStartDate).add(1, 'M').format()
+
+        const response = await fetch(ConfigData.SERVER_URL + '/db/startup/campaign/update/' + startupId, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'PUT',
+            body: JSON.stringify({
+                "startDate": campaignStartDate,
+                "endDate": campaignEndDate
+            }) 
+        })
+
+        const status = await response.status
+        if (status === 200) {
+            const res = await response.json()
+            console.log(res)
+
+        } else {
+            const error = await response.json()
+            console.log("Error", error)
+        }
+    }
+
+    function setLaunchDate(key, value) {
+        setCampaignLaunchDate(prevState => ({
+            ...prevState,
+            [key]: value
+        }))
+    }
+
     return (
         <>
             {/* { status === 'loading' && (
@@ -198,6 +244,26 @@ function CampaignSetup(){
                     <br />
                     <br />
                     <PrimaryButton text="Submit" properties="self-end" onClick={() => saveCampaignDescription()}/>
+                </div>
+                <br/>
+                <br/>
+                <div className="flex flex-wrap flex-col w-full">
+                    <div className="flex flex-row justify-center items-center">
+                        <p className="bg-secondary text-white font-bold px-2 py-2 rounded-xl text-center w-1/2 sm:w-1/3 text-sm sm:text-base">Campaign launch date</p>
+                        <PrimaryInput placeholder="dd/mm/yy" properties="text-center w-1/2 sm:w-1/3 text-xs md:text-md" onChange={(e) => setLaunchDate("date", e.target.value)} type="date" />
+                    </div>
+                    <div className="flex flex-row justify-center items-center">
+                        <p className="bg-secondary text-white font-bold px-2 py-2 rounded-xl text-center w-1/2 sm:w-1/3 text-sm sm:text-base">Campaign launch time</p>
+                        <div className="w-1/2 items-stretch sm:w-1/3 flex flex-col sm:flex-row justify-between sm:items-center m-4">
+                            <input className="rounded-xl w-1/2 bg-gray-100 placeholder-gray-400 font-Inter text-center py-2 text-xs sm:text-base"
+                                    placeholder="0000" onChange={(e) => setLaunchDate("time", e.target.value)}
+                                    type="time" />
+                        </div>
+                    </div>
+                    <div className="flex flex-wrap self-center bg-gray-100 font-bold py-4 px-10 m-2 w-1/2 justify-center rounded-xl text-sm">
+                        <p className="text-center place-self-center font-Inter">Note: Campaign end date will be 1 month from start date</p>
+                    </div>
+                    <PrimaryButton properties="self-end" text="Update" onClick={launchCampaign }/>
                 </div>
             {/* )} */}
             

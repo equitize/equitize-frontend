@@ -74,6 +74,14 @@ export const getIsLoggedIn = createSelector(
     auth => auth.isLoggedIn
 )
 
+export const getToken = createSelector(
+    state => state.auth,
+    auth => {
+        if (auth.isLoggedIn) return auth.data.access_token
+        else return "No JWT found"
+    }
+)
+
 export const getID = createSelector(
     state => state.auth,
     auth => {

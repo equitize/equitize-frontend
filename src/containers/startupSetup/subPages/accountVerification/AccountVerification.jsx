@@ -213,7 +213,7 @@ function AccountVerification(){
                                                   labelId="profilePhoto" errorFunc={setErrorMessage} startupId={startupId} />
                     </div>
                 </div>
-                <PrimaryTextArea placeholder="Zil address" properties="w-full h-12" onChangeFunc={setZilAddr} value={zilAddr}/>
+                <PrimaryTextArea placeholder="Zil address" properties="w-full h-10" onChangeFunc={setZilAddr} value={zilAddr}/>
                 <PrimaryTextArea placeholder="Short Description of your Business" properties="w-full h-40" onChangeFunc={setBusinessDescription} value={businessDescription}/>
                 
                 <label className="block text-lg font-bold text-gray-700 px-5">Add related industries</label>

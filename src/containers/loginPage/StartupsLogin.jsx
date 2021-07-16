@@ -17,7 +17,7 @@ function StartupsLogin(){
     // Redux useDispatch hook
     const dispatch = useDispatch()
     const isLoggedIn = useSelector(getIsLoggedIn)
-    console.log("isLoggedIn:", isLoggedIn)
+    console.log(isLoggedIn)
     
     const { register, formState: { errors }, clearErrors, handleSubmit } = useForm();
     const [showError, setShowError] = useState(false)
