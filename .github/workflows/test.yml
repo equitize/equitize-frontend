@@ -1,11 +1,10 @@
 name: Run frontend tests
 
 on:
-  push:
-  # workflow_dispatch:
-  # pull_request:
-  #   branches:
-  #     - master
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - master
 
 # Main reference: https://ovirium.com/blog/how-to-make-mysql-work-in-your-github-actions/
 
@@ -47,12 +46,14 @@ jobs:
           && chromedriver --version
 
     - run: yarn test sample
-    - run: yarn test selenium
-      if: always()
     - run: yarn start &
       if: always()
-    - run: yarn test frontpage
-      if: always()
+
+    # Selenium tests not working on Github Actions
+    # - run: yarn test selenium
+    #   if: always()
+    # - run: yarn test frontpage
+    #   if: always()
     # - run: yarn test campaign
     #   if: always()
     # - run: yarn test junctionTable
