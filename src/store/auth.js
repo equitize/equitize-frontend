@@ -21,7 +21,7 @@ const slice = createSlice({
         },
         loggedOut: (state) => {
             state.isLoggedIn = false
-            state.data = {}        // deletes state.data as action.payload.user is empty.
+            state.data = {}       // deletes state.data as action.payload.user is empty.
         },
         authRequestFailed: (state, action) => {
             state.debug = action.payload
@@ -74,7 +74,15 @@ export const getIsLoggedIn = createSelector(
     auth => auth.isLoggedIn
 )
 
-export const getStartupId = createSelector(
+export const getToken = createSelector(
+    state => state.auth,
+    auth => {
+        if (auth.isLoggedIn) return auth.data.access_token
+        else return "No JWT found"
+    }
+)
+
+export const getID = createSelector(
     state => state.auth,
     auth => {
         if (auth.isLoggedIn) return auth.data.id

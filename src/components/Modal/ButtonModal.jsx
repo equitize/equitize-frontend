@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import FormButton from "../FormButton/FormButton";
 import PropTypes from 'prop-types';
+import PrimaryButton from "../PrimaryButton/PrimaryButton";
 
 function ButtonModal({ text, onClick, modalImg }) {
     const [showModal, setShowModal] = useState(false);
@@ -49,6 +50,9 @@ function ButtonModal({ text, onClick, modalImg }) {
                                     <p className="my-4 text-blueGray-500 lg:text-lg leading-relaxed">
                                         Cras euismod tempor arcu. Nulla at lacus vel arcu euismod tristique ac sed odio. Etiam sed justo et quam vehicula vehicula non sed arcu. Nullam condimentum erat diam, sit amet pellentesque nulla elementum non. Nam et arcu a diam finibus pulvinar. Aliquam id consectetur nisl, vitae luctus odio. Maecenas malesuada turpis sit amet porttitor pulvinar.
                                     </p>
+                                </div>
+                                <div className="pb-4 flex flex-wrap align-middle justify-center ">
+                                    <PrimaryButton onClick={() => setShowModal(false)} text="Confirm"/>
                                 </div>
                             </div>
                         </div>

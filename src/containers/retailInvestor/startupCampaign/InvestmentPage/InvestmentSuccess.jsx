@@ -6,12 +6,17 @@ import PrimaryButton from "../../../../components/PrimaryButton/PrimaryButton";
 import { useHistory, useParams } from "react-router-dom";
 import queryString from 'query-string';
 import Loading from '../../../../components/Loading/Loading'
+import ConfigData from "../../../../config";
+import TextModal from "../../../../components/Modal/TextModal";
 
 const InvestmentSuccess = () => {
     let { id } = useParams()
     const [pledgeResult, setPledgeResult] = useState('')
     const [done, setDone] = useState(undefined)
     const [loading, setLoading] = useState(undefined)
+
+    const [showError, setShowError] = useState(false)
+    const [resError, setResError] = useState("")
     
     const history = useHistory()
 
@@ -24,8 +29,7 @@ const InvestmentSuccess = () => {
 
     const pledgeAmount = async () => {
 
-        //TODO: Hardcoded baseURL
-        const response = await fetch('http://localhost:8080/api/db/retailInvestors/campaign/pledge/' + id, {
+        const response = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/campaign/pledge/' + id, {
             headers: {
                 'Content-Type': 'application/json',
                 // 'Authorization': 'Bearer ~jwttoken~'
@@ -36,15 +40,32 @@ const InvestmentSuccess = () => {
             }) 
         })
 
-        const res = await response.json()
+        const status = response.status
+        if (status === 200) {
+            const res = await response.json()
 
-        if (res.message === "Milestone SC and Fungible Token SC successfully deployed.") {
-            setPledgeResult(res)
-            setLoading(true)
-            setTimeout(() => {
-                setDone(true)
-            }, 3000)
+            if (res.message === "Milestone SC and Fungible Token SC succesfully deployed.") {
+                setPledgeResult(res)
+                setLoading(true)
+                setTimeout(() => {
+                    setDone(true)
+                }, 3000)
+            }
+
+        } else {
+            const error = await response.json()
+            console.log("Error", error)
+
+            setShowError(true)
+            setResError("Error " + error.error.status + ": " + error.error.message)
         }
+    }
+
+    function closeModal() {
+        function changeSelectedModalState() {
+            setShowError(false)
+        }
+        return changeSelectedModalState;
     }
 
     // TODO CALL API FOR DATA (ONLY Startup Name)
@@ -68,6 +89,9 @@ const InvestmentSuccess = () => {
 
     return (
         <div className="container mx-auto flex flex-wrap p-5 flex-col items-center my-auto">
+            <TextModal header="Error" showModal={showError} setShowModal={closeModal()} 
+                                content={resError}
+                                />
             <p className="font-Rubik text-center text-2xl sm:text-3xl md:text-4xl w-2/3">Transaction Confirmed for</p>
             <p className="font-Rubik text-center text-2xl sm:text-3xl md:text-4xl w-2/3">{startupObject.name}</p>
             <br />

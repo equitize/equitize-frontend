@@ -4,14 +4,15 @@ import PrimaryButton from "../../../../../components/PrimaryButton/PrimaryButton
 import PrimaryInput from "../../../../../components/PrimaryInput/PrimaryInput";
 import PrimaryTextArea from "../../../../../components/PrimaryTextArea/PrimaryTextArea";
 import { Range } from 'react-range';
+import ConfigData from "../../../../../config";
 
 // For redux
 import { useSelector } from 'react-redux'
-import { getStartupId } from '../../../../../store/auth'
+import { getID } from '../../../../../store/auth'
 
 function AddMilestoneModal({ addMilestonesFunc, currentMilestoneLength}){
 
-    const startupId = useSelector(getStartupId)
+    const startupId = useSelector(getID)
 
     const [showModal, setShowModal] = useState(false);
     const [milestone, setMilestone] = useState({
@@ -50,16 +51,23 @@ function AddMilestoneModal({ addMilestonesFunc, currentMilestoneLength}){
 
         console.log(milestone)
         // API to set milestone
-        const response = await fetch('http://localhost:8080/api/db/startup/milestone/addPart', {
+        const response = await fetch(ConfigData.SERVER_URL + '/db/startup/milestone/addPart', {
             headers: {
                 'Content-Type': 'application/json',
             },
             method: 'POST',
             body: JSON.stringify(milestone) 
         })
+        
+        const status = await response.status
+        if (status === 200) {
+            const data = await response.json()
+            console.log(data)
 
-        const data = await response.json()
-        console.log(data)
+        } else {
+            const error = await response.json()
+            console.log("Error", error)
+        }
     }
 
     useEffect(()=> {

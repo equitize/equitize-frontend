@@ -2,18 +2,19 @@ import React, {useCallback} from 'react'
 import {useDropzone} from 'react-dropzone'
 import PlusIcon from './plusIcon.svg'
 import PropTypes from "prop-types";
+import ConfigData from '../../config';
 
 // React query
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
 // React query fetch functions
 const fetchFile = async (key) => {
-    const res = await fetch('http://localhost:8080/api/db/startup/getSignedURLPlus/' + key.queryKey[1])
+    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/getSignedURLPlus/' + key.queryKey[1])
     return res.json()
 }
 
 const addFile = async params => {
-    return fetch('http://localhost:8080/api/db/startup/' + params.endPoint + params.startupId, {
+    return fetch(ConfigData.SERVER_URL + '/db/startup/' + params.endPoint + params.startupId, {
             method: 'PUT',
             body: params.formData,
         }) 
@@ -64,7 +65,7 @@ function DropZone({placeHolderText, acceptedFileTypes, endPoint, startupId}){
                     )}
 
                     { fileStatus === 'success' && (
-                        <div>Current file: {dropZoneFile.data.originalName}</div>
+                        <div>Saved file: {dropZoneFile.data.originalName}</div>
                     )}
                 </>}
 

@@ -8,10 +8,13 @@ import FormItemCheckbox from "./FormItemCheckbox";
 import Investment from './investment.svg'
 import Campaign from './campaign.svg'
 import { Link } from "react-router-dom";
+import TextModal from "../../components/Modal/TextModal";
+import ConfigData from "../../config"
 
 // For redux
 import { useDispatch, useSelector } from 'react-redux'
-import { signUp, getIsLoggedIn } from '../../store/auth'
+import { signedUp, getIsLoggedIn } from '../../store/auth'
+
 
 function StartupRegistration(){
     const [isFirstPage, setIsFirstPage] = useState(true)
@@ -21,20 +24,46 @@ function StartupRegistration(){
         second: false,
         third: false
     })
+    const [showError, setShowError] = useState(false)
+
     // Redux useDispatch hook
     const dispatch = useDispatch()
+
     const isLoggedIn = useSelector(getIsLoggedIn)
-    console.log(isLoggedIn)
+    console.log("isLoggedIn:", isLoggedIn)
     
     const { register, formState: { errors }, clearErrors, handleSubmit } = useForm();
 
-    const onSubmit = (data, e) => {
+    const onSubmit = async (data, e) => {
         console.log(data, e);
         clearErrors()
-        dispatch(signUp(data))
+        
+        console.log(ConfigData.SERVER_URL + '/db/startup')
+        const signUp = await fetch(ConfigData.SERVER_URL + '/db/startup', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+        
+        const status = await signUp.status
+        if (status === 200) {
+            const res = await signUp.json()
+            console.log(res)
 
-        //TODO: PLEASE HELP
-        setIsFirstPage(!isFirstPage)
+            const data = { "access_token": res.auth0.access_token, "id": res.startup.id }
+            dispatch(signedUp(data))
+
+            setIsFirstPage(!isFirstPage)
+        } else {
+            const error = await signUp.json()
+            console.log("Error", error)
+
+            setShowError(true)
+        }
+        
+        
     }
 
     function readContent(sequence){
@@ -42,6 +71,13 @@ function StartupRegistration(){
             ...prevState,
             [sequence]: !prevState[sequence]
         }))
+    }
+
+    function closeModal() {
+        function changeSelectedModalState() {
+            setShowError(false)
+        }
+        return changeSelectedModalState;
     }
 
     useEffect(() => {
@@ -71,8 +107,12 @@ function StartupRegistration(){
                                           properties="text-center" />
                             <PrimaryInput placeholder="Email Address" register={register("emailAddress", {required:true})}
                                           properties="text-center" />
-                            <PrimaryInput placeholder="Password" register={register("companyPassword", {required :true})}
+                            <PrimaryInput placeholder="Password" register={register("password", {required :true})}
                                           properties="text-center" />
+
+                            <TextModal header="Error" showModal={showError} setShowModal={closeModal()} 
+                                content="There was an issue with registration. Perhaps try a stronger password."
+                                />
 
                             {Object.keys(errors).length > 0 && <PrimaryErrorMessage text="All Fields are required" />}
                             <br />
