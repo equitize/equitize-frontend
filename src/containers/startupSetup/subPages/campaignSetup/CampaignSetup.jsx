@@ -27,7 +27,8 @@ function CampaignSetup(){
     const startupId = useSelector(getID)
     const accessToken = useSelector(getToken)
     var decoded = jwt_decode(accessToken)
-    console.log(decoded)
+    //TODO: Check for jwt InvalidTokenError if so dispatch SignOut
+    // console.log(decoded)
 
     const queryClient = useQueryClient()
 
@@ -57,9 +58,11 @@ function CampaignSetup(){
     })
 
     useEffect(() => {
+        
         if (data !== undefined){
             console.log(data)
-            if (data?.campaign?.goal != undefined) {
+            // console.log(typeof data.campaign.campaignDescription)
+            if (data?.campaign?.goal !== undefined && data?.campaign?.goal !== null) {
                 setCampaignGoal({
                     goal: data.campaign.goal,
                     sharesAllocated: data.campaign.sharesAllocated,
@@ -67,7 +70,7 @@ function CampaignSetup(){
                 })
             }
 
-            if (data?.campaign?.zoomDatetime != undefined){
+            if (data?.campaign?.zoomDatetime !== null && data?.campaign?.zoomDatetime !== null){
                 const zoomDateTimeArray = data.campaign.zoomDatetime.split(",")
                 setZoomDetails({
                     date: zoomDateTimeArray[0],
@@ -83,7 +86,7 @@ function CampaignSetup(){
                 }))
             }
 
-            if (data?.campaign?.campaignDescription != null) {
+            if (data?.campaign?.campaignDescription !== undefined) {
                 setCampaignDescription(data.campaign.campaignDescription)
             }
         }
@@ -224,6 +227,15 @@ function CampaignSetup(){
         }))
     }
 
+    function isStartupVerified(msg) {
+        const isStartupVerified = msg.permissions[0]
+        if (isStartupVerified === "startup:unverified") {
+            // console.log("NOT VERIFIED!")
+            return false
+        }
+        return true
+    }
+
     return (
         <>
             {/* { status === 'loading' && (
@@ -261,9 +273,13 @@ function CampaignSetup(){
                         </div>
                     </div>
                     <div className="flex flex-wrap self-center bg-gray-100 font-bold py-4 px-10 m-2 w-1/2 justify-center rounded-xl text-sm">
-                        <p className="text-center place-self-center font-Inter">Note: Campaign end date will be 1 month from start date</p>
+                        {
+                            isStartupVerified(decoded) ? <p className="text-center place-self-center font-Inter">Note: Campaign end date will be 1 month from start date</p>
+                            : <p className="text-center place-self-center font-Inter">Note: Unable to set a launch date as your startup is not KYC verified yet.</p>
+                        }
+                        
                     </div>
-                    <PrimaryButton properties="self-end" text="Update" onClick={launchCampaign }/>
+                    <PrimaryButton properties="self-end" text="Update" onClick={launchCampaign } disabled={ !isStartupVerified(decoded) }/>
                 </div>
             {/* )} */}
             

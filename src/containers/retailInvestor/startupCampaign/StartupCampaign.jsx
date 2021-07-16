@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import MeetupMouse from "../../retailInvestorHomePage/tempImages/MeetupMouse.svg";
 import PrimaryButton from "../../../components/PrimaryButton/PrimaryButton";
 import InvestmentDetails from "./InvestmentDetails";
 import ScoreCard from "./ScoreCard";
@@ -45,83 +44,57 @@ function StartupCampaign(){
     })
 
     const { data, status } = useQuery(['viewStartupDetails', id], getStartupDetails)
+    console.log(data)
 
     const videoData = useQuery(['startupVideo', id], getStartupVideo)
     const pitchDeck = useQuery(['startupPitchDeck', id], getStartupPitchDeck)
 
-    // TODO CALL API FOR DATA
-    const startupObject = {
-        name: "Meetup Mouse",
-        description: "Meetup Mouse suggests the BEST hand-picked places for your group’s needs so you and your friends NEVER worry about where to eat again!",
-        fundedAmount: 200000,
-        sharesAllocated: "20",
-        campaignGoal: 500000,
-        endTime: "47",
-        id: 1,
-        imageLink: MeetupMouse
+    function getProgressBarWidth() {
+        if (status === 'success') {
+            var percentageRaised = data.campaign.currentlyRaised / data.campaign.goal * 100
+            var progressBarWidth = getTailwindWidthFraction(percentageRaised)
+            return progressBarWidth
+        }
     }
+    // const percentageRaised = startupObject.fundedAmount/startupObject.campaignGoal * 100
+    // const progressBarWidth = getTailwindWidthFraction(percentageRaised)
 
-    const percentageRaised = startupObject.fundedAmount/startupObject.campaignGoal * 100
-    const progressBarWidth = getTailwindWidthFraction(percentageRaised)
-
+    //TODO: Hardcoded scorecard
     const ratings = {
         teamSynergy: 8,
         innovation: 8,
         creativity: 7
     }
 
-    // TODO Figure out the format for this, can be just a single key dateTime as well
-    // const zoomSessions = [
-    //     {
-    //         id:0,
-    //         date: "14th August 2021",
-    //         time: "2000",
-    //         zoomLink: ""
-    //     },
-    //     {
-    //         id:1,
-    //         date: "15th August 2021",
-    //         time: "2030",
-    //         zoomLink: ""
-    //     }
-    // ]
-
-    // const campaignMilestones = [
-    //     {
-    //         id: 0,
-    //         title: "Complete first prototype",
-    //         date: "23/01/21",
-    //         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras iaculis blandit enim, ac fringilla dui.",
-    //         percentageFunds: 15
-    //     },
-    //     {
-    //         id: 1,
-    //         title: "Complete second prototype",
-    //         date: "13/06/21",
-    //         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
-    //         percentageFunds: 40
-    //     }
-    // ]
-
     function returnToHomePage(){
         history.push("/home")
     }
 
     return (
+        <>
+        { status === 'loading' && (
+                <div>Loading...</div>
+            )}
+
+        { status === 'error' && (
+                <div>Error fetching data</div>
+            )}
+        
+        { status === 'success' && (
         <div className="container mx-auto flex flex-wrap p-5 flex-col items-center my-auto">
             <br />
             <div className="w-full flex flex-row justify-between">
                 <div className="w-1/3">
                     <PrimaryButton text="Back" properties="lg:px-10 self-start" onClick={returnToHomePage}/>
                 </div>
-                <p className="w-1/3 text-center font-Rubik font-bold text-xl md:text-2xl lg:text-4xl">{startupObject.name}</p>
+                <p className="w-1/3 text-center font-Rubik font-bold text-xl md:text-2xl lg:text-4xl">{data.companyName}</p>
                 <div className="w-1/3"></div>
             </div>
             <div className="w-full flex flex-row">
                 <div className="w-2/3 flex flex-col md:ml-3 space-y-2">
                     <br />
                     <StartupVideo video={ videoData.status === "success" ? videoData.data.signedURL : null}/>
-                    <ProgressBar width={progressBarWidth} />
+                    <ProgressBar width={getProgressBarWidth()} />
                     <CampaignTabs setIsActiveTab={setIsActiveTab} isActiveTab={isActiveTab}/>
                     <br/>
                     {
@@ -154,6 +127,8 @@ function StartupCampaign(){
                 </div>
             </div>
         </div>
+        )}
+        </>
     )
 }
 

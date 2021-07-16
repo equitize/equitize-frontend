@@ -115,7 +115,6 @@ function StartupCampaignInvestment(){
                                 </>
                                 }
                         </p>
-                        {/* <p className="font-Inter text-xs md:text-base lg:text-sm lg:text-base text-gray-500 text-center">Hours Left</p> */}
                     </div>
                 </div>
                 <br />
