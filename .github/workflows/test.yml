@@ -1,4 +1,4 @@
-name: Run database tests
+name: Run frontend tests
 
 on:
   push:
@@ -34,10 +34,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: yarn install
     - run: yarn test sample
-    # - run: yarn test startup
-    #   if: always()
-    # - run: yarn test retailInvestors
-    #   if: always()
+    - run: yarn test selenium
+    - run: yarn serve
+    - run: yarn test frontpage
     # - run: yarn test campaign
     #   if: always()
     # - run: yarn test junctionTable
@@ -46,5 +45,5 @@ jobs:
     #   if: always()
     # - run: yarn test auth
     #   if: always()
-    - run: yarn test
-      if: always()
+    # - run: yarn test
+    #   if: always()
