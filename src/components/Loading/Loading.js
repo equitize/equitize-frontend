@@ -5,8 +5,6 @@ import * as loadingAnimation from '../../animations/Loading.json'
 import * as doneAnimation from '../../animations/Done.json'
 
 const Loading = ({loading}) => {
-    console.log(loading)
-
     const options = {
         animationData: loadingAnimation.default,
         loop: true,
@@ -33,7 +31,7 @@ const Loading = ({loading}) => {
 }
 
 Loading.propTypes = {
-    loading: PropTypes.boolean
+    loading: PropTypes.bool
 }
 
 export default Loading

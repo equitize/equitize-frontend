@@ -44,7 +44,7 @@ const InvestmentSuccess = () => {
         if (status === 200) {
             const res = await response.json()
 
-            if (res.message === "Milestone SC and Fungible Token SC succesfully deployed.") {
+            if (res.message === "Milestone SC and Fungible Token SC successfully deployed.") {
                 setPledgeResult(res)
                 setLoading(true)
                 setTimeout(() => {

@@ -115,14 +115,13 @@ const decodeMessage = (code) => {
 };
 
 export const decodeZilPayError = (error) => {
-    console.log(error);
     switch (error) {
         case "Insufficient funds in source account!":
             return "Insufficient funds for transaction";
         case "User rejected":
             return "Transaction rejected from ZilPay";
         default:
-            return "ZilPay Error";
+            return error;
     }
 };
 

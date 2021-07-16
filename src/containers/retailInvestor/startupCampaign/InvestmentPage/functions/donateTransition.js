@@ -5,7 +5,9 @@ import { decodeZilPayError } from "./decodeMessage";
 const donateTransition = async (
     contract,
     zilPay,
-    amount
+    amount,
+    setTransactionMessage,
+    setTransactionLink
 ) => {
     try {
         const callTransition = await contract.call(
@@ -13,12 +15,18 @@ const donateTransition = async (
             [],
             getCallParameters(zilPay, amount)
         );
+        setTransactionLink(getTransactionLink(callTransition.ID))
 
         return await transitionMessageAlert(zilPay, callTransition.ID);
     } catch (error) {
-        console.log(error)
-        return decodeZilPayError(error)
+        const errorMessage = decodeZilPayError(error)
+        setTransactionMessage(errorMessage)
     }
 };
+
+function getTransactionLink(transactionId){
+    // For Testnet currently
+    return `https://viewblock.io/zilliqa/tx/${transactionId}?network=testnet`
+}
 
 export default donateTransition;

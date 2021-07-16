@@ -21,7 +21,7 @@ function StartupCampaignInvestment(){
     const [investmentAmount, setInvestmentAmount] = useState([0])
 
     const { data, status } = useQuery(['viewStartupDetails', id], getStartupDetails)
-    console.log(status, data)
+    //console.log(status, data)
 
     var days = 0
     var hours = 0
@@ -42,18 +42,6 @@ function StartupCampaignInvestment(){
         else return false
     }
 
-    // TODO CALL API FOR DATA
-    // const startupObject = {
-    //     name: "Meetup Mouse",
-    //     description: "Meetup Mouse suggests the BEST hand-picked places for your group’s needs so you and your friends NEVER worry about where to eat again!",
-    //     fundedAmount: 200000,
-    //     sharesAllocated: "20",
-    //     campaignGoal: 500000,
-    //     endTime: "47",
-    //     id: 1,
-    //     imageLink: MeetupMouse
-    // }
-
     function returnToCampaignPage(){
         history.push(`/startup/${id}`)
     }
@@ -64,9 +52,11 @@ function StartupCampaignInvestment(){
     }
 
     function redirectForTransactionSuccess(){
-        history.push(
-            `/startup/${id}/invest/transactionSuccess?deposit=${investmentAmount[0]}`
-        )
+        setTimeout(function (){
+            history.push(
+                `/startup/${id}/invest/transactionSuccess?deposit=${investmentAmount[0]}`
+            )
+        }, 15000)
     }
 
     return (
@@ -161,7 +151,7 @@ function StartupCampaignInvestment(){
                 </p>
                 <br />
                 <br />
-                <ZilpayModal getInvestmentData={getInvestmentData()} />
+                <ZilpayModal getInvestmentData={getInvestmentData()} redirectForTransactionSuccess={redirectForTransactionSuccess} />
                 <br />
             </div>
             )}

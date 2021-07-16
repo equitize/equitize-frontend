@@ -14,9 +14,6 @@ const transitionMessageAlert = async(
                     const Tx = await zilPay.blockchain.getTransaction(hash[0]);
                     const code = Tx.receipt.transitions[0].msg.params[0].value;
                     const message = decodeMessage(code);
-                    console.log("IMPORTANT")
-                    console.log(Tx)
-                    console.log(code)
 
                     if (message.type === "success") {
                         resolve(message.alert);
@@ -30,9 +27,7 @@ const transitionMessageAlert = async(
 
     async function watchTransition(){
         // can just return if no console.log
-        const message = await transition
-        console.log(message)
-        return message
+        return await transition
     }
 
     return watchTransition()
