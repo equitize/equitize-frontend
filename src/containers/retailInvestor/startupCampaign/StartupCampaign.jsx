@@ -81,7 +81,7 @@ function StartupCampaign(){
             )}
         
         { status === 'success' && (
-        <div className="container mx-auto flex flex-wrap p-5 flex-col items-center my-auto">
+        <div className="container mx-auto flex flex-wrap flex-col items-center my-auto xl:px-40 lg:px-8 md:px-12 sm:px-8">
             <br />
             <div className="w-full flex flex-row justify-between">
                 <div className="w-1/3">
@@ -118,7 +118,7 @@ function StartupCampaign(){
                             : null
                     }
                 </div>
-                <div className="w-1/3 flex flex-col">
+                <div className="w-1/2 ml-8 flex flex-col">
                     <InvestmentDetails info={ status === "success" ? { campaignDetails: data.campaign, startupId: data.id } : null } />
                     <br />
                     <ScoreCard ratings={ratings}/>

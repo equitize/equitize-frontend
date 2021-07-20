@@ -53,30 +53,31 @@ function StartupItem({ info }){
 
     return (
         <>
-            <div className="py-4 space-y-3">
-                <img src={ featuredPhoto.status === "success" ? featuredPhoto.data.signedURL : null } className="h-32 sm:h-48 lg:h-72 cursor-pointer m-auto" alt="Startup Image" onClick={viewStartup}/>
-                <p className="font-bold font-Rubik text-xl md:text-2xl lg:text-4xl text-center">{info.companyName}</p>
-                <br />
-                <p className="font-Inter text-sm md:font-lg lg:text-xl">{info.profileDescription}</p>
-                <ProgressBar width={progressBarWidth} />
-                <div className="flex flex-row">
-                    <div className="flex flex-col w-1/2 space-y-2">
-                        <p className="font-Inter text-xs md:text-base"><span className="text-green-500">S${info.campaign.currentlyRaised}</span> funded</p>
-                        <p className="font-Inter text-xs md:text-base"><span className="text-secondary">{percentageRaised}%</span> Raised</p>
-                    </div>
-                    <div className="flex flex-col w-1/2 space-y-2">
-                        <p className="font-Inter text-xs md:text-base"><span className="text-active-purple">{info.campaign.sharesAllocated}%</span> Equity Stake</p>
-                        <p className="font-Inter text-xs md:text-base"><span className="text-active-purple"></span>
-                            { isLastHour() ? 
+            <div className="h-full space-y-2 group border-indigo-500 border-opacity-25 hover:bg-white hover:shadow-lg hover:border-transparent border rounded-lg cursor-pointer" onClick={viewStartup}>
+                <img src={ featuredPhoto.status === "success" ? featuredPhoto.data.signedURL : null } className="h-32 sm:h-48 lg:h-56 cursor-pointer w-full rounded-t-lg object-cover" alt="Startup Image"/>
+                <p className="font-bold font-Rubik text-xl md:text-xl lg:text-2xl text-center text-black group-hover:text-gray-900">{info.companyName}</p>
+                <div className="mx-6 my-5">
+                    <p className="font-Inter text-sm lg:text-lg text-black group-hover:text-gray-500">{info.profileDescription}</p>
+                    <ProgressBar width={progressBarWidth}/>
+                    <div className="flex flex-row">
+                        <div className="flex flex-col w-1/2 mx-1 space-y-1">
+                            <p className="font-Inter text-xs md:text-base flex-auto"><span className="text-green-500">S${info.campaign.currentlyRaised}</span> funded</p>
+                            <p className="font-Inter text-xs md:text-base flex-auto"><span className="text-secondary">{percentageRaised}%</span> Raised</p>
+                        </div>
+                        <div className="flex flex-col w-1/2 mx-1 space-y-1 mb-2">
+                            <p className="font-Inter text-xs md:text-base flex-auto"><span className="text-active-purple">{info.campaign.sharesAllocated}%</span> Equity Stake</p>
+                            <p className="font-Inter text-xs md:text-base flex-auto"><span className="text-active-purple"></span>
+                                { isLastHour() ? 
+                                    <>
+                                        {minutes} minutes left
+                                    </>
+                                : 
                                 <>
-                                    {minutes} minutes left
+                                    {days} days & {hours} hours left
                                 </>
-                            : 
-                            <>
-                                {days} days & {hours} hours left
-                            </>
-                            }
-                        </p>
+                                }
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

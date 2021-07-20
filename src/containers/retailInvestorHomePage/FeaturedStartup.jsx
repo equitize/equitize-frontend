@@ -62,10 +62,10 @@ function FeaturedStartup({ info }){
             <p className="font-Inter text-xl">Featured Startup</p>
             <div className="flex flex-col md:flex-row space-x22 group border-indigo-500 border-opacity-25 hover:bg-white hover:shadow-lg hover:border-transparent border rounded-lg cursor-pointer" onClick={viewStartup}>
                 <img src={ featuredPhoto.status === "success" ? featuredPhoto.data.signedURL : MeetupMouse } className="md:w-1/3 lg:w-1/2 rounded-md mx-6 my-5" alt="Featured Startup Image" />
-                <div className="md:w-1/2 lg:w-1/3 flex flex-col mx-6 my-5">
-                    <p className="font-bold font-Rubik text-xl md:text-2xl lg:text-4xl text-indigo-600 group-hover:text-gray-900">{info.companyName}</p>
+                <div className="md:w-1/2 lg:w-full flex flex-col mr-6 my-5">
+                    <p className="font-bold font-Rubik text-xl md:text-2xl lg:text-4xl text-black group-hover:text-gray-600">{info.companyName}</p>
                     <br />
-                    <p className="font-Inter md:text-xl text-indigo-500 group-hover:text-gray-500">{info.profileDescription}</p>
+                    <p className="font-Inter md:text-xl text-black group-hover:text-gray-500">{info.profileDescription}</p>
                     <ProgressBar width={progressBarWidth} />
                     <div className="flex flex-row">
                         <div className="flex flex-col w-1/2">

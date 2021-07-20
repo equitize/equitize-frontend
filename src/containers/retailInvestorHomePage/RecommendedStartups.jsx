@@ -11,7 +11,7 @@ function RecommendedStartups({ startups }){
                 {
                     startups.length > 0 ?
                         startups.map((startup, index) => (
-                            <div className="w-1/2 md:w-1/3 px-3" key={index}>
+                            <div className="md:flex-shrink-0 md:w-1/3 px-1 my-2" key={index}>
                                 <StartupItem info={startup}/>
                             </div>
                         ))

@@ -17,19 +17,19 @@ function InvestmentDetails({info}){
         { info === null ? <div><p>Loading...</p></div> : 
             <>
                 <div className="flex flex-row space-x-4">
-                    <p className="font-Inter text-green-500 font-bold text-xs md:text-xl lg:text-2xl w-1/2 text-right self-center">S${formattedSum(info.campaignDetails.currentlyRaised)}</p>
+                    <p className="font-Inter text-green-500 font-bold text-xs md:text-xl lg:text-xl w-1/2 text-right self-center">S${formattedSum(info.campaignDetails.currentlyRaised)}</p>
                     <p className="font-Inter text-xs md:text-base lg:text-sm lg:text-base text-gray-500 w-1/2 self-center">of ${formattedSum(info.campaignDetails.goal)} raised</p>
                 </div>
                 <div className="flex flex-row space-x-4">
-                    <p className="font-Inter text-sm md:text-xl lg:text-2xl w-1/2 text-right">{info.campaignDetails.currentlyRaised/info.campaignDetails.goal * 100}%</p>
+                    <p className="font-Inter text-sm md:text-xl lg:text-xl w-1/2 text-right">{info.campaignDetails.currentlyRaised/info.campaignDetails.goal * 100}%</p>
                     <p className="font-Inter text-xs md:text-base lg:text-sm lg:text-base text-gray-500 w-1/2 self-center">Raised</p>
                 </div>
                 <div className="flex flex-row space-x-4">
-                    <p className="font-Inter text-sm md:text-xl lg:text-2xl w-1/2 text-right">{info.campaignDetails.sharesAllocated}%</p>
+                    <p className="font-Inter text-sm md:text-xl lg:text-xl w-1/2 text-right">{info.campaignDetails.sharesAllocated}%</p>
                     <p className="font-Inter text-xs md:text-base lg:text-sm lg:text-base text-gray-500 w-1/2 self-center">Equity Stake</p>
                 </div>
                 <div className="flex flex-row space-x-4">
-                    <p className="font-Inter text-sm md:text-xl lg:text-2xl w-1/2 text-right">{ moment(info.campaignDetails.endDate).format("llll") }</p>
+                    <p className="font-Inter text-sm md:text-lg lg:text-lg w-1/2 text-right">{ moment(info.campaignDetails.endDate).format("llll") }</p>
                     <p className="font-Inter text-xs md:text-base lg:text-sm lg:text-base text-gray-500 w-1/2 self-center">End Date</p>
                 </div>
                 <br />

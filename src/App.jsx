@@ -25,7 +25,6 @@ import StartupsLogin from "./containers/loginPage/StartupsLogin"
 function App() {
 
   return (
-      <div className="bg-gradient-to-r from-indigo-50 to-indigo-100">
       <Router>
           <Header/>
 
@@ -77,7 +76,6 @@ function App() {
 
           <Footer />
       </Router>
-      </div>
   );
 }
 
