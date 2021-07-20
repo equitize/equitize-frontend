@@ -43,7 +43,7 @@ function TextModal({showModal, setShowModal, modalImg, header, content}){
                                         {content}
                                     </p>
                                 </div>
-                                <div className="pb-4 flex flex-wrap align-middle justify-center test-confirm">
+                                <div className="pb-4 flex flex-wrap align-middle justify-center ">
                                     <PrimaryButton onClick={closeModal} text="Confirm"/>
                                 </div>
                             </div>
