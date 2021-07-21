@@ -45,9 +45,8 @@ it('Testing to see if frontpage works', async () => {
     await sleep(1000)
 
     await driver.findElement(By.xpath("//button[contains(text(),'" + "Sign Up" +"')]")).click();
-    await sleep(2000)
+    await sleep(3000)
 
-    await sleep(5000)
 
     let elements = await driver.findElements(By.className("bg-custom-gray"));
     for (let idx in elements){
@@ -60,25 +59,19 @@ it('Testing to see if frontpage works', async () => {
     await driver.findElement(By.partialLinkText("Submit")).click();
     await sleep(2000)
 
-    // token faulty, await new version
+    // token faulty
     // await driver.findElement(By.css("input[id='capTable']")).sendKeys(sample_pdf_path);
     // await sleep(1000)
-
     // await driver.findElement(By.css("input[id='acraDocuments']")).sendKeys(sample_pdf_path);
     // await sleep(1000)
-
     // await driver.findElement(By.css("input[id='bankInfo']")).sendKeys(sample_pdf_path);
     // await sleep(1000)
-
     // await driver.findElement(By.css("input[id='idProof']")).sendKeys(sample_pdf_path);
     // await sleep(1000)
-
     // await driver.findElement(By.css("input[id='profilePhoto']")).sendKeys(sample_jpeg_path);
     // await sleep(1000)
-
     await driver.findElement(By.css("textarea[placeholder='Zil address']")).sendKeys(sample_input_string);
     await sleep(500)
-
     await driver.findElement(By.css("textarea[placeholder='Short Description of your Business']")).sendKeys(sample_input_string);
     await sleep(500)
 
@@ -91,12 +84,15 @@ it('Testing to see if frontpage works', async () => {
 
     // campaign setup tab
 
-    // input[accept="video/*"]
-    // input[accept=".jpg, .pdf"]
     await driver.findElement(By.xpath("//button[contains(text(),'" + "Campaign Setup" +"')]")).click();
     await sleep(2000)
+
+    await driver.findElement(By.css('input[accept="video/*"]')).sendKeys(sample_mp4_path);
+    await sleep(1000)
     await driver.findElement(By.css("textarea[placeholder='Campaign Description']")).sendKeys(sample_input_string);
     await sleep(2000)
+    await driver.findElement(By.css('input[accept=".jpg, .pdf"]')).sendKeys(sample_pdf_path);
+    await sleep(1000)
 
     
     await driver.findElement(By.xpath('//p[contains(text(),"SET UP PROPOSED CAMPAIGN MILESTONES")]')).click()
@@ -147,7 +143,10 @@ it('Testing to see if frontpage works', async () => {
     await driver.findElement(By.xpath("//p[contains(text(),'" + "15th May" +"')]")).click();
     await sleep(2000)
 
-    await sleep(20000)
+    await driver.findElement(By.xpath('//button[contains(text(),"Submit")]')).click();
+    await sleep(2000)
+
+    await sleep(15000)
 
     //It is always a safe practice to quit the browser after execution
     await driver.quit();
