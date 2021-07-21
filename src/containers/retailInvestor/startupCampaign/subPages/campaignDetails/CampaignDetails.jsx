@@ -72,7 +72,7 @@ function CampaignDetails({ campaignPDF }){
                                 )
                             }
                         </Document>
-                        : null
+                        : <p className="font-Inter text-sm md:text-base font-bold"> Pitch deck not updated </p>
                 }
             </div>
         </>

@@ -38,7 +38,7 @@ function StartupRegistration(){
         console.log(data, e);
         clearErrors()
         
-        console.log(ConfigData.SERVER_URL + '/db/startup')
+        // console.log(ConfigData.SERVER_URL + '/db/startup')
         const signUp = await fetch(ConfigData.SERVER_URL + '/db/startup', {
             headers: {
                 'Content-Type': 'application/json',

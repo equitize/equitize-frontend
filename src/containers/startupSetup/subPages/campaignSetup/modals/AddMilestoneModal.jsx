@@ -8,11 +8,12 @@ import ConfigData from "../../../../../config";
 
 // For redux
 import { useSelector } from 'react-redux'
-import { getID } from '../../../../../store/auth'
+import { getID, getToken } from '../../../../../store/auth'
 
 function AddMilestoneModal({ addMilestonesFunc, currentMilestoneLength}){
 
     const startupId = useSelector(getID)
+    const accessToken = useSelector(getToken)
 
     const [showModal, setShowModal] = useState(false);
     const [milestone, setMilestone] = useState({
@@ -54,6 +55,7 @@ function AddMilestoneModal({ addMilestonesFunc, currentMilestoneLength}){
         const response = await fetch(ConfigData.SERVER_URL + '/db/startup/milestone/addPart', {
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accessToken
             },
             method: 'POST',
             body: JSON.stringify(milestone) 

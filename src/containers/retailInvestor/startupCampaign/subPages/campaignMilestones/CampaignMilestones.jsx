@@ -48,7 +48,10 @@ function CampaignMilestones({ campaign, campaignMilestones }){
             <img src={VerticalLine} alt="Next Milestone Indicator" className="w-px self-start m-3"/>
             <div className="flex flex-row space-x-4">
                 <img src={GrayDot} alt="Campaign Goal Indicator" />
-                <p className="font-Inter text-sm md:text-base font-bold">CAMPAIGN GOAL: (S${formattedSum(campaign.goal)})</p>
+                {
+                    campaign === null ? <p className="font-Inter text-sm md:text-base font-bold"> Campaign goal not updated </p> :
+                    <p className="font-Inter text-sm md:text-base font-bold">CAMPAIGN GOAL: (S${formattedSum(campaign.goal)})</p>
+                }
             </div>
             <br />
             <br />
