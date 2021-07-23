@@ -3,7 +3,16 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import RetailInvestorHomePageTabs from "./RetailInvestorHomePageTabs";
 import StartupShowcase from "./StartupShowcase";
 
+import jwt_decode from "jwt-decode"
+
+// Redux
+import { useSelector } from 'react-redux'
+import { getToken } from '../../store/auth'
+
 function RetailInvestorHomePage(){
+    const accessToken = useSelector(getToken)
+    var decoded = jwt_decode(accessToken)
+
     const [isActiveTab, setIsActiveTab] = useState({
         first: true,
         second: false,
@@ -19,14 +28,32 @@ function RetailInvestorHomePage(){
     // TODO Integration with SearchBar
     // TODO API Integration for different Tabs / Filtering on Front End
 
+    function isRetailInvestorVerified(msg) {
+        if (msg.permissions[0] === "retailInvestor:unverified") {
+            // console.log("NOT VERIFIED!")
+            return false
+        }
+        // console.log("ITS VERIFIED")
+        return true
+    }
+
     return(
-        <div className="container mx-auto flex flex-wrap p-5 flex-col items-center my-auto xl:px-40 lg:px-24 md:px-12 sm:px-8">
-            <SearchBar onChangeFunc={setSearchTerms} />
-            <RetailInvestorHomePageTabs setIsActiveTab={setIsActiveTab} isActiveTab={isActiveTab} />
-            <StartupShowcase searchTerms={searchTerms} category={isActiveTab} />
-            <br />
-            <br />
-        </div>
+        <>
+            {
+                isRetailInvestorVerified(decoded) ? 
+                <div className="container mx-auto flex flex-wrap p-5 flex-col items-center my-auto xl:px-40 lg:px-24 md:px-12 sm:px-8">
+                    <SearchBar onChangeFunc={setSearchTerms} />
+                    <RetailInvestorHomePageTabs setIsActiveTab={setIsActiveTab} isActiveTab={isActiveTab} />
+                    <StartupShowcase searchTerms={searchTerms} category={isActiveTab} />
+                    <br />
+                    <br />
+                </div> :
+                <div>
+                    <p>Placeholder: You not verified yet. Please wait KYC.</p>
+                </div>
+            }
+        </>
+        
     )
 }
 

@@ -16,12 +16,16 @@ import { useQuery } from 'react-query'
 
 // For redux
 import { useSelector } from 'react-redux'
-import { getID } from '../../store/auth'
+import { getID, getToken } from '../../store/auth'
 
 // React query fetch functions
 const getRecommendedStartups = async (key) => {
     console.log("Requesting recommender")
-    const res = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/recommender/' + key.queryKey[1])
+    const res = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/recommender/' + key.queryKey[1], {
+        headers: {
+            'Authorization': 'Bearer ' + key.queryKey[2],
+        },
+    })
     return res.json()
 }
 
@@ -29,11 +33,11 @@ function StartupShowcase({ searchTerms }){
 
     // Redux useSelector
     const retailInvestorID = useSelector(getID)
-    console.log(retailInvestorID)
+    const accessToken = useSelector(getToken)
 
     // React query fetch requests
-    const { data, status } = useQuery(['recommendedStartups', retailInvestorID], getRecommendedStartups)
-    // console.log(status, data)
+    const { data, status } = useQuery(['recommendedStartups', retailInvestorID, accessToken], getRecommendedStartups)
+    console.log(status, data)
     // console.log(recommended)
     // console.log("First startup", firstStartup)
 

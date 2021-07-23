@@ -34,7 +34,7 @@ function CampaignSetup(){
     const accessToken = useSelector(getToken)
     var decoded = jwt_decode(accessToken)
     //TODO: Check for jwt InvalidTokenError if so dispatch SignOut
-    console.log(decoded)
+    // console.log(decoded)
 
     const queryClient = useQueryClient()
 

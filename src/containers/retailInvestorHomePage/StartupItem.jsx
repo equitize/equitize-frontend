@@ -10,9 +10,17 @@ import moment from "moment";
 import { useQuery } from 'react-query'
 // import { useEffect } from "react";
 
+// For redux
+import { useSelector } from 'react-redux'
+import { getToken } from '../../store/auth'
+
 // React query fetch functions
 const getStartupPhoto = async (key) => {
-    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/getSignedURL/profilePhoto/' + key.queryKey[1])
+    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/getSignedURL/profilePhoto/' + key.queryKey[1], {
+        headers: {
+            'Authorization': 'Bearer ' + key.queryKey[2],
+        },
+    })
     return res.json()
 }
 
@@ -20,6 +28,7 @@ function StartupItem({ info }){
     const history = useHistory()
     var percentageRaised = info.campaign.currentlyRaised / info.campaign.goal * 100
     var progressBarWidth = getTailwindWidthFraction(percentageRaised)
+    const accessToken = useSelector(getToken)
 
     useEffect(() => {
         getProgressBarWidth()
@@ -30,7 +39,7 @@ function StartupItem({ info }){
         progressBarWidth = getTailwindWidthFraction(percentageRaised)
     }
 
-    const featuredPhoto = useQuery(['featuredStartupPhoto', info.id], getStartupPhoto)
+    const featuredPhoto = useQuery(['featuredStartupPhoto', info.id, accessToken], getStartupPhoto)
 
     // Find number of days/hours/mins left
     const now = moment()

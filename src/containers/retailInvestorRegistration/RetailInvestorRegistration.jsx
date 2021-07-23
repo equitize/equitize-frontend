@@ -15,7 +15,7 @@ import ConfigData from "../../config";
 
 // For redux
 import { useDispatch, useSelector } from 'react-redux'
-import { signedUp, getIsLoggedIn, getID } from '../../store/auth'
+import { signedUp, getIsLoggedIn, getID, getToken } from '../../store/auth'
 
 function RetailInvestorRegistration(){
     const [page, setPage] = useState("first")
@@ -40,6 +40,8 @@ function RetailInvestorRegistration(){
     const preferencesForm = useForm()
     const registerPreferences = preferencesForm.register
     const handleSubmitPreferences = preferencesForm.handleSubmit
+
+    const accessToken = useSelector(getToken)
 
     const onSubmitUserDetails = async (data, e) => {
         console.log(data, e);
@@ -76,6 +78,7 @@ function RetailInvestorRegistration(){
         const updateRI = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/' + retailInvestorID, {
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accessToken
             },
             method: 'PUT',
             body: JSON.stringify(data)
@@ -102,6 +105,7 @@ function RetailInvestorRegistration(){
         const updateIndustry = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/industries/addIndustries/', {
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accessToken
             },
             method: 'POST',
             body: JSON.stringify(updateIndustryData)

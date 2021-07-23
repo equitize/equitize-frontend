@@ -13,14 +13,24 @@ import MeetupMouse from './tempImages/MeetupMouse.svg'
 import { useQuery } from 'react-query'
 import { useEffect } from "react";
 
+// Redux
+import { getToken } from "../../store/auth";
+import { useSelector } from "react-redux";
+
 // React query fetch functions
 const getStartupPhoto = async (key) => {
-    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/getSignedURL/profilePhoto/' + key.queryKey[1])
+    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/getSignedURL/profilePhoto/' + key.queryKey[1], {
+        headers: {
+            'Authorization': 'Bearer ' + key.queryKey[2],
+        },
+    })
     return res.json()
 }
 
 function FeaturedStartup({ info }){
     const history = useHistory()
+    const accessToken = useSelector(getToken)
+    console.log('info', info)
 
     var percentageRaised = info.campaign.currentlyRaised / info.campaign.goal * 100
     var progressBarWidth = getTailwindWidthFraction(percentageRaised)
@@ -49,7 +59,7 @@ function FeaturedStartup({ info }){
     }
 
 
-    const featuredPhoto = useQuery(['featuredStartupPhoto', info.id], getStartupPhoto)
+    const featuredPhoto = useQuery(['featuredStartupPhoto', info.id, accessToken], getStartupPhoto)
     // console.log(featuredPhoto.data)
 
     function viewStartup(){

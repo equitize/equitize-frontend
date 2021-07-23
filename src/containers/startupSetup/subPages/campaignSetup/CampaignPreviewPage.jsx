@@ -54,7 +54,6 @@ function CampaignPreviewPage({ id }){
     })
 
     const accessToken = useSelector(getToken)
-    // var decoded = jwt_decode(accessToken)
 
     const { data, status } = useQuery(['viewStartupDetails', id, accessToken], getStartupDetails)
     // console.log(data)
