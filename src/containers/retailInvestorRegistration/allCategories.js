@@ -35,7 +35,6 @@ const allCategories = [
         name: "Others",
         id: 9
     }
-
 ]
 
 export default allCategories
