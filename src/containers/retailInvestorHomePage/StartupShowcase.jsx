@@ -2,13 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import FeaturedStartup from "./FeaturedStartup";
 import RecommendedStartups from "./RecommendedStartups";
-// import MeetupMouse from './tempImages/MeetupMouse.svg'
-// import Gover from './tempImages/Gover.png'
-// import Invern from './tempImages/Invern.png'
-// import Rocketeer from './tempImages/Rocketeer.png'
-// import IceBerk from './tempImages/IceBerk.png'
-// import PlantPeace from './tempImages/PlantPeace.png'
-// import ShareNow from './tempImages/ShareNow.png'
 import ConfigData from "../../config";
 
 // React query
@@ -60,7 +53,7 @@ function StartupShowcase({ searchTerms }){
                 <div>No LIVE campaigns. Please check back again later.</div>
             )}
 
-            {liveCampaigns.length > 0 && (  
+            {liveCampaigns.length > 0 && (
                 <>
                 {
                     searchTerms !== "" ?
@@ -76,7 +69,7 @@ function StartupShowcase({ searchTerms }){
                                 liveCampaigns.length > 1 ? <RecommendedStartups startups={ liveCampaigns.filter((v, i) => i !== 0) }/>
                                 : null
                             }
-                            
+
                         </div>
                 }
                 </>

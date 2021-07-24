@@ -172,7 +172,7 @@ function CampaignSetup(){
                 'Authorization': 'Bearer ' + accessToken
             },
             method: 'PUT',
-            body: JSON.stringify({ "campaignDescription": campaignDetails.campaignDescription }) 
+            body: JSON.stringify({ "campaignDescription": campaignDetails.campaignDescription })
         })
 
         const data = await response.json()
@@ -193,7 +193,7 @@ function CampaignSetup(){
                 'Authorization': 'Bearer ' + accessToken
             },
             method: 'PUT',
-            body: JSON.stringify(data) 
+            body: JSON.stringify(data)
         })
 
         const res = await response.json()

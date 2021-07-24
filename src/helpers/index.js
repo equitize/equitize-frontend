@@ -8,6 +8,23 @@ export function formattedSum(sum){
     return Number(sum).toLocaleString()
 }
 
+export function haveSameData(obj1, obj2){
+    const obj1Length = Object.keys(obj1).length;
+    const obj2Length = Object.keys(obj2).length;
+
+    if (obj1Length === obj2Length) {
+        return Object.keys(obj1).every(
+            key => Object.prototype.hasOwnProperty.call(obj2, key)
+                && obj2[key] === obj1[key]);
+    }
+    return false;
+}
+
+// TO CHANGE
+export function round(number){
+    return Math.round( number * 100 + Number.EPSILON ) / 100
+}
+
 export function getTailwindWidthFraction(width){
     const roundedNumber = round5(width)
     const NumberMapping = {
@@ -35,8 +52,6 @@ export function getTailwindWidthFraction(width){
 
     return NumberMapping[roundedNumber]
 }
-
-
 
 function round5(number){
     return Math.ceil(number/5) * 5;

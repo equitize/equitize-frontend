@@ -1,14 +1,13 @@
-import React, { useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import React, {useState} from "react";
+import {useHistory, useParams} from "react-router-dom";
 import PrimaryButton from "../../../../components/PrimaryButton/PrimaryButton";
-// import MeetupMouse from "../../../retailInvestorHomePage/tempImages/MeetupMouse.svg";
-import { formattedSum } from "../../../../helpers";
-import { Range } from "react-range";
+import {formattedSum} from "../../../../helpers";
+import {Range} from "react-range";
+import ZilpayModal from "./ZilpayModal";
 import ConfigData from "../../../../config";
 import moment from "moment";
-
 // React query
-import { useQuery } from 'react-query'
+import {useQuery} from 'react-query'
 
 // For redux
 import { useSelector } from 'react-redux'
@@ -53,31 +52,21 @@ function StartupCampaignInvestment(){
         else return false
     }
 
-    // TODO CALL API FOR DATA
-    // const startupObject = {
-    //     name: "Meetup Mouse",
-    //     description: "Meetup Mouse suggests the BEST hand-picked places for your group’s needs so you and your friends NEVER worry about where to eat again!",
-    //     fundedAmount: 200000,
-    //     sharesAllocated: "20",
-    //     campaignGoal: 500000,
-    //     endTime: "47",
-    //     id: 1,
-    //     imageLink: MeetupMouse
-    // }
-
     function returnToCampaignPage(){
         history.push(`/startup/${id}`)
     }
 
     // TODO Loading Page? Unique URL? Actual ZILPAY integration?
-    const submitInvestment = async () => {
-        console.log(investmentAmount[0])
+    const getInvestmentData = () => {
+        return {...data, "pledgeAmount": investmentAmount[0]}
+    }
 
-        // const investmentData = { "pledgeAmount": investmentAmount[0] }
-
-        history.push(
-            `/startup/${id}/invest/transactionSuccess?deposit=${investmentAmount[0]}`
-        )
+    function redirectForTransactionSuccess(){
+        setTimeout(function (){
+            history.push(
+                `/startup/${id}/invest/transactionSuccess?deposit=${investmentAmount[0]}`
+            )
+        }, 15000)
     }
 
     return (
@@ -115,11 +104,11 @@ function StartupCampaignInvestment(){
                     </div>
                     <div className="flex flex-col w-1/3">
                         <p className="font-Inter text-sm md:text-xl lg:text-2xl text-center">
-                                { isLastHour() ? 
+                                { isLastHour() ?
                                     <>
                                         {minutes} minutes left
                                     </>
-                                : 
+                                :
                                 <>
                                     {days} days & {hours} hours left
                                 </>
@@ -172,17 +161,12 @@ function StartupCampaignInvestment(){
                 </p>
                 <br />
                 <br />
-                <PrimaryButton text="Submit" properties="self-end" onClick={submitInvestment} />
+                <ZilpayModal getInvestmentData={getInvestmentData()} redirectForTransactionSuccess={redirectForTransactionSuccess} />
                 <br />
             </div>
             )}
-        
         </>
     )
-
 }
-
-
-
 
 export default StartupCampaignInvestment;

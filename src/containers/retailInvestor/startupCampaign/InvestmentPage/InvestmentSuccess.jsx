@@ -40,11 +40,11 @@ const InvestmentSuccess = () => {
             }) 
         })
 
-        const status = await response.status
+        const status = response.status
         if (status === 200) {
             const res = await response.json()
 
-            if (res.message === "Milestone SC and Fungible Token SC succesfully deployed.") {
+            if (res.message === "Milestone SC and Fungible Token SC successfully deployed.") {
                 setPledgeResult(res)
                 setLoading(true)
                 setTimeout(() => {
@@ -99,7 +99,7 @@ const InvestmentSuccess = () => {
             <br />
             {!done ? (
                 <>
-                <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">Congratutions! Campaign has reached its goal.</p>
+                <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">Congratulations! Campaign has reached its goal.</p>
                 <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">Deploying smart contracts...</p>
                 <Loading loading={loading}/>
                 <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">Do not navigate away from this page.</p>
