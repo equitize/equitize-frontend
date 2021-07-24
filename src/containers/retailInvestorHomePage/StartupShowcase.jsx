@@ -20,7 +20,6 @@ import { getID, getToken } from '../../store/auth'
 
 // React query fetch functions
 const getRecommendedStartups = async (key) => {
-    console.log("Requesting recommender")
     const res = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/recommender/' + key.queryKey[1], {
         headers: {
             'Authorization': 'Bearer ' + key.queryKey[2],
@@ -37,7 +36,7 @@ function StartupShowcase({ searchTerms }){
 
     // React query fetch requests
     const { data, status } = useQuery(['recommendedStartups', retailInvestorID, accessToken], getRecommendedStartups)
-    console.log(status, data)
+    // console.log(status, data)
     // console.log(recommended)
     // console.log("First startup", firstStartup)
 
@@ -45,15 +44,7 @@ function StartupShowcase({ searchTerms }){
     if (status === "success") {
         liveCampaigns = data.filter( startup => startup.campaign.campaignStatus === "LIVE" )
     }
-    console.log('LIVE', liveCampaigns)
-
-    // TODO Search Results Implementation
-    if (searchTerms !== "") {
-        const newFilter = liveCampaigns.filter((startup) => {
-            return startup.companyName.toLowerCase().includes(searchTerms.toLowerCase())
-        })
-        console.log("FILTERED:", newFilter)
-    }
+    // console.log('LIVE', liveCampaigns)
 
     return(
         <>

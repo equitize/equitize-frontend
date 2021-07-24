@@ -30,7 +30,7 @@ const getStartupPhoto = async (key) => {
 function FeaturedStartup({ info }){
     const history = useHistory()
     const accessToken = useSelector(getToken)
-    console.log('info', info)
+    // console.log('info', info)
 
     var percentageRaised = info.campaign.currentlyRaised / info.campaign.goal * 100
     var progressBarWidth = getTailwindWidthFraction(percentageRaised)
