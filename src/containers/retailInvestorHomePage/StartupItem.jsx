@@ -63,7 +63,7 @@ function StartupItem({ info }){
     return (
         <>
             <div className="h-full space-y-2 group border-indigo-500 border-opacity-25 hover:bg-white hover:shadow-lg hover:border-transparent border rounded-lg cursor-pointer" onClick={viewStartup}>
-                <img src={ featuredPhoto.status === "success" ? featuredPhoto.data.signedURL : null } className="h-32 sm:h-48 lg:h-56 cursor-pointer w-full rounded-t-lg object-cover" alt="Startup Image"/>
+                <img src={ featuredPhoto.status === "success" ? featuredPhoto.data.signedURL : null } className="h-32 sm:h-48 lg:h-56 w-full rounded-t-lg object-cover" alt="Startup Image"/>
                 <p className="font-bold font-Rubik text-xl md:text-xl lg:text-2xl text-center text-black group-hover:text-gray-900">{info.companyName}</p>
                 <div className="mx-6 my-5">
                     <p className="font-Inter text-sm lg:text-lg text-black group-hover:text-gray-500">{info.profileDescription}</p>

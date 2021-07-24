@@ -69,9 +69,9 @@ function FeaturedStartup({ info }){
 
     return (
         <>
-            <p className="font-Inter text-xl">Featured Startup</p>
-            <div className="flex flex-col md:flex-row space-x22 group border-indigo-500 border-opacity-25 hover:bg-white hover:shadow-lg hover:border-transparent border rounded-lg cursor-pointer" onClick={viewStartup}>
-                <img src={ featuredPhoto.status === "success" ? featuredPhoto.data.signedURL : MeetupMouse } className="md:w-1/3 lg:w-1/2 rounded-md mx-6 my-5" alt="Featured Startup Image" />
+            <p className="font-Inter text-xl">Recommended startups</p>
+            <div className="flex flex-col md:flex-row space-x22 group border-indigo-500 border-opacity-25 hover:bg-white hover:shadow-lg hover:border-transparent border rounded-lg cursor-pointer mx-1" onClick={viewStartup}>
+                <img src={ featuredPhoto.status === "success" ? featuredPhoto.data.signedURL : MeetupMouse } className="md:w-1/3 lg:w-1/2 rounded-md mx-6 my-5 object-cover" alt="Featured Startup Image" />
                 <div className="md:w-1/2 lg:w-full flex flex-col mr-6 my-5">
                     <p className="font-bold font-Rubik text-xl md:text-2xl lg:text-4xl text-black group-hover:text-gray-600">{info.companyName}</p>
                     <br />
