@@ -83,7 +83,7 @@ function AccountVerification(){
             method: 'PUT',
             body: JSON.stringify({
                 "profileDescription": businessDescription,
-                "zilAddr": zilAddr
+                "zilAddr": zilAddress
             }) 
         })
 
