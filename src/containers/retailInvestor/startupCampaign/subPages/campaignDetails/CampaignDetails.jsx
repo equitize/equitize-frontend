@@ -3,7 +3,6 @@ import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import PropTypes from "prop-types";
 
 function CampaignDetails({ campaignPDF }){
-
     const [numPages, setNumPages] = useState(null);
     const [dimensions, setDimensions] = React.useState({
         width: window.innerWidth,

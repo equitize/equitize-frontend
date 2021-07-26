@@ -3,7 +3,6 @@ import React from 'react'
 function CampaignFAQs(){
 
     // TODO Where is this FAQs obtained from??
-
     const faqObject = [
         {
             id:0,

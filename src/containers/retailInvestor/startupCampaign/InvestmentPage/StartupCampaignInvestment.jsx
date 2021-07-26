@@ -8,10 +8,15 @@ import ConfigData from "../../../../config";
 import moment from "moment";
 // React query
 import {useQuery} from 'react-query'
+import { isLastHour } from "../../../../helpers";
 
 // React query fetch functions
 const getStartupDetails = async (key) => {
     const res = await fetch(ConfigData.SERVER_URL + '/db/startup/' + key.queryKey[1])
+    if (!res.ok){
+        const response = await res.json()
+        throw new Error(response.error.message)
+    }
     return res.json()
 }
 
@@ -19,13 +24,11 @@ function StartupCampaignInvestment(){
     let { id } = useParams()
     const history = useHistory()
     const [investmentAmount, setInvestmentAmount] = useState([0])
+    const { data, status, error } = useQuery(['viewStartupDetails', id], getStartupDetails)
 
-    const { data, status } = useQuery(['viewStartupDetails', id], getStartupDetails)
-    //console.log(status, data)
-
-    var days = 0
-    var hours = 0
-    var minutes = 0
+    let days = 0
+    let hours = 0
+    let minutes = 0
     if (status === 'success') {
         // Find number of days/hours/mins left
         const now = moment()
@@ -33,13 +36,6 @@ function StartupCampaignInvestment(){
         days = exp.diff(now, 'days');
         hours = exp.subtract(days, 'days').diff(now, 'hours');
         minutes = exp.subtract(hours, 'hours').diff(now, 'minutes');
-    }
-
-    function isLastHour() {
-        if (days <= 0 && hours <= 0) {
-            return true
-        }
-        else return false
     }
 
     function returnToCampaignPage(){
@@ -63,11 +59,11 @@ function StartupCampaignInvestment(){
         <>
         { status === 'loading' && (
                 <div>Loading...</div>
-            )}
+        )}
 
         { status === 'error' && (
-                <div>Error fetching data</div>
-            )}
+                <div>{error.message || "Unexpected Error Occurred"}</div>
+        )}
 
         { status === 'success' && (
                 <div className="container mx-auto flex flex-wrap p-5 flex-col items-center my-auto space-y-2">
@@ -94,7 +90,7 @@ function StartupCampaignInvestment(){
                     </div>
                     <div className="flex flex-col w-1/3">
                         <p className="font-Inter text-sm md:text-xl lg:text-2xl text-center">
-                                { isLastHour() ? 
+                                { isLastHour(days, hours) ?
                                     <>
                                         {minutes} minutes left
                                     </>

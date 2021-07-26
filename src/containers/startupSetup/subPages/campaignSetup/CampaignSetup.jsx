@@ -26,7 +26,7 @@ function CampaignSetup(){
     // Redux useSelector
     const startupId = useSelector(getID)
     const accessToken = useSelector(getToken)
-    var decoded = jwt_decode(accessToken)
+    let decoded = jwt_decode(accessToken)
     //TODO: Check for jwt InvalidTokenError if so dispatch SignOut
     // console.log(decoded)
 
@@ -57,6 +57,7 @@ function CampaignSetup(){
         enabled: true
     })
 
+    // TODO Refactor Logic for React Query instead
     useEffect(() => {
         
         if (data !== undefined){
@@ -70,7 +71,7 @@ function CampaignSetup(){
                 })
             }
 
-            if (data?.campaign?.zoomDatetime !== null && data?.campaign?.zoomDatetime !== null){
+            if (data?.campaign?.zoomDatetime !== undefined && data?.campaign?.zoomDatetime !== null){
                 const zoomDateTimeArray = data.campaign.zoomDatetime.split(",")
                 setZoomDetails({
                     date: zoomDateTimeArray[0],
@@ -209,7 +210,7 @@ function CampaignSetup(){
             }) 
         })
 
-        const status = await response.status
+        const status = response.status
         if (status === 200) {
             const res = await response.json()
             console.log(res)
@@ -229,11 +230,7 @@ function CampaignSetup(){
 
     function isStartupVerified(msg) {
         const isStartupVerified = msg.permissions[0]
-        if (isStartupVerified === "startup:unverified") {
-            // console.log("NOT VERIFIED!")
-            return false
-        }
-        return true
+        return isStartupVerified !== "startup:unverified";
     }
 
     return (
@@ -277,12 +274,9 @@ function CampaignSetup(){
                             isStartupVerified(decoded) ? <p className="text-center place-self-center font-Inter">Note: Campaign end date will be 1 month from start date</p>
                             : <p className="text-center place-self-center font-Inter">Note: Unable to set a launch date as your startup is not KYC verified yet.</p>
                         }
-                        
                     </div>
                     <PrimaryButton properties="self-end" text="Update" onClick={launchCampaign } disabled={ !isStartupVerified(decoded) }/>
                 </div>
-            {/* )} */}
-            
         </>
     )
 }

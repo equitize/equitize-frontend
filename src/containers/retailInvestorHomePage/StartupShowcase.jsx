@@ -13,8 +13,11 @@ import { getID } from '../../store/auth'
 
 // React query fetch functions
 const getRecommendedStartups = async (key) => {
-    console.log("Requesting recommender")
     const res = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/recommender/' + key.queryKey[1])
+    if (!res.ok){
+        const response = await res.json()
+        throw new Error(response.error.message)
+    }
     return res.json()
 }
 
@@ -22,10 +25,9 @@ function StartupShowcase({ searchTerms }){
 
     // Redux useSelector
     const retailInvestorID = useSelector(getID)
-    console.log(retailInvestorID)
 
     // React query fetch requests
-    const { data, status } = useQuery(['recommendedStartups', retailInvestorID], getRecommendedStartups)
+    const { data, status, error } = useQuery(['recommendedStartups', retailInvestorID], getRecommendedStartups)
 
     // TODO Details for object TBC
     // const featuredStartupObject = {
@@ -106,11 +108,11 @@ function StartupShowcase({ searchTerms }){
     return(
         <>
             {status === 'loading' && (
-                <div>Loading data...</div>
+                <div className="font-bold font-Inter sm:text-xl md:text-2xl">Loading data...</div>
             )}
 
             {status === 'error' && (
-                <div>Error fetching data</div>
+                <div className="font-bold font-Inter sm:text-xl md:text-2xl">{error.message || "Unexpected Error Occurred"}</div>
             )}
 
             {status === 'success' && (  
@@ -121,14 +123,18 @@ function StartupShowcase({ searchTerms }){
                             <p>{searchTerms}</p>
                         </div>
                         :
-                        <div className="w-full flex flex-col space-y-4">
-                            <FeaturedStartup info={data[0]}/>
-                            {
-                                data.length > 1 ? <RecommendedStartups startups={ data.filter((v, i) => i !== 0) }/>
-                                : null
-                            }
-                            
-                        </div>
+                        data.length > 0 ?
+                            <div className="w-full flex flex-col space-y-4">
+                                <FeaturedStartup info={data[0]}/>
+                                {
+                                    data.length > 1 ? <RecommendedStartups startups={ data.filter((v, i) => i !== 0) }/>
+                                    : null
+                                }
+                            </div>
+                            :
+                            <div className="font-bold font-Inter sm:text-xl md:text-2xl">
+                                Currently, there are no startups found
+                            </div>
                 }
                 </>
             )}

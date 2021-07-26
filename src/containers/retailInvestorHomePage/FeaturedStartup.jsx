@@ -5,9 +5,10 @@ import { getTailwindWidthFraction } from "../../helpers";
 import { useHistory } from "react-router-dom";
 import ConfigData from "../../config";
 import moment from "moment";
+import { isLastHour } from "../../helpers";
 
 // Default image
-import MeetupMouse from './tempImages/MeetupMouse.svg'
+// import MeetupMouse from './tempImages/MeetupMouse.svg'
 
 // React query
 import { useQuery } from 'react-query'
@@ -22,8 +23,8 @@ const getStartupPhoto = async (key) => {
 function FeaturedStartup({ info }){
     const history = useHistory()
 
-    var percentageRaised = info.campaign.currentlyRaised / info.campaign.goal * 100
-    var progressBarWidth = getTailwindWidthFraction(percentageRaised)
+    let percentageRaised = info.campaign.currentlyRaised / info.campaign.goal * 100
+    let progressBarWidth = getTailwindWidthFraction(percentageRaised)
 
     // Find number of days/hours/mins left
     const now = moment()
@@ -31,13 +32,6 @@ function FeaturedStartup({ info }){
     const days = exp.diff(now, 'days');
     const hours = exp.subtract(days, 'days').diff(now, 'hours');
     const minutes = exp.subtract(hours, 'hours').diff(now, 'minutes');
-
-    function isLastHour() {
-        if (days <= 0 && hours <= 0) {
-            return true
-        }
-        else return false
-    }
 
     useEffect(() => {
         getProgressBarWidth()
@@ -48,9 +42,7 @@ function FeaturedStartup({ info }){
         progressBarWidth = getTailwindWidthFraction(percentageRaised)
     }
 
-
     const featuredPhoto = useQuery(['featuredStartupPhoto', info.id], getStartupPhoto)
-    // console.log(featuredPhoto.data)
 
     function viewStartup(){
         const URL = `/startup/${info.id}`
@@ -61,7 +53,7 @@ function FeaturedStartup({ info }){
         <>
             <p className="font-Inter text-xl">Featured Startup</p>
             <div className="flex flex-col md:flex-row space-x22 group border-indigo-500 border-opacity-25 hover:bg-white hover:shadow-lg hover:border-transparent border rounded-lg cursor-pointer" onClick={viewStartup}>
-                <img src={ featuredPhoto.status === "success" ? featuredPhoto.data.signedURL : MeetupMouse } className="md:w-1/3 lg:w-1/2 rounded-md mx-6 my-5" alt="Featured Startup Image" />
+                <img src={ featuredPhoto.status === "success" ? featuredPhoto.data.signedURL : null } className="md:w-1/3 lg:w-1/2 rounded-md mx-6 my-5" alt="Featured Startup Image" />
                 <div className="md:w-1/2 lg:w-1/3 flex flex-col mx-6 my-5">
                     <p className="font-bold font-Rubik text-xl md:text-2xl lg:text-4xl text-indigo-600 group-hover:text-gray-900">{info.companyName}</p>
                     <br />
@@ -75,7 +67,7 @@ function FeaturedStartup({ info }){
                         <div className="flex flex-col w-1/2">
                             <p className="font-Inter text-sm md:text-md"><span className="text-active-purple">{info.campaign.sharesAllocated}%</span> Equity Stake</p>
                             <p className="font-Inter text-sm md:text-md"><span className="text-active-purple"></span>
-                                { isLastHour() ? 
+                                { isLastHour(days, hours) ?
                                     <>
                                         {minutes} minutes left
                                     </>

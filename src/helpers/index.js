@@ -20,6 +20,10 @@ export function haveSameData(obj1, obj2){
     return false;
 }
 
+export function isLastHour(days, hours) {
+    return days <= 0 && hours <= 0;
+}
+
 // TO CHANGE
 export function round(number){
     return Math.round( number * 100 + Number.EPSILON ) / 100

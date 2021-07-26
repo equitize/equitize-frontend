@@ -185,7 +185,6 @@ function RetailInvestorRegistration(){
                                           properties="text-center" />
                             <PrimaryInput placeholder="Password" register={register("password", {required :true})}
                                           properties="text-center" />
-
                             {Object.keys(errors).length > 0 && <PrimaryErrorMessage text="All Fields are required" />}
                             <br />
                             <PrimaryButton text="Sign Up" type="submit" />
@@ -232,7 +231,6 @@ function RetailInvestorRegistration(){
                                 <PrimaryButton text="Skip" />
                                 <PrimaryButton text="Next" type="submit" />
                             </div>
-                            
                             <br />
                             <br />
                             <FormProgressBar pages={3} selected={1}/>
@@ -277,7 +275,6 @@ function RetailInvestorRegistration(){
                         <br/>
                     </div>
                 }
-                
         </div>
     )
 }

@@ -9,7 +9,6 @@ function CampaignMilestones({ campaign, campaignMilestones }){
 
     return (
         <>
-            
             {
                 campaignMilestones ?
                     campaignMilestones.map((item, index) => (
