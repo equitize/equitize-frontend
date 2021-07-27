@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import PrimaryButton from "../../../components/PrimaryButton/PrimaryButton";
 import InvestmentDetails from "./InvestmentDetails";
 import ScoreCard from "./ScoreCard";
@@ -28,7 +28,11 @@ const getStartupDetails = async (key) => {
             'Authorization': 'Bearer ' + key.queryKey[2]
         }
     })
-    return await res.json()
+    if (!res.ok){
+        const response = await res.json()
+        throw new Error(response.error.message)
+    }
+    return res.json()
 }
 
 const getStartupVideo = async (key) => {
@@ -37,6 +41,10 @@ const getStartupVideo = async (key) => {
             'Authorization': 'Bearer ' + key.queryKey[2]
         }
     })
+    if (!res.ok){
+        const response = await res.json()
+        throw new Error(response.error.message)
+    }
     return res.json()
 }
 
@@ -46,6 +54,10 @@ const getStartupPitchDeck = async (key) => {
             'Authorization': 'Bearer ' + key.queryKey[2]
         }
     })
+    if (!res.ok){
+        const response = await res.json()
+        throw new Error(response.error.message)
+    }
     return res.json()
 }
 
@@ -59,19 +71,17 @@ function StartupCampaign(){
         fourth: false
     })
 
-    const accessToken = useSelector(getToken)
 
-    const { data, status } = useQuery(['viewStartupDetails', id, accessToken], getStartupDetails)
-    console.log(data)
+    const accessToken = useSelector(getToken)
+    const { data, status, error } = useQuery(['viewStartupDetails', id, accessToken], getStartupDetails)
 
     const videoData = useQuery(['startupVideo', id, accessToken], getStartupVideo)
     const pitchDeck = useQuery(['startupPitchDeck', id, accessToken], getStartupPitchDeck)
 
     function getProgressBarWidth() {
         if (status === 'success') {
-            var percentageRaised = data.campaign.currentlyRaised / data.campaign.goal * 100
-            var progressBarWidth = getTailwindWidthFraction(percentageRaised)
-            return progressBarWidth
+            let percentageRaised = data.campaign.currentlyRaised / data.campaign.goal * 100
+            return getTailwindWidthFraction(percentageRaised)
         }
     }
     // const percentageRaised = startupObject.fundedAmount/startupObject.campaignGoal * 100
@@ -92,11 +102,11 @@ function StartupCampaign(){
         <>
         { status === 'loading' && (
                 <div>Loading...</div>
-            )}
+        )}
 
         { status === 'error' && (
-                <div>Error fetching data</div>
-            )}
+                <div>{error.message || "Unexpected Error Occurred"}</div>
+        )}
         
         { status === 'success' && (
         <div className="container mx-auto flex flex-wrap flex-col items-center my-auto xl:px-40 lg:px-8 md:px-12 sm:px-8">

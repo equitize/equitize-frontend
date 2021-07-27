@@ -46,7 +46,6 @@ function DesignSprintApplication(){
 
             const initialSelectedObj = sprintPeriodsJSON.sprintPeriods.reduce((acc, cur)=>({ ...acc, [cur.id]: false }), {})
             setSelected(initialSelectedObj)
-            console.log(selected)
         },[]
     )
 
@@ -81,7 +80,6 @@ function DesignSprintApplication(){
                         : null
                 }
             </div>
-
         </>
     )
 }

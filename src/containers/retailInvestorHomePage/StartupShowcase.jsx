@@ -18,6 +18,10 @@ const getRecommendedStartups = async (key) => {
             'Authorization': 'Bearer ' + key.queryKey[2],
         },
     })
+    if (!res.ok){
+        const response = await res.json()
+        throw new Error(response.error.message)
+    }
     return res.json()
 }
 
@@ -28,25 +32,21 @@ function StartupShowcase({ searchTerms }){
     const accessToken = useSelector(getToken)
 
     // React query fetch requests
-    const { data, status } = useQuery(['recommendedStartups', retailInvestorID, accessToken], getRecommendedStartups)
-    // console.log(status, data)
-    // console.log(recommended)
-    // console.log("First startup", firstStartup)
+    const { data, status, error } = useQuery(['recommendedStartups', retailInvestorID, accessToken], getRecommendedStartups)
 
     var liveCampaigns = []
     if (status === "success") {
         liveCampaigns = data.filter( startup => startup.campaign.campaignStatus === "LIVE" )
     }
-    // console.log('LIVE', liveCampaigns)
 
     return(
         <>
             {status === 'loading' && (
-                <div>Loading data...</div>
+                <div className="font-bold font-Inter sm:text-xl md:text-2xl">Loading data...</div>
             )}
 
             {status === 'error' && (
-                <div>Error fetching data</div>
+                <div className="font-bold font-Inter sm:text-xl md:text-2xl">{error.message || "Unexpected Error Occurred"}</div>
             )}
 
             {liveCampaigns.length === 0 && (
@@ -69,7 +69,6 @@ function StartupShowcase({ searchTerms }){
                                 liveCampaigns.length > 1 ? <RecommendedStartups startups={ liveCampaigns.filter((v, i) => i !== 0) }/>
                                 : null
                             }
-
                         </div>
                 }
                 </>

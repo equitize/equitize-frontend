@@ -61,11 +61,10 @@ function AddMilestoneModal({ addMilestonesFunc, currentMilestoneLength}){
             body: JSON.stringify(milestone) 
         })
         
-        const status = await response.status
+        const status = response.status
         if (status === 200) {
             const data = await response.json()
             console.log(data)
-
         } else {
             const error = await response.json()
             console.log("Error", error)

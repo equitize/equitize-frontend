@@ -48,7 +48,6 @@ function CommercialChampion(){
 
             const initialSelectedObj = commercialChampionsJSON.commercialChampions.reduce((acc, cur)=>({ ...acc, [cur.id]: false }), {})
             setSelected(initialSelectedObj)
-            console.log(selected)
         },[]
     )
 
