@@ -4,6 +4,10 @@ import classNames from "classnames";
 import ConfigData from "../../config";
 import TextModal from "../Modal/TextModal";
 
+// For redux
+import { useSelector } from 'react-redux'
+import { getToken } from '../../store/auth'
+
 function PrimaryUploadImageButton({ text, properties, labelId, errorFunc, startupId }){
     let cssProperties = classNames(properties,
         "flex flex-wrap bg-gray-100 placeholder-gray-400 hover:bg-gray-300 w-full self-stretch text-center font-bold py-4 px-4 m-1 rounded-xl text-sm lg:text-xl")
@@ -12,12 +16,17 @@ function PrimaryUploadImageButton({ text, properties, labelId, errorFunc, startu
     const [showError, setShowError] = useState(false)
     const [resError, setResError] = useState("")
 
+    const accessToken = useSelector(getToken)
+
     const fileUpload = async (fileToUpload) => {
         
         const formData = new FormData()
         formData.append('file', fileToUpload)
 
         const response = await fetch(ConfigData.SERVER_URL + '/db/startup/' + labelId + '/' + startupId, {
+            headers: {
+                'Authorization': 'Bearer ' + accessToken
+            },
             method: 'PUT',
             body: formData
         })

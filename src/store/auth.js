@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createSelector } from 'reselect'
-import { apiCallBegan, authApiCallBegan } from './middleware/apiActions'
+// import { apiCallBegan, authApiCallBegan } from './middleware/apiActions'
 
 const slice = createSlice({
     name: 'auth',
@@ -45,23 +45,23 @@ export const { stateChanged, loggedIn, loggedOut, authRequestFailed, signedUp, v
 export default slice.reducer
 
 // Action creators
-const url = "/token"
-export const logIn = credentials => authApiCallBegan({
-    url: url,
-    method: "post",
-    data: credentials,
-    onSuccess: loggedIn.type,
-    onError: authRequestFailed.type
-})
+// const url = "/token"
+// export const logIn = credentials => authApiCallBegan({
+//     url: url,
+//     method: "post",
+//     data: credentials,
+//     onSuccess: loggedIn.type,
+//     onError: authRequestFailed.type
+// })
 
-const signUpUrl = "/startup"        //TODO: Update this
-export const signUp = credentials => apiCallBegan({
-    url: signUpUrl,
-    method: "post",
-    data: credentials,
-    onSuccess: signedUp.type,
-    onError: authRequestFailed.type
-})
+// const signUpUrl = "/startup"        //TODO: Update this
+// export const signUp = credentials => apiCallBegan({
+//     url: signUpUrl,
+//     method: "post",
+//     data: credentials,
+//     onSuccess: signedUp.type,
+//     onError: authRequestFailed.type
+// })
 
 // export const logOut = () => apiCallBegan({
 //     url: url + '/logout',
