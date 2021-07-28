@@ -7,7 +7,7 @@ require("chromedriver");
 const sleep = t => new Promise(s => setTimeout(s, t));
 
 var uuid = require("uuid");
-var uuid_string = uuid.v4();
+var uuid_string = uuid.v4().substring(0,8);
 
 let companyName = uuid_string
 let emailAddress = `${companyName}@mail.com`
@@ -18,12 +18,25 @@ let sample_mp4_path = "/Users/hkmac/Desktop/equitize-frontend/src/tests/sample_f
 let sample_pdf_path = "/Users/hkmac/Desktop/equitize-frontend/src/tests/sample_files/sample.pdf"
 let sample_input_string = "Sample Input String"
 
+const today = new Date()
+let ytd = new Date(today)
+ytd.setDate(ytd.getDate() - 1)
+let tmr = new Date(today)
+tmr.setDate(tmr.getDate() + 1)
+let date_iso_ytd = ytd.toISOString().split("T")[0]
+let datestring_ytd = date_iso_ytd.substring(8,10) + '-' + date_iso_ytd.substring(5,7) + '-' + date_iso_ytd.substring(0,4)
+let date_iso_tmr = tmr.toISOString().split("T")[0]
+let datestring_tmr = date_iso_tmr.substring(8,10) + '-' + date_iso_tmr.substring(5,7) + '-' + date_iso_tmr.substring(0,4)
+
 it('Testing to see if frontpage works', async () => {
 
     let driver = await new Builder().forBrowser("chrome").build();
 
     await driver.get("http://localhost:3000");
     await sleep(3000)
+
+    console.log(process.env.NODE_ENV, process.env.ADMIN_PASSWORD_FOR_TOKEN, process.env.GENERATE_SOURCEMAP)
+    console.log(datestring_ytd, datestring_tmr)
 
     var title = await driver.getTitle();
     console.log('Title is:', title);
@@ -121,7 +134,7 @@ it('Testing to see if frontpage works', async () => {
     await sleep(500)
     await driver.findElement(By.css('input[placeholder="Milestone Title"]')).sendKeys(sample_input_string);
     await sleep(500)
-    await driver.findElement(By.css('input[type="Date"]')).sendKeys("09-09-2021");
+    await driver.findElement(By.css('input[type="Date"]')).sendKeys(datestring_tmr);
     await sleep(500)
     await driver.findElement(By.css('textarea[placeholder="Description"]')).sendKeys(sample_input_string);
     await sleep(500)
@@ -139,7 +152,7 @@ it('Testing to see if frontpage works', async () => {
 
     await driver.findElement(By.xpath('//p[contains(text(),"ZOOM")]')).click()
     await sleep(1000)
-    await driver.findElement(By.css('input[type="Date"]')).sendKeys("09-09-2021");
+    await driver.findElement(By.css('input[type="Date"]')).sendKeys(datestring_tmr);
     await sleep(1000)
     var elements = await driver.findElements(By.css('input[type="Time"]'));
     for (let idx in elements){
@@ -232,14 +245,14 @@ it('Testing to see if frontpage works', async () => {
     await driver.findElement(By.xpath("//button[contains(text(),'" + "View campaign preview" +"')]")).click();
     await sleep(2000)
 
-    await driver.findElement(By.css('input[type="Date"]')).sendKeys("09-09-2021");
+    await driver.findElement(By.css('input[type="Date"]')).sendKeys(datestring_ytd);
     await sleep(1000)
-    await driver.findElement(By.css('input[type="Time"]')).sendKeys("12:00PM");
+    await driver.findElement(By.css('input[type="Time"]')).sendKeys("00:01AM");
     await sleep(1000)
     await driver.findElement(By.xpath('//button[contains(text(),"Update")]')).click();
     await sleep(2000)
 
-    await sleep(2000000)
+    await sleep(120000)
 
     //It is always a safe practice to quit the browser after execution
     await driver.quit();
