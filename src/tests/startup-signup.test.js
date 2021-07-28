@@ -136,11 +136,10 @@ it('Testing to see if frontpage works', async () => {
     await sleep(500)
     await driver.findElement(By.css('textarea[placeholder="Description"]')).sendKeys(sample_input_string);
     await sleep(500)
-    await driver.findElement(By.css('div[role="slider"]')).sendKeys(Key.RIGHT);
-    await driver.findElement(By.css('div[role="slider"]')).sendKeys(Key.RIGHT);
-    await driver.findElement(By.css('div[role="slider"]')).sendKeys(Key.RIGHT);
-    await driver.findElement(By.css('div[role="slider"]')).sendKeys(Key.RIGHT);
-    await driver.findElement(By.css('div[role="slider"]')).sendKeys(Key.RIGHT);
+
+    for (const _ of Array(20).keys()) {
+      await driver.findElement(By.css('div[role="slider"]')).sendKeys(Key.RIGHT);
+    }
     await sleep(500)
     await driver.findElement(By.xpath('//button[contains(text(),"Submit")]')).click()
     await sleep(1000)

@@ -161,6 +161,9 @@ it('Testing to see if frontpage works', async () => {
     await sleep(10000)  // wait for startup to finish
     driver.navigate().refresh()
 
+    await sleep(10000)  // wait for startup to finish
+    driver.navigate().refresh()
+
     await sleep(2000)  // wait for startup to finish
 
     await driver.findElement(By.css('img[alt="Featured Startup Image"]')).click();
@@ -168,7 +171,7 @@ it('Testing to see if frontpage works', async () => {
     await driver.findElement(By.xpath('//p[contains(text(),"INVEST")]')).click();
     await sleep(2000)
 
-    for (const _ of Array(1000).keys()) {
+    for (const _ of Array(200).keys()) {
       await driver.findElement(By.css('div[role="slider"]')).sendKeys(Key.RIGHT);
     }
     await sleep(2000)
