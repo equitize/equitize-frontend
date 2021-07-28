@@ -55,14 +55,17 @@ it('Testing to see if frontpage works', async () => {
 
     await sleep(3000)
 
+    for (const _ of Array(5).keys()) {
+      try{
+        await driver.findElement(By.css('input[name="age"]')).sendKeys(Key.UP);
+        await sleep(2000)
+      } catch(error){}
+    }
     await driver.findElement(By.xpath('//select[@name="gender"]/option[2]')).click();
     await sleep(2000)
-
     await driver.findElement(By.css('input[type="search"]')).click();
     await sleep(2000)
     await driver.findElement(By.css('svg[fill="currentColor"]')).click();
-    await sleep(2000)
-    await driver.findElement(By.css('input[name="age"]')).sendKeys(Key.UP);
     await sleep(2000)
     await driver.findElement(By.css('input[name="age"]')).click();  // click somewhere
     await sleep(2000)
@@ -146,7 +149,31 @@ it('Testing to see if frontpage works', async () => {
     await driver.findElement(By.xpath('//button[contains(text(),"Log In")]')).click();
     await sleep(3000)
 
-    await sleep(40000)  // wait for startup to finish
+    await sleep(10000)  // wait for startup to finish
+    driver.navigate().refresh()
+
+    await sleep(10000)  // wait for startup to finish
+    driver.navigate().refresh()
+
+    await sleep(10000)  // wait for startup to finish
+    driver.navigate().refresh()
+
+    await sleep(10000)  // wait for startup to finish
+    driver.navigate().refresh()
+
+    await sleep(2000)  // wait for startup to finish
+
+    await driver.findElement(By.css('img[alt="Featured Startup Image"]')).click();
+    await sleep(2000)
+    await driver.findElement(By.xpath('//p[contains(text(),"INVEST")]')).click();
+    await sleep(2000)
+
+    for (const _ of Array(1000).keys()) {
+      await driver.findElement(By.css('div[role="slider"]')).sendKeys(Key.RIGHT);
+    }
+    await sleep(2000)
+    await driver.findElement(By.xpath('//button[contains(text(), "Submit")]')).click();
+    await sleep(2000)
 
     await sleep(300000)  // wait for startup to finish
 

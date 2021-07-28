@@ -56,12 +56,10 @@ it('Testing to see if frontpage works', async () => {
     await sleep(500)
 
     await driver.findElement(By.css('input[placeholder="Password"]')).sendKeys(password);
-    await sleep(1000)
+    await sleep(500)
 
     await driver.findElement(By.xpath("//button[contains(text(),'" + "Sign Up" +"')]")).click();
-    await sleep(2000)
-
-    await sleep(5000)
+    await sleep(4000)
 
     var elements = await driver.findElements(By.className("bg-custom-gray"));
     for (let idx in elements){
@@ -76,19 +74,19 @@ it('Testing to see if frontpage works', async () => {
 
     // token faulty, await new version
     await driver.findElement(By.css("input[id='capTable']")).sendKeys(sample_pdf_path);
-    await sleep(1000)
+    await sleep(500)
 
     await driver.findElement(By.css("input[id='acraDocuments']")).sendKeys(sample_pdf_path);
-    await sleep(1000)
+    await sleep(500)
 
     await driver.findElement(By.css("input[id='bankInfo']")).sendKeys(sample_pdf_path);
-    await sleep(1000)
+    await sleep(500)
 
     await driver.findElement(By.css("input[id='idProof']")).sendKeys(sample_pdf_path);
-    await sleep(1000)
+    await sleep(500)
 
     await driver.findElement(By.css("input[id='profilePhoto']")).sendKeys(sample_jpeg_path);
-    await sleep(1000)
+    await sleep(500)
 
     await driver.findElement(By.css("textarea[placeholder='Zil address']")).sendKeys(sample_input_string);
     await sleep(500)
@@ -107,9 +105,9 @@ it('Testing to see if frontpage works', async () => {
     await driver.findElement(By.xpath("//button[contains(text(),'" + "Campaign Setup" +"')]")).click();
     await sleep(2000)
     await driver.findElement(By.css('input[accept="video/*"]')).sendKeys(sample_mp4_path);
-    await sleep(1000)
+    await sleep(500)
     await driver.findElement(By.css('input[accept=".jpg, .pdf"]')).sendKeys(sample_pdf_path);
-    await sleep(1000)
+    await sleep(500)
     await driver.findElement(By.css("textarea[placeholder='Campaign Description']")).sendKeys(sample_input_string);
     await sleep(2000)
 
