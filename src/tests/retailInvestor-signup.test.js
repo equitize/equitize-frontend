@@ -26,7 +26,8 @@ it('Testing to see if frontpage works', async () => {
     await sleep(2000)
         
     var title = await driver.getTitle();
-    console.log('Title is:',title);
+    console.log('Title is:', title);
+    console.log('uuid is', uuid_string);
     expect(title).toContain("Equitize")
 
     await driver.findElement(By.partialLinkText("Register")).click();
@@ -53,7 +54,6 @@ it('Testing to see if frontpage works', async () => {
     await sleep(2000)
 
     await sleep(2000)
-    await sleep(2000)
 
     await driver.findElement(By.css('input[name="age"]')).sendKeys(Key.UP);
     await sleep(2000)
@@ -69,7 +69,7 @@ it('Testing to see if frontpage works', async () => {
     await sleep(2000)
 
     await driver.findElement(By.xpath("//button[contains(text(),'" + "Next" +"')]")).click();
-    await sleep(12000)
+    await sleep(120000)
 
     //It is always a safe practice to quit the browser after execution
     await driver.quit();
