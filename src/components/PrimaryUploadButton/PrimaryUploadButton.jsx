@@ -5,8 +5,15 @@ import InfoIcon from './info.svg'
 import TextModal from "../Modal/TextModal";
 import ConfigData from "../../config"
 
+// For redux
+import { useSelector } from 'react-redux'
+import { getToken } from '../../store/auth'
+
 function PrimaryUploadButton({ text, properties, moreInfo, labelId, moreInfoFunc, errorFunc, Modal, startupId }){
     let cssProperties;
+
+    const accessToken = useSelector(getToken)
+    // console.log(accessToken)
 
     if (moreInfo){
         cssProperties = classNames(properties,
@@ -29,6 +36,9 @@ function PrimaryUploadButton({ text, properties, moreInfo, labelId, moreInfoFunc
 
         console.log(ConfigData.SERVER_URL + '/db/startup/' + labelId + '/' + startupId)
         const response = await fetch(ConfigData.SERVER_URL + '/db/startup/' + labelId + '/' + startupId, {
+            headers: {
+                'Authorization': 'Bearer ' + accessToken
+            },
             method: 'PUT',
             body: formData
         })

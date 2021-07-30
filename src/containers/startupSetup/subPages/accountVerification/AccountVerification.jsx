@@ -18,7 +18,7 @@ import InterestedIndustries from "../../../retailInvestorRegistration/Interested
 
 // For redux
 import { useSelector } from 'react-redux'
-import { getID } from '../../../../store/auth'
+import { getID, getToken } from '../../../../store/auth'
 
 // React query fetch functions
 // const fetchStartupById = async (key) => {
@@ -31,6 +31,7 @@ function AccountVerification(){
     // const queryClient = useQueryClient()
 
     const startupId = useSelector(getID)
+    const accessToken = useSelector(getToken)
 
     const [businessDescription, setBusinessDescription] = useState("")
     const [zilAddress, setZilAddress] = useState("")
@@ -79,6 +80,7 @@ function AccountVerification(){
         const response = await fetch(ConfigData.SERVER_URL + '/db/startup/' + startupId, {
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accessToken
             },
             method: 'PUT',
             body: JSON.stringify({
@@ -114,6 +116,7 @@ function AccountVerification(){
             const updateIndustry = await fetch(ConfigData.SERVER_URL + '/db/startup/industries/addIndustries/', {
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + accessToken
                 },
                 method: 'POST',
                 body: JSON.stringify(updateIndustryData)

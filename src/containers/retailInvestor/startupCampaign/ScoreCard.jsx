@@ -10,7 +10,7 @@ function ScoreCard({ ratings }){
             <br/>
             <div className="flex flex-col space-y-1 space-x-1 sm:space-x-0">
                 <div className="flex flex-row">
-                    <p className="font-Inter font-bold text-xs md:text-lg lg:text-xl w-1/2 text-right self-center">Team Synergy</p>
+                    <p className="font-Inter font-bold text-xs md:text-base lg:text-base w-1/2 text-right self-center">Team Synergy</p>
                     <p className="font-Inter text-xs md:text-lg lg:text-xl w-1/2 self-center text-center">{ratings.teamSynergy}/10</p>
                 </div>
                 <div className="flex flex-row space-x-1 sm:space-x-0">

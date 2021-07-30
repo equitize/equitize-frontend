@@ -10,9 +10,17 @@ import moment from "moment";
 import {useQuery} from 'react-query'
 import { isLastHour } from "../../../../helpers";
 
+// For redux
+import { useSelector } from 'react-redux'
+import { getToken } from '../../../../store/auth'
+
 // React query fetch functions
 const getStartupDetails = async (key) => {
-    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/' + key.queryKey[1])
+    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/' + key.queryKey[1], {
+        headers: {
+            'Authorization': 'Bearer ' + key.queryKey[2],
+        },
+    })
     if (!res.ok){
         const response = await res.json()
         throw new Error(response.error.message)
@@ -23,12 +31,15 @@ const getStartupDetails = async (key) => {
 function StartupCampaignInvestment(){
     let { id } = useParams()
     const history = useHistory()
+    const accessToken = useSelector(getToken)
+
     const [investmentAmount, setInvestmentAmount] = useState([0])
-    const { data, status, error } = useQuery(['viewStartupDetails', id], getStartupDetails)
+    const { data, status, error } = useQuery(['viewStartupDetails', id, accessToken], getStartupDetails)
 
     let days = 0
     let hours = 0
     let minutes = 0
+    
     if (status === 'success') {
         // Find number of days/hours/mins left
         const now = moment()
@@ -94,7 +105,7 @@ function StartupCampaignInvestment(){
                                     <>
                                         {minutes} minutes left
                                     </>
-                                : 
+                                :
                                 <>
                                     {days} days & {hours} hours left
                                 </>

@@ -7,14 +7,26 @@ import ConfigData from '../../config';
 // React query
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
+// For redux
+import { useSelector } from 'react-redux'
+import { getToken } from '../../store/auth'
+
 // React query fetch functions
 const fetchFile = async (key) => {
-    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/getSignedURLPlus/' + key.queryKey[1])
+    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/getSignedURLPlus/' + key.queryKey[1], {
+        headers: {
+            'Authorization': 'Bearer ' + key.queryKey[2]
+        }
+    })
     return res.json()
 }
 
 const addFile = async params => {
+    console.log("TOKEN", params.accessToken)
     return fetch(ConfigData.SERVER_URL + '/db/startup/' + params.endPoint + params.startupId, {
+            headers: {
+                'Authorization': 'Bearer ' + params.accessToken
+            },
             method: 'PUT',
             body: params.formData,
         }) 
@@ -25,7 +37,10 @@ function DropZone({placeHolderText, acceptedFileTypes, endPoint, startupId}){
     // Get QueryClient from the context
     const queryClient = useQueryClient()
 
-    const dropZoneFile = useQuery(['dropZoneFile', endPoint+startupId], fetchFile)
+    // Redux useSelector
+    const accessToken = useSelector(getToken)
+
+    const dropZoneFile = useQuery(['dropZoneFile', endPoint+startupId, accessToken], fetchFile)
     const fileStatus = dropZoneFile.status
 
     const mutation = useMutation(addFile, {
@@ -40,7 +55,7 @@ function DropZone({placeHolderText, acceptedFileTypes, endPoint, startupId}){
         const formData = new FormData()
         formData.append('file', acceptedFiles[0])
         
-        mutation.mutate({ endPoint: endPoint, startupId: startupId, formData: formData })
+        mutation.mutate({ endPoint: endPoint, startupId: startupId, formData: formData, accessToken: accessToken })
 
     }, [])
 

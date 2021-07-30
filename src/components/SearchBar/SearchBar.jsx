@@ -1,10 +1,17 @@
 import React from "react";
+import PropTypes from 'prop-types';
 
 // TODO Management for search
-function SearchBar() {
+function SearchBar({onChangeFunc}) {
+
+    const changeFunc = (e) => {
+        console.log(e.target.value)
+        onChangeFunc(e.target.value)
+    }
+
     return (
-        <div className="relative mr-6 my-1 self-end">
-            <div className="absolute pin-r pin-t px-9 mt-3 ml-40">
+        <div className="relative self-end">
+            <div className="absolute pin-r pin-t px-9 top-3 right-0">
                 <svg className="h-4 text-dark" xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 52.966 52.966">
                     <path d="M51.704,51.273L36.845,35.82c3.79-3.801,6.138-9.041,6.138-14.82c0-11.58-9.42-21-21-21s-21,9.42-21,21s9.42,21,21,21
@@ -13,9 +20,14 @@ function SearchBar() {
                     S32.459,40,21.983,40z"/>
                 </svg>
             </div>
-            <input type="search" className="bg-purple-white shadow rounded border-0 py-2 px-5" placeholder="Search..." />
+            <input type="search" className="bg-purple-white shadow rounded border-0 py-2 px-5" placeholder="Search..." onChange={changeFunc} />
         </div>
     )
 }
+
+SearchBar.propTypes = {
+    onChangeFunc: PropTypes.func,
+}
+
 
 export default SearchBar

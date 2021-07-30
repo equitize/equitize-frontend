@@ -14,14 +14,24 @@ import { isLastHour } from "../../helpers";
 import { useQuery } from 'react-query'
 import { useEffect } from "react";
 
+// Redux
+import { getToken } from "../../store/auth";
+import { useSelector } from "react-redux";
+
 // React query fetch functions
 const getStartupPhoto = async (key) => {
-    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/getSignedURL/profilePhoto/' + key.queryKey[1])
+    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/getSignedURL/profilePhoto/' + key.queryKey[1], {
+        headers: {
+            'Authorization': 'Bearer ' + key.queryKey[2],
+        },
+    })
     return res.json()
 }
 
 function FeaturedStartup({ info }){
     const history = useHistory()
+    const accessToken = useSelector(getToken)
+    // console.log('info', info)
 
     let percentageRaised = info.campaign.currentlyRaised / info.campaign.goal * 100
     let progressBarWidth = getTailwindWidthFraction(percentageRaised)
@@ -42,7 +52,7 @@ function FeaturedStartup({ info }){
         progressBarWidth = getTailwindWidthFraction(percentageRaised)
     }
 
-    const featuredPhoto = useQuery(['featuredStartupPhoto', info.id], getStartupPhoto)
+    const featuredPhoto = useQuery(['featuredStartupPhoto', info.id, accessToken], getStartupPhoto)
 
     function viewStartup(){
         const URL = `/startup/${info.id}`
@@ -51,13 +61,13 @@ function FeaturedStartup({ info }){
 
     return (
         <>
-            <p className="font-Inter text-xl">Featured Startup</p>
-            <div className="flex flex-col md:flex-row space-x22 group border-indigo-500 border-opacity-25 hover:bg-white hover:shadow-lg hover:border-transparent border rounded-lg cursor-pointer" onClick={viewStartup}>
-                <img src={ featuredPhoto.status === "success" ? featuredPhoto.data.signedURL : null } className="md:w-1/3 lg:w-1/2 rounded-md mx-6 my-5" alt="Featured Startup Image" />
-                <div className="md:w-1/2 lg:w-1/3 flex flex-col mx-6 my-5">
-                    <p className="font-bold font-Rubik text-xl md:text-2xl lg:text-4xl text-indigo-600 group-hover:text-gray-900">{info.companyName}</p>
+            <p className="font-Inter text-xl">Recommended startups</p>
+            <div className="flex flex-col md:flex-row space-x22 group border-indigo-500 border-opacity-25 hover:bg-white hover:shadow-lg hover:border-transparent border rounded-lg cursor-pointer mx-1" onClick={viewStartup}>
+                <img src={ featuredPhoto.status === "success" ? featuredPhoto.data.signedURL : null } className="md:w-1/3 lg:w-1/2 rounded-md mx-6 my-5 object-cover" alt="Featured Startup Image" />
+                <div className="md:w-1/2 lg:w-full flex flex-col mr-6 my-5">
+                    <p className="font-bold font-Rubik text-xl md:text-2xl lg:text-4xl text-black group-hover:text-gray-600">{info.companyName}</p>
                     <br />
-                    <p className="font-Inter md:text-xl text-indigo-500 group-hover:text-gray-500">{info.profileDescription}</p>
+                    <p className="font-Inter md:text-xl text-black group-hover:text-gray-500">{info.profileDescription}</p>
                     <ProgressBar width={progressBarWidth} />
                     <div className="flex flex-row">
                         <div className="flex flex-col w-1/2">

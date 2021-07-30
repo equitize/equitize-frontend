@@ -9,6 +9,8 @@ import PrimaryInput from "../../../../components/PrimaryInput/PrimaryInput";
 import moment from "moment";
 import jwt_decode from "jwt-decode"
 
+import CampaignPreviewPage from "./CampaignPreviewPage";
+
 // React query
 import { useQuery, useQueryClient } from 'react-query'
 
@@ -18,7 +20,11 @@ import { getID, getToken } from '../../../../store/auth'
 
 // React query fetch functions
 const fetchStartupById = async (key) => {
-    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/' + key.queryKey[1])
+    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/' + key.queryKey[1], {
+        headers: {
+            'Authorization': 'Bearer ' + key.queryKey[2]
+        }
+    })
     return await res.json()
 }
 
@@ -31,6 +37,8 @@ function CampaignSetup(){
     // console.log(decoded)
 
     const queryClient = useQueryClient()
+
+    const [editMode, setEditMode] = useState(true)
 
     const [campaignDetails, setCampaignDetails] = useState({
         campaignDescription: "",
@@ -53,7 +61,7 @@ function CampaignSetup(){
     })
 
     // React query fetch requests
-    const { data } = useQuery(['startupDetails', startupId], fetchStartupById, {
+    const { data } = useQuery(['startupDetails', startupId, accessToken], fetchStartupById, {
         enabled: true
     })
 
@@ -61,7 +69,7 @@ function CampaignSetup(){
     useEffect(() => {
         
         if (data !== undefined){
-            console.log(data)
+            // console.log(data)
             // console.log(typeof data.campaign.campaignDescription)
             if (data?.campaign?.goal !== undefined && data?.campaign?.goal !== null) {
                 setCampaignGoal({
@@ -162,6 +170,7 @@ function CampaignSetup(){
         const response = await fetch(ConfigData.SERVER_URL + '/db/startup/campaign/update/' + startupId, {
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accessToken
             },
             method: 'PUT',
             body: JSON.stringify({ "campaignDescription": campaignDetails.campaignDescription })
@@ -182,7 +191,7 @@ function CampaignSetup(){
         const response = await fetch(ConfigData.SERVER_URL + '/db/startup/campaign/update/' + startupId, {
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer ~jwttoken~'
+                'Authorization': 'Bearer ' + accessToken
             },
             method: 'PUT',
             body: JSON.stringify(data)
@@ -202,6 +211,7 @@ function CampaignSetup(){
         const response = await fetch(ConfigData.SERVER_URL + '/db/startup/campaign/update/' + startupId, {
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accessToken
             },
             method: 'PUT',
             body: JSON.stringify({
@@ -233,14 +243,17 @@ function CampaignSetup(){
         return isStartupVerified !== "startup:unverified";
     }
 
+    function changeEditMode() {
+        setEditMode(!editMode)
+    }
+
     return (
         <>
-            {/* { status === 'loading' && (
-                <div>Updating...</div>
-            )} */}
-
-            {/* { status === 'success' && ( */}
+            {
+                editMode ? 
                 <div className="bg-white px-6 sm:px-24 py-16 rounded-xl space-y-4 shadow-lg h-full w-full flex flex-wrap flex-col items-center">
+                    <p className="text-center place-self-center font-Inter font-bold text-xl">Update Campaign Details</p>
+                    <PrimaryButton text="View campaign preview" properties="self-end" onClick={() => changeEditMode()}/>
                     <DropZone placeHolderText="Drop Video Material (MP4, MOV)" acceptedFileTypes="video/*" endPoint="video/" startupId={startupId} />
                     <DropZone placeHolderText="Drop Pitch Deck Materials (pdf, jpg)" acceptedFileTypes=".jpg, .pdf" endPoint="pitchDeck/" startupId={startupId} />
                     <PrimaryTextArea placeholder="Campaign Description" onChangeFunc={setCampaignDescription}
@@ -253,30 +266,39 @@ function CampaignSetup(){
                     <br />
                     <br />
                     <PrimaryButton text="Submit" properties="self-end" onClick={() => saveCampaignDescription()}/>
+                </div> :
+                <div className="bg-white px-6 sm:px-24 py-16 rounded-xl space-y-4 shadow-lg h-full w-full flex flex-wrap flex-col items-center">
+                    <p className="text-center place-self-center font-Inter font-bold text-xl">Campaign preview</p>
+                    <PrimaryButton text="Edit campaign details" properties="self-end" onClick={() => changeEditMode()}/>
+                    <CampaignPreviewPage id={startupId} />
                 </div>
-                <br/>
-                <br/>
-                <div className="flex flex-wrap flex-col w-full">
-                    <div className="flex flex-row justify-center items-center">
-                        <p className="bg-secondary text-white font-bold px-2 py-2 rounded-xl text-center w-1/2 sm:w-1/3 text-sm sm:text-base">Campaign launch date</p>
-                        <PrimaryInput placeholder="dd/mm/yy" properties="text-center w-1/2 sm:w-1/3 text-xs md:text-md" onChange={(e) => setLaunchDate("date", e.target.value)} type="date" />
-                    </div>
-                    <div className="flex flex-row justify-center items-center">
-                        <p className="bg-secondary text-white font-bold px-2 py-2 rounded-xl text-center w-1/2 sm:w-1/3 text-sm sm:text-base">Campaign launch time</p>
-                        <div className="w-1/2 items-stretch sm:w-1/3 flex flex-col sm:flex-row justify-between sm:items-center m-4">
-                            <input className="rounded-xl w-1/2 bg-gray-100 placeholder-gray-400 font-Inter text-center py-2 text-xs sm:text-base"
-                                    placeholder="0000" onChange={(e) => setLaunchDate("time", e.target.value)}
-                                    type="time" />
-                        </div>
-                    </div>
-                    <div className="flex flex-wrap self-center bg-gray-100 font-bold py-4 px-10 m-2 w-1/2 justify-center rounded-xl text-sm">
-                        {
-                            isStartupVerified(decoded) ? <p className="text-center place-self-center font-Inter">Note: Campaign end date will be 1 month from start date</p>
-                            : <p className="text-center place-self-center font-Inter">Note: Unable to set a launch date as your startup is not KYC verified yet.</p>
-                        }
-                    </div>
-                    <PrimaryButton properties="self-end" text="Update" onClick={launchCampaign } disabled={ !isStartupVerified(decoded) }/>
+            }
+            <br/>
+            <br/>
+            <div className="bg-white px-6 sm:px-24 py-16 rounded-xl space-y-4 shadow-lg h-full w-full flex flex-wrap flex-col">
+                <p className="text-center place-self-center font-Inter font-bold text-xl">Campaign Launch Date & Time</p>
+                <div className="flex flex-row justify-center items-center">
+                    <p className="bg-secondary text-white font-bold px-2 py-2 rounded-xl text-center w-1/2 sm:w-1/3 text-sm sm:text-base">Campaign launch date</p>
+                    <PrimaryInput placeholder="dd/mm/yy" properties="text-center w-1/2 sm:w-1/3 text-xs md:text-md" onChange={(e) => setLaunchDate("date", e.target.value)} type="date" />
                 </div>
+                <div className="flex flex-row justify-center items-center">
+                    <p className="bg-secondary text-white font-bold px-2 py-2 rounded-xl text-center w-1/2 sm:w-1/3 text-sm sm:text-base">Campaign launch time</p>
+                    <div className="w-1/2 items-stretch sm:w-1/3 flex flex-col sm:flex-row justify-between sm:items-center m-4">
+                        <input className="rounded-xl w-1/2 bg-gray-100 placeholder-gray-400 font-Inter text-center py-2 text-xs sm:text-base"
+                                placeholder="0000" onChange={(e) => setLaunchDate("time", e.target.value)}
+                                type="time" />
+                    </div>
+                </div>
+                <div className="flex flex-wrap self-center bg-gray-100 font-bold py-4 px-10 m-2 w-1/2 justify-center rounded-xl text-sm">
+                    {
+                        isStartupVerified(decoded) ? <p className="text-center place-self-center font-Inter">Note: Campaign end date will be 1 month from start date</p>
+                        : <p className="text-center place-self-center font-Inter">Note: Unable to set a launch date as your startup is not KYC verified yet.</p>
+                    }
+                    
+                </div>
+                <PrimaryButton properties="self-end" text="Update" onClick={launchCampaign } disabled={ !isStartupVerified(decoded) }/>
+            </div>
+           
         </>
     )
 }

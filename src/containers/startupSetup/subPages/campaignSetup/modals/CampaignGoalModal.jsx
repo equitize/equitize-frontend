@@ -11,10 +11,11 @@ import ConfigData from '../../../../../config';
 
 // For redux
 import { useSelector } from 'react-redux'
-import { getID } from '../../../../../store/auth'
+import { getID, getToken } from '../../../../../store/auth'
 
 function CampaignGoalModal({ ModalFunc, showModal, editCampaignGoal, campaignGoal }){
     const startupId = useSelector(getID)
+    const accessToken = useSelector(getToken)
 
     const [tempCampaignGoal, setTempCampaignGoal] = useState(campaignGoal)
 
@@ -36,6 +37,7 @@ function CampaignGoalModal({ ModalFunc, showModal, editCampaignGoal, campaignGoa
         const response = await fetch(ConfigData.SERVER_URL + '/db/startup/campaign/update/' + startupId, {
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accessToken
             },
             method: 'PUT',
             body: JSON.stringify(tempCampaignGoal)

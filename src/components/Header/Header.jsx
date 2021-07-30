@@ -4,15 +4,17 @@ import Logo from './Logo.svg';
 import PrimaryButton from "../PrimaryButton/PrimaryButton";
 import PropTypes from 'prop-types'; // ES6
 import HeaderDropdown from '../HeaderDropdown/HeaderDropdown';
+import jwt_decode from "jwt-decode"
 
 // For redux
 import { useDispatch, useSelector } from 'react-redux'
-import { getIsLoggedIn, loggedOut } from '../../store/auth';
+import { getIsLoggedIn, loggedOut, getToken } from '../../store/auth';
 
 const Header = () => {
 
     const dispatch = useDispatch()
     const isLoggedIn = useSelector(getIsLoggedIn)
+    const accessToken = useSelector(getToken)
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -38,11 +40,23 @@ const Header = () => {
         dispatch(loggedOut())
     }
 
+    const isRetailInvestor = (accessToken) => {
+        if (isLoggedIn) {
+            let decoded = jwt_decode(accessToken)
+            console.log(decoded)
+
+            if (decoded.permissions[0] === "retailInvestor:verified" || decoded.permissions[0] === "retailInvestor:unverified") {
+                return true
+            }
+        }
+        return false
+    }
+
     const navDisplay = (isLoggedIn) => {
         if (isLoggedIn) {
             return (
                 <>
-                <Link to="/profile"><img src="https://www.creative-tim.com/learning-lab/tailwind-starter-kit/img/team-2-800x800.jpg" className="m-2 inline object-cover w-12 mr-2 rounded-full" /></Link>
+                    <Link to="/profile" className="p-4 hover:bg-blue-400 py-2 px-5">Profile</Link>
                     <Link className="p-4" to="/">
                         <PrimaryButton text="Sign Out" onClick={signOut} />
                     </Link>
@@ -62,9 +76,9 @@ const Header = () => {
 
     return (
         <div>
-            <nav className="flex justify-between items-center h-16 relative bg-white shadow-sm text-gray-600 body-font m-2" role='navigation'>
-                <Link className="pl-8" to="/">
-                    <div className="flex flex-wrap items-center">
+            <nav className="flex items-center justify-between h-16 relative bg-white shadow-sm text-gray-600 body-font m-2" role='navigation'>
+                <Link className="ml-8 mr-12" to="/">
+                    <div className="flex flex-row items-center">
                         <img src={Logo} alt="Company Logo" />
                         <p className="font-Inter">EQUITIZE</p>
                     </div>
@@ -72,11 +86,18 @@ const Header = () => {
                 <div className="px-4 cursor-pointer md:hidden" onClick={toggle}>
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
                 </div>
-                <div className='flex-row pr-8 md:block hidden'>                
-                    <Link className="p-4 hover:text-gray-900" to="/about">About</Link>
-                    <Link className="p-4 hover:text-gray-900" to="/guide">How it works</Link>
-                    <Link className="p-4 hover:text-gray-900" to="/contact">Contact</Link>
-                    {navDisplay(isLoggedIn)}
+                <div className='flex-row pr-8 md:block hidden'>
+                        {
+                            isRetailInvestor(accessToken) ? 
+                                <div className="inline-block">
+                                    <Link to="/home" className="p-4 hover:bg-blue-400 py-2 px-5" >Live Campaigns</Link>
+                                </div>
+                            : null
+                        }  
+                    <div className="inline-block">
+                        <Link className="p-4 hover:bg-blue-400 py-2 px-5" to="/guide">Guide</Link>
+                        {navDisplay(isLoggedIn)}
+                    </div>                    
                 </div>
             </nav>
 
