@@ -29,7 +29,9 @@ function PublicPage() {
                 <div className="flex flex-col items-center md:w-1/2 px-4 place-content-center">
                     <p className="text-left xl:text-7xl lg:text-6xl sm:text-5xl text-4xl font-Rubik">Blockchain Powered Equity Crowdfunding</p>
                     <br/>
-                    <p className="text-left text-gray-400 font-Rubik sm:text-2xl">We empower startups so that our investors become highly successful</p>
+                    <div className="self-start">
+                        <p className="text-left text-gray-400 font-Rubik sm:text-2xl">We empower startups so that our investors become highly successful</p>
+                    </div>
                     <br/>
                     <Link className="self-start" to="/guide">
                         <button className="bg-custom-blue text-white font-bold py-2 px-5 rounded-full">Learn More</button>
@@ -42,7 +44,7 @@ function PublicPage() {
             <div className="flex flex-col bg-secondary w-full items-center space-y-10 px-4 py-6">
                 <br/>
                 <p className="text-white font-Rubik text-xl md:text-3xl lg:text-4xl">Equitize at a glance</p>
-                <div className="flex flex-col lg:flex-row w-full items-center space-y-3 lg:space-y-0 lg:px-4">
+                <div className="flex flex-col lg:flex-row w-full items-center space-y-3 lg:space-y-0 lg:px-6">
                     <div className="flex flex-row w-full md:w-1/3 justify-center items-center space-x-4">
                         <div className="flex flex-col w-16">
                             <img src={ChartIcon} alt="Chart Icon" />

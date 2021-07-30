@@ -6,7 +6,7 @@ import CampaignTabs from "../../../retailInvestor/startupCampaign/CampaignTabs";
 import CampaignDetails from "../../../retailInvestor/startupCampaign/subPages/campaignDetails/CampaignDetails";
 import CampaignMilestones from "../../../retailInvestor/startupCampaign/subPages/campaignMilestones/CampaignMilestones";
 import CampaignFAQs from "../../../retailInvestor/startupCampaign/subPages/campaignFAQs/CampaignFAQs";
-import CampaignResearch from "../../../retailInvestor/startupCampaign/subPages/campaignResearch/CampaignResearch";
+import CampaignMarketAnalysis from "../../../retailInvestor/startupCampaign/subPages/campaignMarketAnalysis/CampaignMarketAnalysis";
 import ConfigData from "../../../../config";
 import PropTypes from 'prop-types';
 
@@ -54,7 +54,6 @@ function CampaignPreviewPage({ id }){
     })
 
     const accessToken = useSelector(getToken)
-
     const { data, status } = useQuery(['viewStartupDetails', id, accessToken], getStartupDetails)
     // console.log(data)
 
@@ -111,11 +110,10 @@ function CampaignPreviewPage({ id }){
                     }
                     {
                         isActiveTab.fourth ?
-                            <CampaignResearch />
+                            <CampaignMarketAnalysis />
                             : null
                     }
                 </div>
-                
             </div>
         </div>
         )}
