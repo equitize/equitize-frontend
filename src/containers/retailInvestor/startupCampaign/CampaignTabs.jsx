@@ -21,7 +21,7 @@ function CampaignTabs({ isActiveTab, setIsActiveTab }) {
             <TabButton text="Campaign" active={isActiveTab.first} onClick={() => changeTab("first")}/>
             <TabButton text="Milestones" active={isActiveTab.second} onClick={() => changeTab("second")}/>
             <TabButton text="FAQs" active={isActiveTab.third} onClick={() => changeTab("third")}/>
-            <TabButton text="Research" active={isActiveTab.fourth} onClick={() => changeTab("fourth")}/>
+            <TabButton text="Market Analysis" active={isActiveTab.fourth} onClick={() => changeTab("fourth")}/>
         </div>
     )
 }

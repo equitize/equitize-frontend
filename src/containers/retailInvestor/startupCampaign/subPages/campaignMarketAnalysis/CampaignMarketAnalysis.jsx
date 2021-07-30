@@ -1,6 +1,6 @@
 import React from 'react'
 
-function CampaignResearch(){
+function CampaignMarketAnalysis(){
 
     // TODO Special Cases for links not done yet like clickable and blue text color
     // TODO Where is this research obtained from??
@@ -41,4 +41,4 @@ function CampaignResearch(){
 
 
 
-export default CampaignResearch;
+export default CampaignMarketAnalysis;
