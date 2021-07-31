@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'; // ES6
 import jwt_decode from "jwt-decode"
 
@@ -18,11 +18,10 @@ const HeaderDropdown = ({isOpen, toggle}) => {
 
     const isRetailInvestor = (accessToken) => {
         if (isLoggedIn) {
-            var decoded = jwt_decode(accessToken)
+            let decoded = jwt_decode(accessToken)
             // console.log(decoded)
-            if (decoded.permissions[0] === "retailInvestor:verified" || decoded.permissions[0] === "retailInvestor:unverified") {
-                return true
-            }
+            return decoded.permissions[0] === "retailInvestor:verified" || decoded.permissions[0] === "retailInvestor:unverified";
+
         }
         return false
     }
@@ -37,7 +36,7 @@ const HeaderDropdown = ({isOpen, toggle}) => {
                 isLoggedIn ?
                     <>
                         <Link to="/profile" className="p-4 hover:bg-blue-400 py-2 px-5">Profile</Link>
-                        <Link className="p-4 font-bold bg-secondary hover:bg-blue-700 text-white py-2 px-5" onClick={signOut}>Sign Out</Link>
+                        <Link className="p-4 font-bold bg-secondary hover:bg-blue-700 text-white py-2 px-5" onClick={signOut} to="/">Sign Out</Link>
                     </>
                 :
                     <>

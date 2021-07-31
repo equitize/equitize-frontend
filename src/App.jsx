@@ -22,7 +22,7 @@ import InvestmentSuccess from "./containers/retailInvestor/startupCampaign/Inves
 import RetailInvestorsLogin from "./containers/loginPage/RetailInvestorsLogin"
 import StartupsLogin from "./containers/loginPage/StartupsLogin"
 import ProfilePage from "./containers/retailInvestor/profilePage/ProfilePage";
-import GuidePage from "./containers/guidePage/guidePage";
+import GuidePage from "./containers/guidePage/GuidePage";
 
 function App() {
 
