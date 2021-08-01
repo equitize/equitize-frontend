@@ -32,7 +32,7 @@ function CampaignSetup(){
     // Redux useSelector
     const startupId = useSelector(getID)
     const accessToken = useSelector(getToken)
-    var decoded = jwt_decode(accessToken)
+    let decoded = jwt_decode(accessToken)
     //TODO: Check for jwt InvalidTokenError if so dispatch SignOut
     // console.log(decoded)
 
@@ -65,6 +65,7 @@ function CampaignSetup(){
         enabled: true
     })
 
+    // TODO Refactor Logic for React Query instead
     useEffect(() => {
         
         if (data !== undefined){
@@ -219,7 +220,7 @@ function CampaignSetup(){
             }) 
         })
 
-        const status = await response.status
+        const status = response.status
         if (status === 200) {
             const res = await response.json()
             console.log(res)
@@ -238,13 +239,8 @@ function CampaignSetup(){
     }
 
     function isStartupVerified(msg) {
-        const isStartupVerified = msg
-        if (isStartupVerified.permissions[0] === "startup:unverified") {
-            // console.log("NOT VERIFIED!")
-            return false
-        }
-        // console.log("ITS VERIFIED")
-        return true
+        const isStartupVerified = msg.permissions[0]
+        return isStartupVerified !== "startup:unverified";
     }
 
     function changeEditMode() {
@@ -277,7 +273,6 @@ function CampaignSetup(){
                     <CampaignPreviewPage id={startupId} />
                 </div>
             }
-            
             <br/>
             <br/>
             <div className="bg-white px-6 sm:px-24 py-16 rounded-xl space-y-4 shadow-lg h-full w-full flex flex-wrap flex-col">
@@ -303,7 +298,7 @@ function CampaignSetup(){
                 </div>
                 <PrimaryButton properties="self-end" text="Update" onClick={launchCampaign } disabled={ !isStartupVerified(decoded) }/>
             </div>
-            
+           
         </>
     )
 }

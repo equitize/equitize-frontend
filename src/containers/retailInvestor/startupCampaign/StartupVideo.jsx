@@ -25,9 +25,8 @@ function StartupVideo({ video }){
     )
 }
 
-//TODO Change Proptype when using link instead
 StartupVideo.propTypes = {
-    video: PropTypes.any
+    video: PropTypes.string
 }
 
 export default StartupVideo;

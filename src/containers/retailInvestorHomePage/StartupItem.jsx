@@ -5,10 +5,10 @@ import { getTailwindWidthFraction } from "../../helpers";
 import ProgressBar from "../../components/ProgressBar/ProgressBar";
 import ConfigData from "../../config";
 import moment from "moment";
+import { isLastHour } from "../../helpers";
 
 // React query
 import { useQuery } from 'react-query'
-// import { useEffect } from "react";
 
 // For redux
 import { useSelector } from 'react-redux'
@@ -26,9 +26,9 @@ const getStartupPhoto = async (key) => {
 
 function StartupItem({ info }){
     const history = useHistory()
-    var percentageRaised = info.campaign.currentlyRaised / info.campaign.goal * 100
-    var progressBarWidth = getTailwindWidthFraction(percentageRaised)
     const accessToken = useSelector(getToken)
+    let percentageRaised = info.campaign.currentlyRaised / info.campaign.goal * 100
+    let progressBarWidth = getTailwindWidthFraction(percentageRaised)
 
     useEffect(() => {
         getProgressBarWidth()
@@ -47,13 +47,6 @@ function StartupItem({ info }){
     const days = exp.diff(now, 'days');
     const hours = exp.subtract(days, 'days').diff(now, 'hours');
     const minutes = exp.subtract(hours, 'hours').diff(now, 'minutes');
-
-    function isLastHour() {
-        if (days <= 0 && hours <= 0) {
-            return true
-        }
-        else return false
-    }
 
     function viewStartup(){
         const URL = `/startup/${info.id}`
@@ -76,7 +69,7 @@ function StartupItem({ info }){
                         <div className="flex flex-col w-1/2 mx-1 space-y-1 mb-2">
                             <p className="font-Inter text-xs md:text-base flex-auto"><span className="text-active-purple">{info.campaign.sharesAllocated}%</span> Equity Stake</p>
                             <p className="font-Inter text-xs md:text-base flex-auto"><span className="text-active-purple"></span>
-                                { isLastHour() ? 
+                                { isLastHour(days, hours) ? 
                                     <>
                                         {minutes} minutes left
                                     </>

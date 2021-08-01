@@ -16,7 +16,6 @@ function IndustrySearchBarDropdown({ options, addInterestedIndustriesFunc }) {
     }
 
     function addIndustry(selectedIndustry) {
-        console.log(selectedIndustry)
         addInterestedIndustriesFunc(selectedIndustry)
     }
 

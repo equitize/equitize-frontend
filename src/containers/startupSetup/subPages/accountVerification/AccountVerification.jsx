@@ -34,7 +34,7 @@ function AccountVerification(){
     const accessToken = useSelector(getToken)
 
     const [businessDescription, setBusinessDescription] = useState("")
-    const [zilAddr, setZilAddr] = useState("")
+    const [zilAddress, setZilAddress] = useState("")
     const [errorMessage, setErrorMessage] = useState(null)
     const [showModal, setShowModal] = React.useState({
         capTable: false,
@@ -53,13 +53,13 @@ function AccountVerification(){
     // useEffect(() => {
     //     if (status === 'success') {
     //         console.log("Updated")
-    //         if (data.zilAddr) { setZilAddr(data.zilAddr) }
+    //         if (data.zilAddr) { setZilAddress(data.zilAddr) }
     //         if (data.profileDescription) { setBusinessDescription(data.profileDescription) } 
     //     }
     // });
 
     // function updateStates(data) {
-    //     if (data.zilAddr) { setZilAddr(data.zilAddr) }
+    //     if (data.zilAddr) { setZilAddress(data.zilAddr) }
     //     if (data.profileDescription) { setBusinessDescription(data.profileDescription) } 
         
     // }
@@ -85,11 +85,11 @@ function AccountVerification(){
             method: 'PUT',
             body: JSON.stringify({
                 "profileDescription": businessDescription,
-                "zilAddr": zilAddr
+                "zilAddr": zilAddress
             }) 
         })
 
-        const status = await response.status
+        const status = response.status
         if (status === 200) {
             const res = await response.json()
             console.log(res)
@@ -216,9 +216,8 @@ function AccountVerification(){
                                                   labelId="profilePhoto" errorFunc={setErrorMessage} startupId={startupId} />
                     </div>
                 </div>
-                <PrimaryTextArea placeholder="Zil address" properties="w-full h-10" onChangeFunc={setZilAddr} value={zilAddr}/>
+                <PrimaryTextArea placeholder="Zil address" properties="w-full h-10" onChangeFunc={setZilAddress} value={zilAddress}/>
                 <PrimaryTextArea placeholder="Short Description of your Business" properties="w-full h-40" onChangeFunc={setBusinessDescription} value={businessDescription}/>
-                
                 <label className="block text-lg font-bold text-gray-700 px-5">Add related industries</label>
                 <div className="h-1/2 flex flex-wrap md:flex-row w-full flex-col justify-between m-0">
                     <IndustrySearchBarDropdown options={allCategories} addInterestedIndustriesFunc={addInterestedIndustriesFunc} />
@@ -226,7 +225,6 @@ function AccountVerification(){
                         <InterestedIndustries industries={interestedIndustries} removeInterestedIndustry={removeInterestedIndustry} />
                     </div>
                 </div>
-
                 <TextModal header="Success" showModal={showSuccess} setShowModal={closeModal()} 
                                 content={successMessage}/>
                 <PrimaryButton text="Submit" properties="self-end" onClick={updateVerificationDetails}/>
