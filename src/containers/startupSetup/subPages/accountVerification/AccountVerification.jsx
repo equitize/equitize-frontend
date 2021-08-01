@@ -75,7 +75,7 @@ function AccountVerification(){
     }
 
     const updateVerificationDetails = async () => {
-        console.log(businessDescription)
+        // console.log(businessDescription)
 
         const response = await fetch(ConfigData.SERVER_URL + '/db/startup/' + startupId, {
             headers: {
@@ -109,11 +109,12 @@ function AccountVerification(){
         if (interestedIndustries.length !== 0) {
             const updateIndustryData = {
                 "industryArr": interestedIndustries,
-                "id": startupId,
                 "accountType": "startup"
             }
 
-            const updateIndustry = await fetch(ConfigData.SERVER_URL + '/db/startup/industries/addIndustries/', {
+            console.log(updateIndustryData)
+
+            const updateIndustry = await fetch(ConfigData.SERVER_URL + '/db/startup/industries/addIndustries/' + startupId, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + accessToken

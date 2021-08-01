@@ -17,7 +17,6 @@ function AddMilestoneModal({ addMilestonesFunc, currentMilestoneLength}){
 
     const [showModal, setShowModal] = useState(false);
     const [milestone, setMilestone] = useState({
-        startupId: startupId,
         title: "",
         endDate: "",
         description: "",
@@ -52,7 +51,7 @@ function AddMilestoneModal({ addMilestonesFunc, currentMilestoneLength}){
 
         console.log(milestone)
         // API to set milestone
-        const response = await fetch(ConfigData.SERVER_URL + '/db/startup/milestone/addPart', {
+        const response = await fetch(ConfigData.SERVER_URL + '/db/startup/milestone/addPart/' + startupId, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + accessToken
@@ -73,7 +72,6 @@ function AddMilestoneModal({ addMilestonesFunc, currentMilestoneLength}){
 
     useEffect(()=> {
         setMilestone({
-                startupId: startupId,
                 title: "",
                 endDate: "",
                 description: "",

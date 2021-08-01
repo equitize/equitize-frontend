@@ -36,7 +36,7 @@ const HeaderDropdown = ({isOpen, toggle}) => {
             {
                 isLoggedIn ?
                     <>
-                        <Link to="/profile" className="p-4 hover:bg-blue-400 py-2 px-5">Profile</Link>
+                        { isRetailInvestor(accessToken) ? <Link to="/profile" className="p-4 hover:bg-blue-400 py-2 px-5">Profile</Link> : null }
                         <Link className="p-4 font-bold bg-secondary hover:bg-blue-700 text-white py-2 px-5" onClick={signOut}>Sign Out</Link>
                     </>
                 :
