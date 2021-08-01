@@ -43,7 +43,7 @@ const Header = () => {
     const isRetailInvestor = (accessToken) => {
         if (isLoggedIn) {
             var decoded = jwt_decode(accessToken)
-            console.log(decoded)
+            // console.log(decoded)
 
             if (decoded.permissions[0] === "retailInvestor:verified" || decoded.permissions[0] === "retailInvestor:unverified") {
                 return true

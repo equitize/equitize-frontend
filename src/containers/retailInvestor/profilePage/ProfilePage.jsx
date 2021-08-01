@@ -4,13 +4,30 @@ import Overview from "./subPages/Overview";
 import Updates from "./subPages/Updates";
 import AccountSettings from "./subPages/AccountSettings";
 import DefaultPic from './defaultPic.svg'
+import ConfigData from "../../../config";
 
-const profileInfo = {
-    firstName: "Nicole",
-    lastName: "Daniels",
-    address: "221 Baker Street #05-21 543301",
-    interests: [{ name: "Agriculture", id: 1 }, { name: "Education", id: 2}]
+import { useQuery } from 'react-query'
+
+// Redux
+import { useSelector } from 'react-redux'
+import { getID, getToken } from '../../../store/auth'
+
+// React Query functions
+const fetchRIByID = async (key) => {
+    const res = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/' + key.queryKey[1], {
+        headers: {
+            'Authorization': 'Bearer ' + key.queryKey[2]
+        }
+    })
+    return await res.json()
 }
+
+// const profileInfo = {
+//     firstName: "Nicole",
+//     lastName: "Daniels",
+//     address: "221 Baker Street #05-21 543301",
+//     interests: [{ name: "Agriculture", id: 1 }, { name: "Education", id: 2}]
+// }
 
 function ProfilePage(){
     const [isActiveTab, setIsActiveTab] = useState({
@@ -19,13 +36,20 @@ function ProfilePage(){
         third: false
     })
 
+    // Redux useSelector
+    const retailInvestorID = useSelector(getID)
+    const accessToken = useSelector(getToken)
+
     // TBC
     const [onAccountSettingsTab, setOnAccountSettingsTab] = useState(false)
     useEffect(() => {
         setOnAccountSettingsTab(!onAccountSettingsTab)
     },[isActiveTab.third])
 
-    // TODO Call API to get profile info
+    // React query fetch requests
+    const { data } = useQuery(['retailInvestorDetails', retailInvestorID, accessToken], fetchRIByID, {
+        enabled: true
+    })
 
     return(
         <>
@@ -46,7 +70,7 @@ function ProfilePage(){
                     }
                     {
                         isActiveTab.third ?
-                            <AccountSettings profilePicture={DefaultPic} profileInfo={profileInfo} />
+                            <AccountSettings profilePicture={DefaultPic} profileInfo={data} />
                             : null
                     }
                 </div>

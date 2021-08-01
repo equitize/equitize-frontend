@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import PrimaryButton from "../../../../components/PrimaryButton/PrimaryButton";
 import { RiCloseCircleLine } from "react-icons/ri";
@@ -9,6 +9,7 @@ import { haveSameData } from "../../../../helpers";
 import DiscardChangesModal from "./AccountSettings/DiscardChangesModal";
 
 function AccountSettings({ profilePicture, profileInfo }){
+
     const [accountDetails, setAccountDetails] = useState({
         firstName: profileInfo.firstName || "",
         lastName: profileInfo.lastName || "",
@@ -32,6 +33,21 @@ function AccountSettings({ profilePicture, profileInfo }){
             }
         }
     })
+    
+    // useEffect(() => {
+    //     if (data !== undefined) {
+    //         setAccountDetails({
+    //             firstName: data.firstName,
+    //             lastName: data.lastName,
+    //         })
+
+    //         // if (data?.campaigns.length !== 0) {
+    //         //     setAccountDetails({
+    //         //         interests: data.
+    //         //     })
+    //         // }
+    //     }
+    // })
 
     function discardChanges(){
         setAccountDetails({
@@ -48,6 +64,7 @@ function AccountSettings({ profilePicture, profileInfo }){
                 ...prevState,
                 [key]: e.target.value
             }))
+            // console.log(accountDetails)
         }
         return onChange;
     }
