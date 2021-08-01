@@ -9,7 +9,8 @@ function AddInterestsModal({ categoryList, saveChanges }) {
     const [tempInterestList, setTempInterestList] = useState(categoryList || [])
 
     function saveAndClose(){
-        saveChanges()
+        const changedList = tempInterestList.filter( interestItem => interestItem.checked )
+        saveChanges(changedList)
         setShowModal(!showModal)
     }
 

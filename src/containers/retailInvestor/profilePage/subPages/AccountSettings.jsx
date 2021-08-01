@@ -8,13 +8,13 @@ import allCategories from "../../../retailInvestorRegistration/allCategories";
 import { haveSameData } from "../../../../helpers";
 import DiscardChangesModal from "./AccountSettings/DiscardChangesModal";
 
-function AccountSettings({ profilePicture, profileInfo }){
+function AccountSettings({ profilePicture, profileInfo, updateAccountFunc, updateInterestsFunc }){
 
     const [accountDetails, setAccountDetails] = useState({
         firstName: profileInfo.firstName || "",
         lastName: profileInfo.lastName || "",
         address: profileInfo.address || "",
-        interests: profileInfo.interests || []
+        interests: profileInfo.industryPreferences || []
     })
 
     const categoryList = allCategories.map((categoryItem)=>{
@@ -33,21 +33,6 @@ function AccountSettings({ profilePicture, profileInfo }){
             }
         }
     })
-    
-    // useEffect(() => {
-    //     if (data !== undefined) {
-    //         setAccountDetails({
-    //             firstName: data.firstName,
-    //             lastName: data.lastName,
-    //         })
-
-    //         // if (data?.campaigns.length !== 0) {
-    //         //     setAccountDetails({
-    //         //         interests: data.
-    //         //     })
-    //         // }
-    //     }
-    // })
 
     function discardChanges(){
         setAccountDetails({
@@ -69,8 +54,21 @@ function AccountSettings({ profilePicture, profileInfo }){
         return onChange;
     }
 
-    function saveChangesApiCall(){
-        console.log("Saving Changes to Server")
+    function saveIndustryPreferencesApiCall(newPreferencesList) {
+        // console.log("Saving Changes to industry preferences~")
+        // console.log(newPreferencesList)
+
+        updateInterestsFunc(newPreferencesList)
+    }
+
+    function saveAccountDetailsApiCall() {
+        // console.log("Saving Changes for account details")
+        const accountChanges = {
+            "firstName": accountDetails.firstName,
+            "lastName": accountDetails.lastName
+        }
+
+        updateAccountFunc(accountChanges)
     }
 
     function removeInterestedIndustry(id) {
@@ -126,7 +124,7 @@ function AccountSettings({ profilePicture, profileInfo }){
                             ))
                         }
                     </div>
-                    <AddInterestsModal categoryList={categoryList} saveChanges={saveChangesApiCall} />
+                    <AddInterestsModal categoryList={categoryList} saveChanges={saveIndustryPreferencesApiCall} />
                 </div>
                 <div className="flex flex col md:w-1/3 self-start justify-center">
                     <img src={profilePicture} alt="Profile Picture" className="w-full md:w-48" />
@@ -136,7 +134,7 @@ function AccountSettings({ profilePicture, profileInfo }){
             <br />
             <div className="flex flex-row justify-between pb-3">
                 <DiscardChangesModal discardChanges={discardChanges} />
-                <PrimaryButton text="Apply Changes"  />
+                <PrimaryButton text="Apply Changes" onClick={saveAccountDetailsApiCall} />
             </div>
         </>
     )
@@ -144,7 +142,9 @@ function AccountSettings({ profilePicture, profileInfo }){
 
 AccountSettings.propTypes = {
     profilePicture: PropTypes.string,
-    profileInfo: PropTypes.object
+    profileInfo: PropTypes.object,
+    updateAccountFunc: PropTypes.func,
+    updateInterestsFunc: PropTypes.func
 }
 
 export default AccountSettings;
