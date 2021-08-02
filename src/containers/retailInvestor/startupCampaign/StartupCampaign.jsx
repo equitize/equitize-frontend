@@ -11,7 +11,7 @@ import CampaignTabs from "./CampaignTabs";
 import CampaignDetails from "./subPages/campaignDetails/CampaignDetails";
 import CampaignMilestones from "./subPages/campaignMilestones/CampaignMilestones";
 import CampaignFAQs from "./subPages/campaignFAQs/CampaignFAQs";
-import CampaignResearch from "./subPages/campaignResearch/CampaignResearch";
+import CampaignMarketAnalysis from "./subPages/campaignMarketAnalysis/CampaignMarketAnalysis";
 import ConfigData from "../../../config";
 
 // React query
@@ -19,13 +19,13 @@ import { useQuery } from 'react-query'
 
 // Redux
 import { useSelector } from 'react-redux'
-import { getToken } from '../../../store/auth'
+import { getToken, getID } from '../../../store/auth'
 
 // React query fetch functions
 const getStartupDetails = async (key) => {
-    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/' + key.queryKey[1], {
+    const res = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/getStartup/' + key.queryKey[1] + "/" + key.queryKey[2], {
         headers: {
-            'Authorization': 'Bearer ' + key.queryKey[2]
+            'Authorization': 'Bearer ' + key.queryKey[3]
         }
     })
     if (!res.ok){
@@ -36,9 +36,9 @@ const getStartupDetails = async (key) => {
 }
 
 const getStartupVideo = async (key) => {
-    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/getSignedURLPlus/video/' + key.queryKey[1], {
+    const res = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/getSignedURLPlus/video/' + key.queryKey[1] + "/" + key.queryKey[2], {
         headers: {
-            'Authorization': 'Bearer ' + key.queryKey[2]
+            'Authorization': 'Bearer ' + key.queryKey[3]
         }
     })
     if (!res.ok){
@@ -49,9 +49,9 @@ const getStartupVideo = async (key) => {
 }
 
 const getStartupPitchDeck = async (key) => {
-    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/getSignedURLPlus/pitchDeck/' + key.queryKey[1], {
+    const res = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/getSignedURLPlus/pitchDeck/' + key.queryKey[1] + "/" + key.queryKey[2], {
         headers: {
-            'Authorization': 'Bearer ' + key.queryKey[2]
+            'Authorization': 'Bearer ' + key.queryKey[3]
         }
     })
     if (!res.ok){
@@ -73,10 +73,11 @@ function StartupCampaign(){
 
 
     const accessToken = useSelector(getToken)
-    const { data, status, error } = useQuery(['viewStartupDetails', id, accessToken], getStartupDetails)
+    const retailInvestorID = useSelector(getID)
+    const { data, status, error } = useQuery(['viewStartupDetails', id, retailInvestorID, accessToken], getStartupDetails)
 
-    const videoData = useQuery(['startupVideo', id, accessToken], getStartupVideo)
-    const pitchDeck = useQuery(['startupPitchDeck', id, accessToken], getStartupPitchDeck)
+    const videoData = useQuery(['startupVideo', id, retailInvestorID, accessToken], getStartupVideo)
+    const pitchDeck = useQuery(['startupPitchDeck', id, retailInvestorID, accessToken], getStartupPitchDeck)
 
     function getProgressBarWidth() {
         if (status === 'success') {
@@ -142,7 +143,7 @@ function StartupCampaign(){
                     }
                     {
                         isActiveTab.fourth ?
-                            <CampaignResearch />
+                            <CampaignMarketAnalysis />
                             : null
                     }
                 </div>

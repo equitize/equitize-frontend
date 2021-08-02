@@ -98,11 +98,10 @@ function RetailInvestorRegistration(){
         // Update RI interested industries
         const updateIndustryData = {
             "industryArr": industryPreferences,
-            "id": retailInvestorID,
             "accountType": "retailInvestor"
         }
         
-        const updateIndustry = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/industries/addIndustries/', {
+        const updateIndustry = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/industries/addIndustries/' + retailInvestorID, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + accessToken

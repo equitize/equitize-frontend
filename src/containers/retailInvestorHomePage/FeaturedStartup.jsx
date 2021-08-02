@@ -15,14 +15,14 @@ import { useQuery } from 'react-query'
 import { useEffect } from "react";
 
 // Redux
-import { getToken } from "../../store/auth";
+import { getToken, getID } from "../../store/auth";
 import { useSelector } from "react-redux";
 
 // React query fetch functions
 const getStartupPhoto = async (key) => {
-    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/getSignedURL/profilePhoto/' + key.queryKey[1], {
+    const res = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/getSignedURL/profilePhoto/' + key.queryKey[1] + "/" + key.queryKey[2], {
         headers: {
-            'Authorization': 'Bearer ' + key.queryKey[2],
+            'Authorization': 'Bearer ' + key.queryKey[3],
         },
     })
     return res.json()
@@ -31,6 +31,7 @@ const getStartupPhoto = async (key) => {
 function FeaturedStartup({ info }){
     const history = useHistory()
     const accessToken = useSelector(getToken)
+    const retailInvestorID = useSelector(getID)
     // console.log('info', info)
 
     let percentageRaised = info.campaign.currentlyRaised / info.campaign.goal * 100
@@ -52,7 +53,7 @@ function FeaturedStartup({ info }){
         progressBarWidth = getTailwindWidthFraction(percentageRaised)
     }
 
-    const featuredPhoto = useQuery(['featuredStartupPhoto', info.id, accessToken], getStartupPhoto)
+    const featuredPhoto = useQuery(['featuredStartupPhoto', info.id, retailInvestorID, accessToken], getStartupPhoto)
 
     function viewStartup(){
         const URL = `/startup/${info.id}`

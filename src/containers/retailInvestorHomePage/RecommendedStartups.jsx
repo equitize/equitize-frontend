@@ -10,7 +10,7 @@ function RecommendedStartups({ startups }){
             <div className="flex flex-row flex-wrap">
                 {
                     startups.length === 1 && (
-                        <div className="md:flex-shrink-0 w-full px-1 my-2">
+                        <div className="md:flex-shrink-0 w-1/3 px-1 my-2">
                             <StartupItem info={startups[0]}/>
                         </div>
                     )
