@@ -22,7 +22,7 @@ const fetchFile = async (key) => {
 }
 
 const addFile = async params => {
-    console.log("TOKEN", params.accessToken)
+    // console.log("TOKEN", params.accessToken)
     return fetch(ConfigData.SERVER_URL + '/db/startup/' + params.endPoint + params.startupId, {
             headers: {
                 'Authorization': 'Bearer ' + params.accessToken

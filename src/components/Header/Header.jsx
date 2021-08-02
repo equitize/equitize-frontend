@@ -42,8 +42,8 @@ const Header = () => {
 
     const isRetailInvestor = (accessToken) => {
         if (isLoggedIn) {
-            let decoded = jwt_decode(accessToken)
-            console.log(decoded)
+            var decoded = jwt_decode(accessToken)
+            // console.log(decoded)
 
             return decoded.permissions[0] === "retailInvestor:verified" || decoded.permissions[0] === "retailInvestor:unverified";
         }
@@ -54,7 +54,7 @@ const Header = () => {
         if (isLoggedIn) {
             return (
                 <>
-                    <Link to="/profile" className="p-4 hover:bg-blue-400 py-2 px-5">Profile</Link>
+                    { isRetailInvestor(accessToken) ? <Link to="/profile" className="p-4 hover:bg-blue-400 py-2 px-5">Profile</Link> : null }
                     <Link className="p-4" to="/">
                         <PrimaryButton text="Sign Out" onClick={signOut} />
                     </Link>

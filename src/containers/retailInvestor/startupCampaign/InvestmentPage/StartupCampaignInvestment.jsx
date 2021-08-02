@@ -12,13 +12,13 @@ import { isLastHour } from "../../../../helpers";
 
 // For redux
 import { useSelector } from 'react-redux'
-import { getToken } from '../../../../store/auth'
+import { getID, getToken } from '../../../../store/auth'
 
 // React query fetch functions
 const getStartupDetails = async (key) => {
-    const res = await fetch(ConfigData.SERVER_URL + '/db/startup/' + key.queryKey[1], {
+    const res = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/getStartup/' + key.queryKey[1] + "/" + key.queryKey[2], {
         headers: {
-            'Authorization': 'Bearer ' + key.queryKey[2],
+            'Authorization': 'Bearer ' + key.queryKey[3],
         },
     })
     if (!res.ok){
@@ -32,9 +32,10 @@ function StartupCampaignInvestment(){
     let { id } = useParams()
     const history = useHistory()
     const accessToken = useSelector(getToken)
+    const retailInvestorID = useSelector(getID)
 
     const [investmentAmount, setInvestmentAmount] = useState([0])
-    const { data, status, error } = useQuery(['viewStartupDetails', id, accessToken], getStartupDetails)
+    const { data, status, error } = useQuery(['viewStartupDetails', id, retailInvestorID, accessToken], getStartupDetails)
 
     let days = 0
     let hours = 0

@@ -2,12 +2,18 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import PrimaryButton from "../../../components/PrimaryButton/PrimaryButton";
 
+// For redux
+import { useDispatch } from 'react-redux'
+import { loggedOut } from '../../../store/auth';
+
 function LogOutModal() {
     let history = useHistory();
     const [showModal, setShowModal] = useState(false);
 
+    const dispatch = useDispatch()
+
     function logOut(){
-        // TODO Remove cookies and login information from browser
+        dispatch(loggedOut())
         history.push('/')
     }
 

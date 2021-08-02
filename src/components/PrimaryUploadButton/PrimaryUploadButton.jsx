@@ -61,7 +61,7 @@ function PrimaryUploadButton({ text, properties, moreInfo, labelId, moreInfoFunc
     }
 
     const fileSelectedHandler = (event) => {
-        console.log(event.target.files[0]);
+        // console.log(event.target.files[0]);
         if (event.target.files[0] !== undefined){
             let success = fileUpload(event.target.files[0])
             if (success){

@@ -3,14 +3,31 @@ import ProfilePageTabs from "./ProfilePageTabs";
 import Overview from "./subPages/Overview";
 import Updates from "./subPages/Updates";
 import AccountSettings from "./subPages/AccountSettings";
-import DefaultPic from './defaultPic.svg'
+import DefaultPic2 from './defaultPic2.svg'
+import ConfigData from "../../../config";
 
-const profileInfo = {
-    firstName: "Nicole",
-    lastName: "Daniels",
-    address: "221 Baker Street #05-21 543301",
-    interests: [{ name: "Agriculture", id: 1 }, { name: "Education", id: 2}]
+import { useQuery, useQueryClient } from 'react-query'
+
+// Redux
+import { useSelector } from 'react-redux'
+import { getID, getToken } from '../../../store/auth'
+
+// React Query functions
+const fetchRIByID = async (key) => {
+    const res = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/' + key.queryKey[1], {
+        headers: {
+            'Authorization': 'Bearer ' + key.queryKey[2]
+        }
+    })
+    return await res.json()
 }
+
+// const profileInfo = {
+//     firstName: "Nicole",
+//     lastName: "Daniels",
+//     address: "221 Baker Street #05-21 543301",
+//     interests: [{ name: "Agriculture", id: 1 }, { name: "Education", id: 2}]
+// }
 
 function ProfilePage(){
     const [isActiveTab, setIsActiveTab] = useState({
@@ -19,19 +36,65 @@ function ProfilePage(){
         third: false
     })
 
+    // Redux useSelector
+    const retailInvestorID = useSelector(getID)
+    const accessToken = useSelector(getToken)
+    const queryClient = useQueryClient()
+
     // TBC
     const [onAccountSettingsTab, setOnAccountSettingsTab] = useState(false)
     useEffect(() => {
         setOnAccountSettingsTab(!onAccountSettingsTab)
     },[isActiveTab.third])
 
-    // TODO Call API to get profile info
+    // React query fetch requests
+    const { data } = useQuery(['retailInvestorDetails', retailInvestorID, accessToken], fetchRIByID, {
+        enabled: true
+    })
+    console.log(data)
+
+    const updateAccountFunc = async (newAccountDetails) => {
+        // console.log("NEW ACCOUNT DETAILS BELOW")
+        // console.log(newAccountDetails)
+
+        const response = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/' + retailInvestorID, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accessToken
+            },
+            method: 'PUT',
+            body: JSON.stringify(newAccountDetails)
+        })
+
+        const res = await response.json()
+        console.log(res)
+
+        await queryClient.invalidateQueries('retailInvestorDetails')
+    }
+
+    const updateInterestsFunc = async (newPreferences) => {
+        console.log("Updating retail investor industry preferences")
+        console.log(newPreferences)
+        // const response = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/industries/addIndustries/' + retailInvestorID, {
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': 'Bearer ' + accessToken
+        //     },
+        //     method: 'POST',
+        //     body: JSON.stringify(newAccountDetails)
+        // })
+
+        // const res = await response.json()
+        // console.log(res)
+
+        // await queryClient.invalidateQueries('retailInvestorDetails')
+    }
 
     return(
         <>
             <div className="container mx-auto flex md:px-2 flex-row items-center space-x-4 w-full border-black border-t-2">
                 <div className="flex flex-col items-center w-1/4 self-start">
-                    <ProfilePageTabs setIsActiveTab={setIsActiveTab} isActiveTab={isActiveTab} profilePicture={DefaultPic} />
+                    <ProfilePageTabs setIsActiveTab={setIsActiveTab} isActiveTab={isActiveTab} profilePicture={DefaultPic2} />
                 </div>
                 <div className="flex flex-col self-start w-full border-black border-l-2 p-3 self-stretch justify-between">
                     {
@@ -46,7 +109,7 @@ function ProfilePage(){
                     }
                     {
                         isActiveTab.third ?
-                            <AccountSettings profilePicture={DefaultPic} profileInfo={profileInfo} />
+                            <AccountSettings profilePicture={DefaultPic2} profileInfo={data} updateAccountFunc={updateAccountFunc} updateInterestsFunc={updateInterestsFunc} />
                             : null
                     }
                 </div>
