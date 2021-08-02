@@ -45,9 +45,7 @@ const Header = () => {
             var decoded = jwt_decode(accessToken)
             // console.log(decoded)
 
-            if (decoded.permissions[0] === "retailInvestor:verified" || decoded.permissions[0] === "retailInvestor:unverified") {
-                return true
-            }
+            return decoded.permissions[0] === "retailInvestor:verified" || decoded.permissions[0] === "retailInvestor:unverified";
         }
         return false
     }
@@ -95,10 +93,9 @@ const Header = () => {
                             : null
                         }  
                     <div className="inline-block">
-                        <Link className="p-4 hover:bg-blue-400 py-2 px-5" to="/About">Guide</Link>
+                        <Link className="p-4 hover:bg-blue-400 py-2 px-5" to="/guide">Guide</Link>
                         {navDisplay(isLoggedIn)}
                     </div>                    
-                    
                 </div>
             </nav>
 

@@ -22,6 +22,7 @@ import InvestmentSuccess from "./containers/retailInvestor/startupCampaign/Inves
 import RetailInvestorsLogin from "./containers/loginPage/RetailInvestorsLogin"
 import StartupsLogin from "./containers/loginPage/StartupsLogin"
 import ProfilePage from "./containers/retailInvestor/profilePage/ProfilePage";
+import GuidePage from "./containers/guidePage/GuidePage";
 
 function App() {
 
@@ -71,6 +72,9 @@ function App() {
               </Route>
               <Route exact path="/home">
                   <RetailInvestorHomePage />
+              </Route>
+              <Route exact path="/guide">
+                  <GuidePage />
               </Route>
               <Route path="*">
                   <InvalidPage />

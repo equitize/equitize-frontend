@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'; // ES6
 import jwt_decode from "jwt-decode"
 
@@ -18,11 +18,10 @@ const HeaderDropdown = ({isOpen, toggle}) => {
 
     const isRetailInvestor = (accessToken) => {
         if (isLoggedIn) {
-            var decoded = jwt_decode(accessToken)
+            let decoded = jwt_decode(accessToken)
             // console.log(decoded)
-            if (decoded.permissions[0] === "retailInvestor:verified" || decoded.permissions[0] === "retailInvestor:unverified") {
-                return true
-            }
+            return decoded.permissions[0] === "retailInvestor:verified" || decoded.permissions[0] === "retailInvestor:unverified";
+
         }
         return false
     }

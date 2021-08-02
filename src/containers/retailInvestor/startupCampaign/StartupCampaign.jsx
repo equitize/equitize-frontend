@@ -11,7 +11,7 @@ import CampaignTabs from "./CampaignTabs";
 import CampaignDetails from "./subPages/campaignDetails/CampaignDetails";
 import CampaignMilestones from "./subPages/campaignMilestones/CampaignMilestones";
 import CampaignFAQs from "./subPages/campaignFAQs/CampaignFAQs";
-import CampaignResearch from "./subPages/campaignResearch/CampaignResearch";
+import CampaignMarketAnalysis from "./subPages/campaignMarketAnalysis/CampaignMarketAnalysis";
 import ConfigData from "../../../config";
 
 // React query
@@ -143,7 +143,7 @@ function StartupCampaign(){
                     }
                     {
                         isActiveTab.fourth ?
-                            <CampaignResearch />
+                            <CampaignMarketAnalysis />
                             : null
                     }
                 </div>
