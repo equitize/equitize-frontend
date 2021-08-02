@@ -58,7 +58,7 @@ it('Testing to see if frontpage works', async () => {
     for (const _ of Array(5).keys()) {
       try{
         await driver.findElement(By.css('input[name="age"]')).sendKeys(Key.UP);
-        await sleep(2000)
+        await sleep(500)
       } catch(error){}
     }
     await driver.findElement(By.xpath('//select[@name="gender"]/option[2]')).click();
