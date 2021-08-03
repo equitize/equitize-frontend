@@ -12,11 +12,20 @@ const transitionMessageAlert = async(
                 subscription.unsubscribe();
                 try {
                     const Tx = await zilPay.blockchain.getTransaction(hash[0]);
-                    const code = Tx.receipt.transitions[0].msg.params[0].value;
-                    const message = decodeMessage(code);
+                    const code = Tx?.receipt?.transitions[0]?.msg?.params[0]?.value;
+                    let message
+                    if (code){
+                        message = decodeMessage(code);
+                        console.log(message)
+                    }
+                    console.log(Tx)
+                    console.log(Tx.success)
 
-                    if (message.type === "success") {
+                    if (message?.type === "success") {
                         resolve(message.alert);
+                    }
+                    else if(Tx.success){
+                        resolve("Transaction Success")
                     }
                     reject(message.alert);
                 } catch (err) {

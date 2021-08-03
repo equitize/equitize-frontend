@@ -88,7 +88,7 @@ const Header = () => {
                         {
                             isRetailInvestor(accessToken) ? 
                                 <div className="inline-block">
-                                    <Link to="/home" className="p-4 hover:bg-blue-400 py-2 px-5" >Live Campaigns</Link>
+                                    <Link to="/home" className="p-4 hover:bg-blue-400 py-2 px-5">Live Campaigns</Link>
                                 </div>
                             : null
                         }  

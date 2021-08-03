@@ -26,13 +26,11 @@ function PublicPage() {
     return (
         <div className="flex flex-wrap flex-col items-center justify-between w-full">
             <div className="flex sm:flex-row flex-col w-full p-4 sm:p-6">
-                <div className="flex flex-col items-center md:w-1/2 px-4 place-content-center">
+                <div className="flex flex-col items-center md:w-1/2 px-4 place-content-center space-y-4">
                     <p className="text-left xl:text-7xl lg:text-6xl sm:text-5xl text-4xl font-Rubik">Blockchain Powered Equity Crowdfunding</p>
-                    <br/>
                     <div className="self-start">
                         <p className="text-left text-gray-400 font-Rubik sm:text-2xl">We empower startups so that our investors become highly successful</p>
                     </div>
-                    <br/>
                     <Link className="self-start" to="/guide">
                         <button className="bg-custom-blue text-white font-bold py-2 px-5 rounded-full">Learn More</button>
                     </Link>
@@ -136,7 +134,7 @@ function PublicPage() {
                         <div className="flex flex-col lg:w-2/3 space-y-6">
                             <div className="flex flex-col md:flex-row w-full md:space-x-6 gap-y-5">
                                 <div className="flex flex-col w-full md:w-1/2 space-y-3 md:items-baseline items-center">
-                                    <p className="font-Inter text-xl font-bold">Little Capital Requirement</p>
+                                    <p className="font-Inter text-xl font-bold text-center">Little Capital Requirement</p>
                                     <div className="flex flex-row w-2/3 md:w-full space-x-4">
                                         <div className="flex flex-row w-1/2 lg:w-14 items-center md:items-start">
                                             <img src={TrendingUp} alt="Trending Up Icon" className="w-full h-12 md:h-full" />
@@ -145,7 +143,7 @@ function PublicPage() {
                                     </div>
                                 </div>
                                 <div className="flex flex-col w-full md:w-1/2 space-y-3 md:items-baseline items-center">
-                                    <p className="font-Inter text-xl font-bold">Blockchain Powered</p>
+                                    <p className="font-Inter text-xl font-bold text-center">Blockchain Powered</p>
                                     <div className="flex flex-row w-2/3 md:w-full space-x-4">
                                         <div className="flex flex-row w-1/2 lg:w-24 items-center md:items-start">
                                             <img src={Hub} alt="Hub Icon" className="w-full h-2/3" />
@@ -156,7 +154,7 @@ function PublicPage() {
                             </div>
                             <div className="flex flex-col md:flex-row w-full md:space-x-6 gap-y-5">
                                 <div className="flex flex-col w-full md:w-1/2 space-y-3 md:items-baseline items-center">
-                                    <p className="font-Inter text-xl font-bold">Invest in the best</p>
+                                    <p className="font-Inter text-xl font-bold text-center">Invest in the best</p>
                                     <div className="flex flex-row w-2/3 md:w-full space-x-4">
                                         <div className="flex flex-row w-1/2 lg:w-24 items-center md:items-start">
                                             <img src={UserCircle} alt="User Circle Icon" className="w-20 md:w-full h-12 md:h-full" />
@@ -165,7 +163,7 @@ function PublicPage() {
                                     </div>
                                 </div>
                                 <div className="flex flex-col w-full md:w-1/2 space-y-3 md:items-baseline items-center">
-                                    <p className="font-Inter text-xl font-bold">Recommender System</p>
+                                    <p className="font-Inter text-xl font-bold text-center">Recommender System</p>
                                     <div className="flex flex-row w-2/3 md:w-full sm:space-x-4">
                                         <div className="flex flex-row w-1/2 lg:w-24 justify-center items-center md:items-start">
                                             <img src={CheckList} alt="Checklist Icon" className=" md:w-full h-8 md:h-full" />
@@ -187,7 +185,7 @@ function PublicPage() {
                         <div className="flex flex-col lg:w-2/3 space-y-6">
                             <div className="flex flex-col md:flex-row w-full md:space-x-6 gap-y-5">
                                 <div className="flex flex-col w-full md:w-1/2 space-y-3 md:items-baseline items-center">
-                                    <p className="font-Inter text-xl font-bold">Access to Retail Investors</p>
+                                    <p className="font-Inter text-xl font-bold text-center">Access to Retail Investors</p>
                                     <div className="flex flex-row w-2/3 md:w-full space-x-4">
                                         <div className="flex flex-row w-1/2 lg:w-24 items-center md:items-start">
                                             <img src={People} alt="People Icon" className="w-full h-24 md:h-full" />
@@ -196,7 +194,7 @@ function PublicPage() {
                                     </div>
                                 </div>
                                 <div className="flex flex-col w-full md:w-1/2 space-y-3 md:items-baseline items-center">
-                                    <p className="font-Inter text-xl font-bold">Guided Mentorship</p>
+                                    <p className="font-Inter text-xl font-bold text-center">Guided Mentorship</p>
                                     <div className="flex flex-row w-2/3 md:w-full space-x-4">
                                         <div className="flex flex-row w-1/2 lg:w-24 items-center md:items-start">
                                             <img src={Stars} alt="Stars Icon" className="w-full h-24 md:h-full" />

@@ -10,10 +10,17 @@ const donateTransition = async (
     setTransactionLink
 ) => {
     try {
-        const callTransition = await contract.call(
+        // Actual XSGD has 6 decimals instead of 8
+        const callTransition = await contract?.call(
             "Donate",
-            [],
-            getCallParameters(zilPay, amount)
+            [
+                {
+                    vname: 'amount',
+                    type: 'Uint128',
+                    value: `${amount * 100000000}`,
+                },
+            ],
+            getCallParameters(zilPay)
         );
         setTransactionLink(getTransactionLink(callTransition.ID))
 
