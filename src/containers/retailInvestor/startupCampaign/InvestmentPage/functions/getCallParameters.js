@@ -10,7 +10,7 @@ const getCallParameters = (zilPay, amountValue = "0") => {
 
     const CHAIN_ID = 333;
     const MSG_VERSION = 1;
-    const GAS_PRICE = 60000000000;
+    const GAS_PRICE = 600000000;
     const GAS_LIMIT = 50000;
 
     const version = bytes.pack(CHAIN_ID, MSG_VERSION);

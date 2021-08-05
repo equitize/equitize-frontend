@@ -26,13 +26,11 @@ function PublicPage() {
     return (
         <div className="flex flex-col items-center justify-between w-full">
             <div className="flex sm:flex-row flex-col w-3/4 p-4 sm:p-6">
-                <div className="flex flex-col items-center md:w-1/2 px-4 place-content-center">
+                <div className="flex flex-col items-center md:w-1/2 px-4 place-content-center space-y-8">
                     <p className="text-left xl:text-7xl lg:text-6xl sm:text-5xl text-4xl font-Rubik">Blockchain Powered Equity Crowdfunding</p>
-                    <br/>
                     <div className="self-start">
                         <p className="text-left text-gray-400 font-Rubik sm:text-2xl">We empower startups so that our investors become highly successful</p>
                     </div>
-                    <br/>
                     <Link className="self-start" to="/guide">
                         <button className="bg-custom-blue text-white font-bold py-2 px-5 rounded-full">Learn More</button>
                     </Link>

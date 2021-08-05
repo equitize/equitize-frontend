@@ -36,7 +36,7 @@ function StartupShowcase({ searchTerms }){
 
     var liveCampaigns = []
     if (status === "success") {
-        liveCampaigns = data.filter( startup => startup.campaign.campaignStatus === "LIVE" )
+        liveCampaigns = data.filter( startup => startup?.campaign?.campaignStatus === "LIVE" )
     }
 
     return(

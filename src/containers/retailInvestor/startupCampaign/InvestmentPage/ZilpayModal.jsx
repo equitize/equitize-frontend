@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import PrimaryButton from "../../../../components/PrimaryButton/PrimaryButton";
 import donateTransition from "./functions/donateTransition";
 import Loading from "../../../../components/Loading/Loading";
+import increaseAllowanceTransition from "./functions/increaseAllowanceTransition";
 
 function ZilpayModal({ getInvestmentData, redirectForTransactionSuccess }){
     const [showModal, setShowModal] = useState(false);
@@ -21,6 +22,10 @@ function ZilpayModal({ getInvestmentData, redirectForTransactionSuccess }){
     const [transactionMessage, setTransactionMessage] = useState(undefined)
     const [transactionLink, setTransactionLink] = useState("#")
     const [redirect, setRedirect] = useState(false)
+    const [increaseAllowance, setIncreaseAllowance] = useState(false)
+    // TODO change according to API or XSGD Contract Address
+    const XSGDContractAddress = "0xf2d43cd4c755681a602b129b20a48d3d32fb03ec"
+    const CrowdFundContractAddress= "0xb7715dd7808347e15b62ba609d9a8164a0f53701"
 
     function ModalFunc(){
         setShowModal(!showModal)
@@ -36,7 +41,7 @@ function ZilpayModal({ getInvestmentData, redirectForTransactionSuccess }){
     const getContractState = async () => {
         // TO Replace with API Address
         const contract = await zilPay.contracts.at(
-            "0xa636b0cc54dd38e2bff96f6f79afde8bcecdc880"
+            CrowdFundContractAddress
         );
         setContract(contract);
         const contractState = await contract.getState();
@@ -53,6 +58,17 @@ function ZilpayModal({ getInvestmentData, redirectForTransactionSuccess }){
         }
         setTransition(false)
     }
+
+    async function increaseAllowanceCall(){
+        setTransition(true)
+        let message = await increaseAllowanceTransition(CrowdFundContractAddress, XSGDContractAddress, zilPay, setTransactionMessage, setTransactionLink)
+        if (message){
+            setTransactionMessage(message)
+        }
+        setTransition(false)
+    }
+
+
 
     useEffect(() => {
         if (error === false) return;
@@ -91,6 +107,26 @@ function ZilpayModal({ getInvestmentData, redirectForTransactionSuccess }){
             account?.unsubscribe?.();
         };
     }, [error]);
+
+    useEffect(async () => {
+        if (isConnect){
+            const XSGDContract = await zilPay?.contracts?.at(XSGDContractAddress);
+            let allowances = await XSGDContract?.getSubState('allowances', [zilPay.wallet.defaultAccount.base16.toLowerCase(), CrowdFundContractAddress])
+            if (allowances){
+                let currentAllowance = allowances.allowances[zilPay.wallet.defaultAccount.base16.toLowerCase()][CrowdFundContractAddress]
+                // Temporary Value
+                if (currentAllowance < 10000000000){
+                    setIncreaseAllowance(true)
+                }
+                else {
+                    setIncreaseAllowance(false)
+                }
+            }
+            else {
+                setIncreaseAllowance(true)
+            }
+        }
+    },[isConnect, transition])
 
     return (
         <>
@@ -175,6 +211,11 @@ function ZilpayModal({ getInvestmentData, redirectForTransactionSuccess }){
                                                             <p className="font-Inter text-xl">{zilPay.wallet.defaultAccount.bech32}</p>
                                                             <br/>
                                                             <br/>
+                                                            {
+                                                                increaseAllowance ?
+                                                                    <PrimaryButton text="Approve Spending" onClick={increaseAllowanceCall} properties="px-20 py-3" />
+                                                                    : null
+                                                            }
                                                             <PrimaryButton text="Donate" onClick={donateToStartup} properties="px-20 py-3" />
                                                             {
                                                                 transactionMessage ?
