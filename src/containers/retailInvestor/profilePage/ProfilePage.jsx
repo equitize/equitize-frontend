@@ -48,10 +48,10 @@ function ProfilePage(){
     },[isActiveTab.third])
 
     // React query fetch requests
-    const { data } = useQuery(['retailInvestorDetails', retailInvestorID, accessToken], fetchRIByID, {
+    const { data, status } = useQuery(['retailInvestorDetails', retailInvestorID, accessToken], fetchRIByID, {
         enabled: true
     })
-    console.log(data)
+    // console.log(data)
 
     const updateAccountFunc = async (newAccountDetails) => {
         // console.log("NEW ACCOUNT DETAILS BELOW")
@@ -92,28 +92,48 @@ function ProfilePage(){
 
     return(
         <>
-            <div className="container mx-auto flex md:px-2 flex-row items-center space-x-4 w-full border-black border-t-2">
-                <div className="flex flex-col items-center w-1/4 self-start">
-                    <ProfilePageTabs setIsActiveTab={setIsActiveTab} isActiveTab={isActiveTab} profilePicture={DefaultPic2} />
-                </div>
-                <div className="flex flex-col self-start w-full border-black border-l-2 p-3 self-stretch justify-between">
-                    {
-                        isActiveTab.first ?
-                            <Overview />
-                            : null
-                    }
-                    {
-                        isActiveTab.second ?
-                            <Updates />
-                            : null
-                    }
-                    {
-                        isActiveTab.third ?
-                            <AccountSettings profilePicture={DefaultPic2} profileInfo={data} updateAccountFunc={updateAccountFunc} updateInterestsFunc={updateInterestsFunc} />
-                            : null
-                    }
-                </div>
-            </div>
+            {
+                status === 'loading' && (
+                    <div className="container mx-auto flex flex-wrap p-5 flex-col items-center my-auto xl:px-40 lg:px-24 md:px-12 sm:px-8">
+                        <p className="font-Rubik text-xl">Loading profile...</p>
+                    </div>
+                )
+            }
+
+            {
+                status === 'error' && (
+                    <div className="container mx-auto flex flex-wrap p-5 flex-col items-center my-auto xl:px-40 lg:px-24 md:px-12 sm:px-8">
+                        <p className="font-Rubik text-xl">An error occurred. Please check back again later.</p>
+                    </div>
+                )
+            }
+
+            {
+                status === 'success' && (
+                    <div className="container mx-auto flex md:px-2 flex-row items-center space-x-4 w-full border-black border-t-2">
+                        <div className="flex flex-col items-center w-1/4 self-start">
+                            <ProfilePageTabs setIsActiveTab={setIsActiveTab} isActiveTab={isActiveTab} profilePicture={DefaultPic2} />
+                        </div>
+                        <div className="flex flex-col self-start w-full border-black border-l-2 p-3 self-stretch justify-between">
+                            {
+                                isActiveTab.first ?
+                                    <Overview investedCampaigns={data.campaigns} />
+                                    : null
+                            }
+                            {
+                                isActiveTab.second ?
+                                    <Updates />
+                                    : null
+                            }
+                            {
+                                isActiveTab.third ?
+                                    <AccountSettings profilePicture={DefaultPic2} profileInfo={data} updateAccountFunc={updateAccountFunc} updateInterestsFunc={updateInterestsFunc} />
+                                    : null
+                            }
+                        </div>
+                    </div>
+                )
+            }
         </>
     )
 }
