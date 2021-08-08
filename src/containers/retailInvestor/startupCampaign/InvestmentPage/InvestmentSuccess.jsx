@@ -9,6 +9,10 @@ import Loading from '../../../../components/Loading/Loading'
 import ConfigData from "../../../../config";
 import TextModal from "../../../../components/Modal/TextModal";
 
+// Redux
+import { useSelector } from 'react-redux'
+import { getID, getToken } from '../../../../store/auth'
+
 const InvestmentSuccess = () => {
     let { id } = useParams()
     const [pledgeResult, setPledgeResult] = useState('')
@@ -23,20 +27,25 @@ const InvestmentSuccess = () => {
     let params = queryString.parse(history.location.search)
     const { deposit } = params
 
+    const retailInvestorID = useSelector(getID)
+    const accessToken = useSelector(getToken)
+
     useEffect(() => {
         pledgeAmount();
     }, [])
 
     const pledgeAmount = async () => {
+        console.log('deposit:', deposit)
 
-        const response = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/campaign/pledge/' + id, {
+        const response = await fetch(ConfigData.SERVER_URL + '/db/retailInvestors/campaign/pledge/' + id + '/' + retailInvestorID, {
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer ~jwttoken~'
+                'Authorization': 'Bearer ' + accessToken,
             },
             method: 'PUT',
             body: JSON.stringify({
-                "pledgeAmount": deposit
+                "retailInvID" : retailInvestorID,
+                "pledgeAmount": Number(deposit)
             }) 
         })
 
@@ -44,13 +53,14 @@ const InvestmentSuccess = () => {
         if (status === 200) {
             const res = await response.json()
 
-            if (res.message === "Milestone SC and Fungible Token SC successfully deployed.") {
-                setPledgeResult(res)
-                setLoading(true)
-                setTimeout(() => {
-                    setDone(true)
-                }, 3000)
-            }
+            console.log(res)
+
+            setPledgeResult(res)
+            console.log(pledgeResult)
+            setLoading(true)
+            setTimeout(() => {
+                setDone(true)
+            }, 3000)
 
         } else {
             const error = await response.json()
@@ -71,10 +81,10 @@ const InvestmentSuccess = () => {
     // TODO CALL API FOR DATA (ONLY Startup Name)
     const startupObject = {
         name: "Meetup Mouse",
-        description: "Meetup Mouse suggests the BEST hand-picked places for your group’s needs so you and your friends NEVER worry about where to eat again!",
-        fundedAmount: 200000,
-        sharesAllocated: "20",
-        campaignGoal: 500000,
+        description: "Meetup Mouse is a mobile app that recommends the best outing location for you and your friends.",
+        fundedAmount: 10000,
+        sharesAllocated: "10",
+        campaignGoal: 10000,
         endTime: "47",
         id: 1,
         imageLink: MeetupMouse
@@ -109,8 +119,9 @@ const InvestmentSuccess = () => {
                 </>
             ) : (
                 <>
-                <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">Milestone Smart Contract Address: {pledgeResult.milestoneSCaddress}</p>
-                <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">Fungible Token Address: {pledgeResult.fungibleTokenSCaddress}</p>
+                <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">You have successfully deposited your investment.</p>
+                {/* <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">Milestone Smart Contract Address: {pledgeResult.milestoneSCaddress}</p>
+                <p className="font-Rubik text-center text-sm sm:text-base md:text-lg w-1/2">Fungible Token Address: {pledgeResult.fungibleTokenSCaddress}</p> */}
                 </>
             )}
             
