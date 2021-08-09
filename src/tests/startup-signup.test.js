@@ -249,7 +249,7 @@ it('Testing to see if frontpage works', async () => {
     await driver.findElement(By.xpath('//button[contains(text(),"Update")]')).click();
     await sleep(2000)
 
-    await sleep(120000)
+    await sleep(2000)
 
     //It is always a safe practice to quit the browser after execution
     await driver.quit();
