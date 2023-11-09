@@ -14,7 +14,7 @@
     "@testing-library/user-event": "^7.1.2",
     "add": "^2.0.6",
     "axios": "^0.21.1",
-    "chromedriver": "^91.0.1",
+    "chromedriver": "^119.0.1",
     "classnames": "^2.3.1",
     "geckodriver": "^2.0.1",
     "jwt-decode": "^3.1.2",
